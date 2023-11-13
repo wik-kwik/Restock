@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  restock-mariadb:
+    container_name: restock-mariadb
+    image: mariadb:11.1.2
+    ports:
+      - "3306:3306"
+    environment:
+      MARIADB_ROOT_PASSWORD: mysql
+    volumes:
+      - ./restock-mariadb/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
