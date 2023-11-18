@@ -1,6 +1,6 @@
 package com.example.restockbackend.api;
 
-import com.example.restockbackend.dao.entity.User;
+import com.example.restockbackend.dao.entity.UserEntity;
 import com.example.restockbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,22 +20,22 @@ public class UserApi {
     }
 
     @GetMapping("/all")
-    public Iterable<User> getAll() {
+    public Iterable<UserEntity> getAll() {
         return users.findAll();
     }
 
     @GetMapping
-    public Optional<User> getById(@RequestParam Long index) {
+    public Optional<UserEntity> getById(@RequestParam Long index) {
         return users.findById(index);
     }
 
     @PostMapping
-    public User addUser(@RequestBody User user) {
+    public UserEntity addUser(@RequestBody UserEntity user) {
         return users.save(user);
     }
 
     @PutMapping
-    public User updateUser(@RequestBody User user) {
+    public UserEntity updateUser(@RequestBody UserEntity user) {
         return users.save(user);
     }
 

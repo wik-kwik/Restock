@@ -1,13 +1,12 @@
 package com.example.restockbackend.service;
 
 import com.example.restockbackend.dao.UserRepo;
-import com.example.restockbackend.dao.entity.User;
+import com.example.restockbackend.dao.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -21,15 +20,15 @@ public class UserService {
         this.userRepo = userRepo;
     }
 
-    public Optional<User> findById(Long id){
+    public Optional<UserEntity> findById(Long id){
         return userRepo.findById(id);
     }
 
-    public Iterable<User> findAll(){
+    public Iterable<UserEntity> findAll(){
         return userRepo.findAll();
     }
 
-    public User save(User user){
+    public UserEntity save(UserEntity user){
         return userRepo.save(user);
     }
 
@@ -39,7 +38,7 @@ public class UserService {
 
     @EventListener(ApplicationReadyEvent.class)
     public void fillDB() {
-        save(new User(1L, "Jan", "jan123", LocalDateTime.now(), LocalDateTime.now()));
-        save(new User(2L, "Piotr", "piotr54321!", LocalDateTime.now(), LocalDateTime.now()));
+        save(new UserEntity(null, "Jan", "jan123", LocalDateTime.now(), null, null));
+        save(new UserEntity(null, "Piotr", "piotr54321!", LocalDateTime.now(), null, null));
     }
 }
