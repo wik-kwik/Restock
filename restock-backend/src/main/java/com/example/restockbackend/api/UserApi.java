@@ -25,8 +25,8 @@ public class UserApi {
     }
 
     @GetMapping
-    public Optional<UserEntity> getById(@RequestParam Long index) {
-        return users.findById(index);
+    public Optional<UserEntity> getById(@RequestParam Long id) {
+        return users.findById(id);
     }
 
     @PostMapping

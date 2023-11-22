@@ -4,14 +4,11 @@ import com.example.restockbackend.dao.UserRepo;
 import com.example.restockbackend.dao.entity.UserEntity;
 import com.example.restockbackend.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -38,12 +35,6 @@ public class UserService implements UserDetailsService {
 
     public void deleteById(Long id) {
         userRepo.deleteById(id);
-    }
-
-    @EventListener(ApplicationReadyEvent.class)
-    public void fillDB() {
-        save(new UserEntity(null, "Jan", "jan123", LocalDateTime.now(), null, null));
-        save(new UserEntity(null, "Piotr", "piotr54321!", LocalDateTime.now(), null, null));
     }
 
     @Override
