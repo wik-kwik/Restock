@@ -128,13 +128,6 @@ export const EyeIconContainer = styled.span`
   cursor: pointer;
 `;
 
-// export const EyeIconContainer = styled.span`
-//   position: absolute;
-//   right: 10px;
-//   top: 50%;
-//   transform: translateY(-50%);
-// `;
-
 export const EyeIcon = styled(Icon)`
   cursor: pointer;
 `;
