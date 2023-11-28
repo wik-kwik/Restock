@@ -34,9 +34,8 @@ export const RegistrationForm = () => {
     // Clear the error when passwords match
     setError('');
 
-    // Tutaj nie wiem jaki endpoint - do dokończenia
     try {
-      const response = await fetch('http://localhost:8080/users/addUser', {
+      const response = await fetch('http://localhost:8080/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
