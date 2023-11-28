@@ -28,9 +28,4 @@ public class DataService {
     public DataEntity save(DataEntity data) {
         return dataRepo.save(data);
     }
-
-    public void deleteById(Long id) {
-        dataRepo.deleteById(id);
-    }
-
 }

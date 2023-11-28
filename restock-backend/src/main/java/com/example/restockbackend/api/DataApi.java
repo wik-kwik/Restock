@@ -33,14 +33,4 @@ public class DataApi {
     public DataEntity addData(@RequestBody DataEntity data) {
         return dataServices.save(data);
     }
-
-    @PutMapping
-    public DataEntity updateData(@RequestBody DataEntity data) {
-        return dataServices.save(data);
-    }
-
-    @DeleteMapping
-    public void deleteUser(@RequestParam Long index) {
-        dataServices.deleteById(index);
-    }
 }
