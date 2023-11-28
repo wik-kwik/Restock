@@ -5,6 +5,7 @@ import com.example.restockbackend.dao.entity.SensorEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -30,7 +31,12 @@ public class SensorService {
     }
 
     public void deleteById(Long id) {
-        sensorRepo.deleteById(id);
+        Optional<SensorEntity> existingSensor = sensorRepo.findById(id);
+        if (existingSensor.isPresent()) {
+            SensorEntity deletedSensor = existingSensor.get();
+            deletedSensor.setRemoveDate(LocalDateTime.now());
+            sensorRepo.save(deletedSensor);
+        }
     }
 
 }

@@ -33,7 +33,7 @@ public class SensorEntity {
     @Column
     private LocalDateTime modifyDate;
 
-    @Column(updatable = false)
+    @Column
     private LocalDateTime removeDate;
 
 }

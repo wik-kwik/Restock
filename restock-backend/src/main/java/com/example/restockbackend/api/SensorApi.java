@@ -41,7 +41,7 @@ public class SensorApi {
     }
 
     @DeleteMapping
-    public void deleteUser(@RequestParam Long index) {
-        sensors.deleteById(index);
+    public void deleteSensor(@RequestParam Long id) {
+        sensors.deleteById(id);
     }
 }
