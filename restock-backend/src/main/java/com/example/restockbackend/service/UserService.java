@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -25,16 +26,17 @@ public class UserService implements UserDetailsService {
         return userRepo.findById(id);
     }
 
-    public Iterable<UserEntity> findAll() {
-        return userRepo.findAll();
-    }
-
     public UserEntity save(UserEntity user) {
         return userRepo.save(user);
     }
 
     public void deleteById(Long id) {
-        userRepo.deleteById(id);
+        Optional<UserEntity> existingUser = userRepo.findById(id);
+        if (existingUser.isPresent()) {
+            UserEntity deletedUser = existingUser.get();
+            deletedUser.setRemoveDate(LocalDateTime.now());
+            userRepo.save(deletedUser);
+        }
     }
 
     @Override

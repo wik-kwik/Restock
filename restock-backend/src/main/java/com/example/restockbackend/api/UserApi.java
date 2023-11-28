@@ -19,19 +19,9 @@ public class UserApi {
         this.users = userService;
     }
 
-    @GetMapping("/all")
-    public Iterable<UserEntity> getAll() {
-        return users.findAll();
-    }
-
     @GetMapping
     public Optional<UserEntity> getById(@RequestParam Long id) {
         return users.findById(id);
-    }
-
-    @PostMapping
-    public UserEntity addUser(@RequestBody UserEntity user) {
-        return users.save(user);
     }
 
     @PutMapping
@@ -40,7 +30,7 @@ public class UserApi {
     }
 
     @DeleteMapping
-    public void deleteUser(@RequestParam Long index) {
-        users.deleteById(index);
+    public void deleteUser(@RequestParam Long id) {
+        users.deleteById(id);
     }
 }
