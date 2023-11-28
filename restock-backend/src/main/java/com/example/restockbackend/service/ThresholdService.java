@@ -5,6 +5,7 @@ import com.example.restockbackend.dao.entity.ThresholdEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -30,7 +31,12 @@ public class ThresholdService {
     }
 
     public void deleteById(Long id) {
-        thresholdRepo.deleteById(id);
+        Optional<ThresholdEntity> existingThreshold = thresholdRepo.findById(id);
+        if (existingThreshold.isPresent()) {
+            ThresholdEntity deletedThreshold = existingThreshold.get();
+            deletedThreshold.setRemoveDate(LocalDateTime.now());
+            thresholdRepo.save(deletedThreshold);
+        }
     }
 
 }

@@ -33,7 +33,7 @@ public class ThresholdEntity {
     @Column
     private LocalDateTime modifyDate;
 
-    @Column(updatable = false)
+    @Column
     private LocalDateTime removeDate;
 
 }
