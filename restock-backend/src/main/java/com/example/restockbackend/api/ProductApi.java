@@ -39,8 +39,4 @@ public class ProductApi {
         return productService.save(product);
     }
 
-    @DeleteMapping
-    public void deleteProduct(@RequestParam Long id) {
-        productService.deleteById(id);
-    }
 }

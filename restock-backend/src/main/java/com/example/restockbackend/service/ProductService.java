@@ -28,9 +28,4 @@ public class ProductService {
     public ProductEntity save(ProductEntity product) {
         return productRepo.save(product);
     }
-
-    public void deleteById(Long id) {
-        productRepo.deleteById(id);
-    }
-
 }
