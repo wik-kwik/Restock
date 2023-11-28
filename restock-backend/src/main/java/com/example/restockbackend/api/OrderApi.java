@@ -39,8 +39,4 @@ public class OrderApi {
         return orderService.save(order);
     }
 
-    @DeleteMapping
-    public void deleteOrder(@RequestParam Long id) {
-        orderService.deleteById(id);
-    }
 }

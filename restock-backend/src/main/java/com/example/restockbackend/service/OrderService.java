@@ -29,7 +29,4 @@ public class OrderService {
         return orderRepo.save(order);
     }
 
-    public void deleteById(Long id) {
-        orderRepo.deleteById(id);
-    }
 }
