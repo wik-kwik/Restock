@@ -26,6 +26,7 @@ import {
   EyeIconContainer,
   EyeIcon,
   PasswordContainer,
+  ErrorMessage
 } from './LoginFormElements';
 import logoBig from '../../images/logo_big.png';
 
@@ -37,6 +38,8 @@ export const LoginForm = () => {
   const [icon, setIcon] = useState(eyeOff);
   const [showPassword, setShowPassword] = useState(false);
   const [showRegisterForm, setShowRegisterForm] = useState(false);
+  const [error, setError] = useState('');
+
 
   const handleToggle = () => {
     setType((prevType) => (prevType === 'password' ? 'text' : 'password'));
@@ -44,9 +47,50 @@ export const LoginForm = () => {
     setIcon((prevIcon) => (prevIcon === eyeOff ? eye : eyeOff));
   };
 
-  const handleLogin = () => {
-    alert(`Login clicked with username: ${username}, password: ${password}, Remember me: ${rememberMe}`);
+  const handleLogin = async (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+  
+    try {
+      console.log('Attempting login...');
+      const response = await fetch('http://localhost:8080/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      });
+  
+      console.log('Response status:', response.status);
+  
+      if (!response.ok) {
+        const errorData = await response.json(); // Assuming the API returns an error message in JSON format
+        console.error('Login failed:', errorData.message);
+        setError('Login failed. ' + errorData.message);
+        return;
+      }
+  
+      // Clear the error message on successful login
+      setError('');
+  
+      // Successful login
+      const data = await response.json();
+      const token = data.token; // Assuming the token is returned in the response
+  
+      // TO DO: Handle the token, e.g., store it in local storage or context
+      console.log('Login successful. Token:', token);
+  
+      // Display a popup for successful login
+      window.alert('Login successful. Welcome!');
+    } catch (error) {
+      console.error('Error during login:', error.message);
+      setError('Login failed. Please try again.');
+    }
   };
+  
+  
 
   const handleCreateAccountClick = () => {
     setShowRegisterForm(true);
@@ -72,6 +116,7 @@ export const LoginForm = () => {
                 </>
               ) : (
                 <>
+                    {error && <ErrorMessage>{error}</ErrorMessage>}
                   <FormLabel>Username</FormLabel>
                   <LoginInput htmlFor="login" id="login" type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
                   <FormLabel>Password</FormLabel>

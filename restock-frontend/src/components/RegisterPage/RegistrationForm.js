@@ -13,7 +13,8 @@ import {
   PasswordInput,
   ConfirmPasswordInput,
   EyeIcon,
-  ErrorMessage
+  ErrorMessage,
+  SuccessMessage
 } from './RegistrationFormElements';
 
 export const RegistrationForm = () => {
@@ -24,10 +25,12 @@ export const RegistrationForm = () => {
   const [icon, setIcon] = useState(eyeOff);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
   const handleRegister = async () => {
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      setError('Passwords do not match.');
+      setRegistrationSuccess(false);
       return;
     }
 
@@ -51,10 +54,14 @@ export const RegistrationForm = () => {
       }
 
       // Handle successful registration
+      setRegistrationSuccess(true);
       console.log('User registered successfully');
+      // ------> Printuje w consoli, że jest false, mimo sukcesu - do ogarnięcia
+      console.log('registrationSuccess:', registrationSuccess);
     } catch (error) {
       console.error('Error during registration:', error.message);
       setError('Registration failed. Please try again.');
+      setRegistrationSuccess(false);
     }
   };
 
@@ -102,6 +109,7 @@ export const RegistrationForm = () => {
           </EyeIconContainer>
         </PasswordContainer>
         {error && <ErrorMessage>{error}</ErrorMessage>}
+        {registrationSuccess && <SuccessMessage>Successful registration. Welcome!</SuccessMessage>}
         <ButtonContainer>
           <RegistrationFormButton type="button" onClick={handleRegister}>
             Register

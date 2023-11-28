@@ -224,3 +224,8 @@ export const ForgotPasswordLink = styled.span`
   
 `;
 
+export const ErrorMessage = styled.div`
+  color: red;
+  margin-top: 0.5em;
+  text-align: center;
+`;

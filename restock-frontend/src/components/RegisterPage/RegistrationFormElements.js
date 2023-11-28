@@ -122,3 +122,10 @@ export const ErrorMessage = styled.div`
   margin-top: 0.5em;
   text-align: center;
 `;
+
+export const SuccessMessage = styled.div`
+  color: green;
+  margin-top: 0.5em;
+  text-align: center;
+  font-weight: bold;
+`;
