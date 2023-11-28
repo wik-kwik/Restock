@@ -30,7 +30,7 @@ public class UserEntity {
     @Column
     private LocalDateTime modifyDate;
 
-    @Column(updatable = false)
+    @Column
     private LocalDateTime removeDate;
 
 }
