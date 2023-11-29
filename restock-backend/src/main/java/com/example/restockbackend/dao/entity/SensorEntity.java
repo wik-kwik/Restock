@@ -27,6 +27,9 @@ public class SensorEntity {
     @Column(nullable = false)
     private String ipAddress;
 
+    @Column(nullable = false, unique = true)
+    private String sensorToken;
+
     @Column(updatable = false, nullable = false)
     private LocalDateTime createDate;
 

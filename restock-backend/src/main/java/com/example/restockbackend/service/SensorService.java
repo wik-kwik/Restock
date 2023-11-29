@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public class SensorService {
 
-    private SensorRepo sensorRepo;
+    private final SensorRepo sensorRepo;
 
     @Autowired
     public SensorService(SensorRepo sensorRepo) {
