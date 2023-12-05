@@ -19,6 +19,7 @@ public class OrderEntity {
     @Id
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OrderStatus status;
 
