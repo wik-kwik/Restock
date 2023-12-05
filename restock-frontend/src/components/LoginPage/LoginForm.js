@@ -83,9 +83,9 @@ export const LoginForm = () => {
   
       // TO DO: Handle the token, e.g., store it in local storage or context
       console.log('Login successful. Token:', token);
-      navigate('/'); 
+      navigate('/home'); 
       // Display a popup for successful login
-      window.alert('Login successful. Welcome!');
+      // window.alert('Login successful. Welcome!');
     } catch (error) {
       console.error('Error during login:', error.message);
       setError('Login failed. Please try again.');
