@@ -4,6 +4,7 @@ import { Icon } from 'react-icons-kit';
 import { eyeOff } from 'react-icons-kit/feather/eyeOff';
 import { eye } from 'react-icons-kit/feather/eye';
 import { RegistrationForm } from '../RegisterPage/RegistrationForm';
+import { useNavigate } from 'react-router-dom';
 import {
   LoginFormContainer,
   InputContainer,
@@ -39,6 +40,7 @@ export const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showRegisterForm, setShowRegisterForm] = useState(false);
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
 
   const handleToggle = () => {
@@ -81,9 +83,9 @@ export const LoginForm = () => {
   
       // TO DO: Handle the token, e.g., store it in local storage or context
       console.log('Login successful. Token:', token);
-  
+      navigate('/home'); 
       // Display a popup for successful login
-      window.alert('Login successful. Welcome!');
+      // window.alert('Login successful. Welcome!');
     } catch (error) {
       console.error('Error during login:', error.message);
       setError('Login failed. Please try again.');

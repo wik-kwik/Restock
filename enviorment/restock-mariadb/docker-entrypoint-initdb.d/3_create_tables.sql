@@ -25,13 +25,14 @@ CREATE TABLE restock_db.`orders`
 
 CREATE TABLE restock_db.`sensors`
 (
-    `id`          INT         NOT NULL AUTO_INCREMENT,
-    `name`        VARCHAR(30) NOT NULL,
-    `model`       TEXT        NOT NULL,
-    `ip_address`  TEXT        NOT NULL,
-    `create_date` TIMESTAMP   NOT NULL,
-    `modify_date` TIMESTAMP,
-    `remove_date` TIMESTAMP,
+    `id`           INT         NOT NULL AUTO_INCREMENT,
+    `name`         VARCHAR(30) NOT NULL,
+    `model`        TEXT        NOT NULL,
+    `ip_address`   TEXT        NOT NULL,
+    `sensor_token` VARCHAR(30) NOT NULL UNIQUE,
+    `create_date`  TIMESTAMP   NOT NULL,
+    `modify_date`  TIMESTAMP,
+    `remove_date`  TIMESTAMP,
     PRIMARY KEY (`id`)
 );
 

@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public class ThresholdService {
 
-    private ThresholdRepo thresholdRepo;
+    private final ThresholdRepo thresholdRepo;
 
     @Autowired
     public ThresholdService(ThresholdRepo thresholdRepo) {
