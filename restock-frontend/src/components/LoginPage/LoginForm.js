@@ -1,4 +1,3 @@
-// src/components/LoginPage/LoginForm.js
 import React, { useState } from 'react';
 import { Icon } from 'react-icons-kit';
 import { eyeOff } from 'react-icons-kit/feather/eyeOff';
@@ -79,10 +78,14 @@ export const LoginForm = () => {
   
       // Successful login
       const data = await response.json();
-      const token = data.token; // Assuming the token is returned in the response
+      const jwt_token = data.jwt; // Assuming the token is returned in the response
+
+      // console.log('Token before storing:', jwt_token);
+      localStorage.setItem('jwt_token', jwt_token);
+
   
       // TO DO: Handle the token, e.g., store it in local storage or context
-      console.log('Login successful. Token:', token);
+      console.log('Login successful. Token:', jwt_token);
       navigate('/home'); 
       // Display a popup for successful login
       // window.alert('Login successful. Welcome!');
@@ -92,8 +95,6 @@ export const LoginForm = () => {
     }
   };
   
-  
-
   const handleCreateAccountClick = () => {
     setShowRegisterForm(true);
   };
