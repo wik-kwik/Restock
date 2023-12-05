@@ -12,23 +12,14 @@ CREATE TABLE restock_db.`users`
 CREATE TABLE restock_db.`orders`
 (
     `id`          INT         NOT NULL AUTO_INCREMENT,
-    `status`      VARCHAR(20) NOT NULL,
+    `status`      VARCHAR(1)  NOT NULL,
+    `name`        TEXT        NOT NULL,
+    `price`       DOUBLE,
+    `offer_id`    INT         NOT NULL,
     `create_date` TIMESTAMP   NOT NULL,
     `modify_date` TIMESTAMP,
     `user_id`     INT,
     FOREIGN KEY (user_id) REFERENCES restock_db.`users` (id),
-    PRIMARY KEY (`id`)
-);
-
-CREATE TABLE restock_db.`products`
-(
-    `id`          INT         NOT NULL AUTO_INCREMENT,
-    `order_id`    INT         NOT NULL,
-    `name`        TEXT        NOT NULL,
-    `price`       DOUBLE      NOT NULL,
-    `offer_link`  TEXT        NOT NULL,
-    `create_date` TIMESTAMP   NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES restock_db.`orders` (id),
     PRIMARY KEY (`id`)
 );
 
