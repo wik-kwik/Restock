@@ -13,7 +13,7 @@ import java.util.Optional;
 @CrossOrigin
 public class SensorApi {
 
-    private SensorService sensors;
+    private final SensorService sensors;
 
     @Autowired
     public SensorApi(SensorService sensorService) {

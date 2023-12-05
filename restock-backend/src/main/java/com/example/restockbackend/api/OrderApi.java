@@ -12,7 +12,7 @@ import java.util.Optional;
 @CrossOrigin
 public class OrderApi {
 
-    private OrderService orderService;
+    private final OrderService orderService;
 
     @Autowired
     public OrderApi(OrderService orderService) {
