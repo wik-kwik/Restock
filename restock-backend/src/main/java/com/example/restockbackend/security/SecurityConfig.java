@@ -38,27 +38,12 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
-
-    @Bean
-    @Order(3)
-    public SecurityFilterChain dummyApiSecurityChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
-                .cors(AbstractHttpConfigurer::disable)
-                .securityMatcher("/**")
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll()
-                );
-        return http.build();
-    }
-
     @Bean
     @Order(2)
     public SecurityFilterChain userApiSecurityFilterChain(HttpSecurity http, AuthenticationProvider authenticationProvider, JwtService jwtService) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
-                .securityMatchers(matcher -> matcher.requestMatchers("/api/users/**"))
+                .securityMatchers(matcher -> matcher.requestMatchers("/api/**"))
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
@@ -72,7 +57,7 @@ public class SecurityConfig {
     @Order(1)
     public SecurityFilterChain sensorApiSecurityFilterChain(HttpSecurity http, SensorAuthService sensorAuthService) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .securityMatchers(matcher -> matcher.requestMatchers("/api/sensors/**"))
+                .securityMatchers(matcher -> matcher.requestMatchers("/api/data/**"))
                 .cors(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

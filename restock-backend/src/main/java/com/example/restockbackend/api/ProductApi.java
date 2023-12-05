@@ -12,7 +12,7 @@ import java.util.Optional;
 @CrossOrigin
 public class ProductApi {
 
-    private ProductService productService;
+    private final ProductService productService;
 
     @Autowired
     public ProductApi(ProductService productService) {

@@ -13,7 +13,7 @@ import java.util.Optional;
 @CrossOrigin
 public class ThresholdApi {
 
-    private ThresholdService thresholds;
+    private final ThresholdService thresholds;
 
     @Autowired
     public ThresholdApi(ThresholdService thresholdService) {
