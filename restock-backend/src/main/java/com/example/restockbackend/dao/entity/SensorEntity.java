@@ -19,13 +19,16 @@ public class SensorEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
-
-    @Column(nullable = false)
     private String model;
 
     @Column(nullable = false)
-    private String ipAddress;
+    private String productName;
+
+    @Column
+    private String preferredBrand; // optional
+
+    @Column
+    private String preferredAmount; // optional: kg or numbers
 
     @Column(nullable = false, unique = true)
     private String sensorToken;
