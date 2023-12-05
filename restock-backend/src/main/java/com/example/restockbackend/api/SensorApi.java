@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/sensors")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 public class SensorApi {
 
     private final SensorService sensors;

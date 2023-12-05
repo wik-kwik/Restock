@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/thresholds")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 public class ThresholdApi {
 
     private final ThresholdService thresholds;

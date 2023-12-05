@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/orders")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 public class OrderApi {
 
     private final OrderService orderService;
