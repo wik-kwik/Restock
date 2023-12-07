@@ -41,7 +41,7 @@ CREATE TABLE restock_db.`thresholds`
 (
     `id`          INT         NOT NULL AUTO_INCREMENT,
     `sensor_id`   INT         NOT NULL,
-    `type`        TEXT        NOT NULL,
+    `type`        VARCHAR(1)  NOT NULL,
     `value`       DOUBLE      NOT NULL,
     `create_date` TIMESTAMP   NOT NULL,
     `modify_date` TIMESTAMP,

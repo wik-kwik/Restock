@@ -25,7 +25,7 @@ public class ThresholdEntity {
     private String type;
 
     @Column(nullable = false)
-    private String value;
+    private double value;
 
     @Column(updatable = false, nullable = false)
     private LocalDateTime createDate;

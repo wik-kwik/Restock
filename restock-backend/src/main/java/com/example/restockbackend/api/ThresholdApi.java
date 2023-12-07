@@ -25,6 +25,11 @@ public class ThresholdApi {
         return thresholds.findAll();
     }
 
+    @GetMapping("/sensor")
+    public double getBySensorId(@RequestParam Long id) {
+        return thresholds.getValueBySensorId(id);
+    }
+
     @GetMapping
     public Optional<ThresholdEntity> getById(@RequestParam Long id) {
         return thresholds.findById(id);
@@ -41,7 +46,7 @@ public class ThresholdApi {
     }
 
     @DeleteMapping
-    public void deleteUser(@RequestParam Long index) {
-        thresholds.deleteById(index);
+    public void deleteThreshold(@RequestParam Long id) {
+        thresholds.deleteById(id);
     }
 }

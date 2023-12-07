@@ -22,6 +22,10 @@ public class ThresholdService {
         return thresholdRepo.findById(id);
     }
 
+    public double getValueBySensorId(Long id) {
+        return thresholdRepo.getValueBySensorId(id);
+    }
+
     public Iterable<ThresholdEntity> findAll() {
         return thresholdRepo.findAll();
     }
