@@ -69,7 +69,7 @@ export const LoginForm = () => {
       if (!response.ok) {
         const errorData = await response.json(); // Assuming the API returns an error message in JSON format
         console.error('Login failed:', errorData.message);
-        setError('Login failed. ' + errorData.message);
+        setError('Login failed. Please try again.');
         return;
       }
   
