@@ -10,10 +10,10 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/thresholds")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 public class ThresholdApi {
 
-    private ThresholdService thresholds;
+    private final ThresholdService thresholds;
 
     @Autowired
     public ThresholdApi(ThresholdService thresholdService) {
@@ -23,6 +23,11 @@ public class ThresholdApi {
     @GetMapping("/all")
     public Iterable<ThresholdEntity> getAll() {
         return thresholds.findAll();
+    }
+
+    @GetMapping("/sensor")
+    public double getBySensorId(@RequestParam Long id) {
+        return thresholds.getValueBySensorId(id);
     }
 
     @GetMapping
@@ -41,7 +46,7 @@ public class ThresholdApi {
     }
 
     @DeleteMapping
-    public void deleteUser(@RequestParam Long index) {
-        thresholds.deleteById(index);
+    public void deleteThreshold(@RequestParam Long id) {
+        thresholds.deleteById(id);
     }
 }

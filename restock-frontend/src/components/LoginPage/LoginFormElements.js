@@ -13,6 +13,9 @@ export const LoginFormContainer = styled.div`
 export const LogoContainer = styled.div`
   max-width: 100%;
   max-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const LogoImage = styled.img`
@@ -29,10 +32,11 @@ export const FormWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  max-width: 30%;
+  max-width: 50%;
   text-align: left;
   /* background: #5B6D5B; */
   padding: 1em;
+  /* border: pink solid 1px; */
 
   @media screen and (max-width: 1294px) {
     max-width: 50%;

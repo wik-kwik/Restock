@@ -19,8 +19,18 @@ public class OrderEntity {
     @Id
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OrderStatus status;
+
+    @Column(updatable = false, nullable = false)
+    private String name;
+
+    @Column
+    private double price; // set after purchase
+
+    @Column(updatable = false, nullable = false)
+    private String offerId; // id from allegro
 
     @Column(updatable = false, nullable = false)
     private LocalDateTime createDate;
@@ -29,6 +39,6 @@ public class OrderEntity {
     private LocalDateTime modifyDate;
 
     @Column
-    private Long userId;
+    private Long userId; // set after status changing
 
 }

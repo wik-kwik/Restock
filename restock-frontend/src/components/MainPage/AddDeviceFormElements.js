@@ -5,7 +5,7 @@ export const FormWrapper = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: white;
+  background-color: #afaca7;
   padding: 3em;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -29,12 +29,16 @@ export const FormInput = styled.input`
 `;
 
 export const FormButton = styled.button`
-  background-color: #4caf50;
   color: white;
   padding: 10px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  background-color: #bdd49d;
+
+  &:hover, &:focus {
+        background-color: #a4b888;
+    }
 `;
 
 export const CloseButton = styled.span`

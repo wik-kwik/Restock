@@ -10,8 +10,8 @@ export const RegistrationFormWrapper = styled.div`
   justify-content: center;
   min-width: 100%;
   padding: 3em;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  /* border: 1px solid #ddd;
+  border-radius: 5px; */
   background-color: #FAF1E4;
 `;
 

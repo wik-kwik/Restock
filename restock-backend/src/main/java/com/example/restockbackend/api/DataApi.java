@@ -9,28 +9,28 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/data")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 public class DataApi {
 
-    private DataService dataServices;
+    private final DataService dataService;
 
     @Autowired
     public DataApi(DataService dataService) {
-        this.dataServices = dataService;
+        this.dataService = dataService;
     }
 
     @GetMapping("/all")
     public Iterable<DataEntity> getAll() {
-        return dataServices.findAll();
+        return dataService.findAll();
     }
 
     @GetMapping
     public Optional<DataEntity> getById(@RequestParam Long id) {
-        return dataServices.findById(id);
+        return dataService.findById(id);
     }
 
     @PostMapping
     public DataEntity addData(@RequestBody DataEntity data) {
-        return dataServices.save(data);
+        return dataService.save(data);
     }
 }

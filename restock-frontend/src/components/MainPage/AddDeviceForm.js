@@ -25,7 +25,7 @@ const AddDeviceForm = ({ onClose, onSubmit }) => {
   return (
     <FormWrapper>
       <CloseButton onClick={onClose}>&times;</CloseButton>
-      <FormTitle>Create a New Device</FormTitle>
+      <FormTitle>Add a new product</FormTitle>
       <FormInput
         type="text"
         placeholder="Product Name"

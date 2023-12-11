@@ -5,13 +5,11 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum OrderStatus {
+public enum ThresholdTypes {
 
-    PENDING("P"),
-    ACCEPTED("A"),
-    REJECTED("R"),
-    IN_DELIVERY("D"),
-    CLOSED("C");
+    UPDATE("U"),
+    ORDER("O");
 
     private final String code;
+
 }

@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public class ThresholdService {
 
-    private ThresholdRepo thresholdRepo;
+    private final ThresholdRepo thresholdRepo;
 
     @Autowired
     public ThresholdService(ThresholdRepo thresholdRepo) {
@@ -20,6 +20,10 @@ public class ThresholdService {
 
     public Optional<ThresholdEntity> findById(Long id) {
         return thresholdRepo.findById(id);
+    }
+
+    public double getValueBySensorId(Long id) {
+        return thresholdRepo.getValueBySensorId(id);
     }
 
     public Iterable<ThresholdEntity> findAll() {
