@@ -6,6 +6,7 @@ import com.example.restockbackend.dao.entity.OrderEntity;
 import com.example.restockbackend.dao.entity.UserEntity;
 import com.example.restockbackend.dto.domain.OrderDTO;
 import com.example.restockbackend.dto.mapper.OrderMapper;
+import com.example.restockbackend.dao.enums.OrderStatus;
 import com.example.restockbackend.security.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -31,6 +32,20 @@ public class OrderService {
 
     public Iterable<OrderDTO> findAll() {
         return orderRepo.findAllByUsername(SecurityUtils.unwrapUsername())
+                .stream()
+                .map(orderMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public Iterable<OrderDTO> findPendingOrders() {
+        return orderRepo.findByStatusIn(SecurityUtils.unwrapUsername(), OrderStatus.ACCEPTED, OrderStatus.IN_DELIVERY, OrderStatus.PENDING)
+                .stream()
+                .map(orderMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public Iterable<OrderDTO> findOrdersHistory() {
+        return orderRepo.findByStatusIn(SecurityUtils.unwrapUsername(), OrderStatus.CLOSED, OrderStatus.REJECTED)
                 .stream()
                 .map(orderMapper::toDto)
                 .collect(Collectors.toList());

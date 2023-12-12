@@ -12,7 +12,7 @@ CREATE TABLE restock_db.`users`
 CREATE TABLE restock_db.`orders`
 (
     `id`          INT         NOT NULL AUTO_INCREMENT,
-    `status`      VARCHAR(1)  NOT NULL,
+    `status`      VARCHAR(15)  NOT NULL,
     `name`        TEXT        NOT NULL,
     `price`       DOUBLE,
     `offer_id`    INT         NOT NULL,

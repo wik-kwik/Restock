@@ -27,7 +27,7 @@ public class UserEntity {
 
     @Column(nullable = false)
     @NotBlank
-    @Length(min = 8, max = 50)
+    @Length(min = 8)
     private String password;
 
     @Column(updatable = false, nullable = false)
