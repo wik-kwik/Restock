@@ -2,36 +2,45 @@ package com.example.restockbackend.service;
 
 import com.example.restockbackend.dao.ThresholdRepo;
 import com.example.restockbackend.dao.entity.ThresholdEntity;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.restockbackend.dto.domain.ThresholdDTO;
+import com.example.restockbackend.dto.mapper.ThresholdMapper;
+import com.example.restockbackend.security.SecurityUtils;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class ThresholdService {
 
     private final ThresholdRepo thresholdRepo;
+    private final ThresholdMapper thresholdMapper;
 
-    @Autowired
-    public ThresholdService(ThresholdRepo thresholdRepo) {
-        this.thresholdRepo = thresholdRepo;
+    public ThresholdDTO findById(Long id) {
+        Optional<ThresholdEntity> thresholdOpt = thresholdRepo.findById(id);
+        ThresholdEntity thresholdEntity = thresholdOpt.orElseThrow(() -> new IllegalArgumentException("Not found!"));
+        return thresholdMapper.toDto(thresholdEntity);
     }
 
-    public Optional<ThresholdEntity> findById(Long id) {
-        return thresholdRepo.findById(id);
+    public ThresholdDTO getValueBySensorId() {
+        Optional<ThresholdEntity> thresholdOpt = thresholdRepo.getValueBySensorId(SecurityUtils.unwrapSensorToken());
+        ThresholdEntity thresholdEntity = thresholdOpt.orElseThrow(() -> new IllegalArgumentException("Not found!"));
+        return thresholdMapper.toDto(thresholdEntity);
     }
 
-    public double getValueBySensorId(Long id) {
-        return thresholdRepo.getValueBySensorId(id);
+    public Iterable<ThresholdDTO> findAll() {
+        return thresholdRepo.findAll()
+                .stream()
+                .map(thresholdMapper::toDto)
+                .collect(Collectors.toList());
     }
 
-    public Iterable<ThresholdEntity> findAll() {
-        return thresholdRepo.findAll();
-    }
-
-    public ThresholdEntity save(ThresholdEntity threshold) {
-        return thresholdRepo.save(threshold);
+    public ThresholdDTO save(ThresholdDTO threshold) {
+        ThresholdEntity thresholdEntity = thresholdMapper.fromDto(threshold);
+        return thresholdMapper.toDto(thresholdRepo.save(thresholdEntity));
     }
 
     public void deleteById(Long id) {

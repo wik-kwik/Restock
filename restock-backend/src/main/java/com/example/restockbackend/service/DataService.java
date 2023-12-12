@@ -4,38 +4,43 @@ import com.example.restockbackend.dao.DataRepo;
 import com.example.restockbackend.dao.SensorRepo;
 import com.example.restockbackend.dao.entity.DataEntity;
 import com.example.restockbackend.dao.entity.SensorEntity;
+import com.example.restockbackend.dto.domain.DataDTO;
+import com.example.restockbackend.dto.mapper.DataMapper;
 import com.example.restockbackend.security.SecurityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class DataService {
 
     private final DataRepo dataRepo;
     private final SensorRepo sensorRepo;
+    private final DataMapper dataMapper;
 
-    @Autowired
-    public DataService(DataRepo dataRepo, SensorRepo sensorRepo) {
-        this.dataRepo = dataRepo;
-        this.sensorRepo = sensorRepo;
+    public DataDTO findById(Long id) {
+        DataEntity dataEntity = dataRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Data not found"));
+        return dataMapper.toDto(dataEntity);
     }
 
-    public Optional<DataEntity> findById(Long id) {
-        return dataRepo.findById(id);
+    public List<DataDTO> findAll() {
+        return dataRepo.findAll()
+                .stream()
+                .map(dataMapper::toDto)
+                .collect(Collectors.toList());
     }
 
-    public Iterable<DataEntity> findAll() {
-        return dataRepo.findAll();
-    }
-
-    public DataEntity save(DataEntity data) {
+    public DataDTO save(DataDTO data) {
+        DataEntity dataEntity = dataMapper.fromDto(data);
         Optional<SensorEntity> sensorEntityOpt = sensorRepo.findBySensorToken(SecurityUtils.unwrapSensorToken());
         SensorEntity sensor = sensorEntityOpt.orElseThrow(() -> new IllegalArgumentException("Sensor not found"));
-        data.setSensorId(sensor.getId());
-        data.setCreateDate(LocalDateTime.now());
-        return dataRepo.save(data);
+        dataEntity.setSensorId(sensor.getId());
+        dataEntity.setCreateDate(LocalDateTime.now());
+        return dataMapper.toDto(dataRepo.save(dataEntity));
     }
 }
