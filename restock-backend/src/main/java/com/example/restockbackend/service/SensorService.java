@@ -2,32 +2,38 @@ package com.example.restockbackend.service;
 
 import com.example.restockbackend.dao.SensorRepo;
 import com.example.restockbackend.dao.entity.SensorEntity;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.restockbackend.dto.domain.SensorDTO;
+import com.example.restockbackend.dto.mapper.SensorMapper;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class SensorService {
 
     private final SensorRepo sensorRepo;
+    private final SensorMapper sensorMapper;
 
-    @Autowired
-    public SensorService(SensorRepo sensorRepo) {
-        this.sensorRepo = sensorRepo;
+    public SensorDTO findById(Long id) {
+        Optional<SensorEntity> sensorOpt = sensorRepo.findById(id);
+        SensorEntity sensorEntity = sensorOpt.orElseThrow(() -> new IllegalArgumentException("Sensor not found"));
+        return sensorMapper.toDto(sensorEntity);
     }
 
-    public Optional<SensorEntity> findById(Long id) {
-        return sensorRepo.findById(id);
+    public Iterable<SensorDTO> findAll() {
+        return sensorRepo.findAll()
+                .stream()
+                .map(sensorMapper::toDto)
+                .collect(Collectors.toList());
     }
 
-    public Iterable<SensorEntity> findAll() {
-        return sensorRepo.findAll();
-    }
-
-    public SensorEntity save(SensorEntity sensor) {
-        return sensorRepo.save(sensor);
+    public SensorDTO save(SensorDTO sensor) {
+        SensorEntity sensorEntity = sensorMapper.fromDto(sensor);
+        return sensorMapper.toDto(sensorRepo.save(sensorEntity));
     }
 
     public void deleteById(Long id) {

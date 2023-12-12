@@ -28,8 +28,8 @@ CREATE TABLE restock_db.`sensors`
     `id`               INT         NOT NULL AUTO_INCREMENT,
     `model`            TEXT        NOT NULL,
     `product_name`     TEXT        NOT NULL,
-    `preferred_band`   TEXT        NOT NULL,
-    `preferred_amount` TEXT        NOT NULL,
+    `preferred_brand`   TEXT,
+    `preferred_amount` TEXT,
     `sensor_token`     VARCHAR(30) NOT NULL UNIQUE,
     `create_date`      TIMESTAMP   NOT NULL,
     `modify_date`      TIMESTAMP,
@@ -63,6 +63,7 @@ CREATE TABLE restock_db.`sensor_data`
 CREATE TABLE restock_db.`parameters`
 (
     `id`          INT         NOT NULL AUTO_INCREMENT,
+    `sensor_id`   INT         NOT NULL,
     `type`        VARCHAR(1)  NOT NULL,
     `value`       TEXT        NOT NULL,
     `create_date` TIMESTAMP   NOT NULL,

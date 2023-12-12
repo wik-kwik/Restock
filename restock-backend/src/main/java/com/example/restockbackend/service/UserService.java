@@ -2,8 +2,9 @@ package com.example.restockbackend.service;
 
 import com.example.restockbackend.dao.UserRepo;
 import com.example.restockbackend.dao.entity.UserEntity;
+import com.example.restockbackend.dto.mapper.UserMapper;
 import com.example.restockbackend.security.UserDetailsImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,14 +14,11 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class UserService implements UserDetailsService {
 
     private final UserRepo userRepo;
-
-    @Autowired
-    public UserService(UserRepo userRepo) {
-        this.userRepo = userRepo;
-    }
+    private final UserMapper userMapper;
 
     public Optional<UserEntity> findById(Long id) {
         return userRepo.findById(id);
