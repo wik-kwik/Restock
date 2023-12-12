@@ -1,41 +1,36 @@
 package com.example.restockbackend.api;
 
 import com.example.restockbackend.dao.entity.OrderEntity;
+import com.example.restockbackend.dto.domain.OrderDTO;
 import com.example.restockbackend.service.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/orders")
 @CrossOrigin(origins = "http://localhost:3000")
+@RequiredArgsConstructor
 public class OrderApi {
 
     private final OrderService orderService;
 
-    @Autowired
-    public OrderApi(OrderService orderService) {
-        this.orderService = orderService;
-    }
-
     @GetMapping("/all")
-    public Iterable<OrderEntity> getAll() {
+    public Iterable<OrderDTO> getAll() {
         return orderService.findAll();
     }
 
     @GetMapping
-    public Optional<OrderEntity> getById(@RequestParam Long id) {
+    public OrderDTO getById(@RequestParam Long id) {
         return orderService.findById(id);
     }
 
     @PostMapping
-    public OrderEntity addOrder(@RequestBody OrderEntity order) {
+    public OrderDTO addOrder(@RequestBody OrderDTO order) {
         return orderService.save(order);
     }
 
     @PutMapping
-    public OrderEntity updateOrder(@RequestBody OrderEntity order) {
+    public OrderDTO updateOrder(@RequestBody OrderDTO order) {
         return orderService.save(order);
     }
 

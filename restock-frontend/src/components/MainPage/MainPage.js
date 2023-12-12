@@ -29,18 +29,32 @@ import {
   LogoImage
 } from './MainPageElements';
 import AddDeviceForm from './AddDeviceForm';
+import SettingsForm from './SettingsForm';
+import UserSettingsForm from './UserSettingsForm';
 import logoBig from '../../images/logo_big.png';
 
 const MainPage = () => {
   // State to manage the visibility of the device creation form
   const [showDeviceForm, setShowDeviceForm] = useState(false);
   const [pendingOrders, setPendingOrders] = useState([]);
-  const [purchaseHistory, setPurchaseHistory] = useState([]);
+  const [showSettingsForm, setShowSettingsForm] = useState(false);
+  const [showUserSettingsForm, setShowUserSettingsForm] = useState(false);
+  const [username, setUsername] = useState('');
 
   // Function to handle the click on the add button
   const handleAddButtonClick = () => {
     setShowDeviceForm(true);
   };
+
+  const handleSettingsIconClick = () => {
+    setShowSettingsForm(true);
+  };
+
+  const handleAddressIconClick = () => {
+    setUsername('username'); 
+    setShowUserSettingsForm(true);
+  };
+
 
   // Fetch pending orders from API
 
@@ -66,39 +80,19 @@ const MainPage = () => {
       }
     };
 
-    // Do usunięcia
-    const fetchPurchaseHistory = async () => {
-      try {
-        // Retrieve the token from local storage
-        const jwt_token = localStorage.getItem('jwt_token');
-
-        // Fetch purchase history with the token in the headers
-        const response = await fetch('http://localhost:8080/api/purchase/history', {
-          headers: {
-            Authorization: `Bearer ${jwt_token}`,
-          },
-        });
-
-        const data = await response.json();
-        setPurchaseHistory(data);
-      } catch (error) {
-        console.error('Error fetching purchase history:', error);
-      }
-    };
-
     fetchPendingOrders();
 
   }, []);
   return (
     <AppContainer>
       <NavbarWrapper>
-          <LogoContainer>
-            <LogoImage src={logoBig} alt="Restock" />
-          </LogoContainer>
-          <Navbar>
+        <LogoContainer>
+          <LogoImage src={logoBig} alt="Restock" />
+        </LogoContainer>
+        <Navbar>
           <NavbarIcons>
-            <AddressIcon src="your-address-icon.png" alt="Address Icon" />
-            <SettingsIcon src="your-logo-icon.png" alt="Logo Icon" />
+            <AddressIcon src="your-address-icon.png" alt="Address Icon" onClick={handleAddressIconClick}/>
+            <SettingsIcon src="your-logo-icon.png" alt="Logo Icon" onClick={handleSettingsIconClick}/>
             <LogoutIcon src="your-logout-icon.png" alt="Logout Icon" />
           </NavbarIcons>
         </Navbar>
@@ -171,15 +165,38 @@ const MainPage = () => {
             </RectanglesList>
           </PurchaseHistoryContainer>
         </RightSide>
+        
         {/* Pop-up form for creating a device */}
         {showDeviceForm && (
           <AddDeviceForm
             onClose={() => setShowDeviceForm(false)} // Function to close the form
             onSubmit={(formData) => {
-              // Logic to handle the submitted form data
               console.log('Form submitted with data:', formData);
               setShowDeviceForm(false); // Close the form after submission
             }}
+          />
+        )}
+        {/* Pop-up form for settings */}
+        {showSettingsForm && (
+          <SettingsForm
+            onClose={() => setShowSettingsForm(false)}
+            onSubmit={(formData) => {
+              console.log('Settings form submitted with data:', formData);
+              setShowSettingsForm(false);
+            }}
+          />
+        )}
+
+         {/* Pop-up form for user settings */}
+         {showUserSettingsForm && (
+          <UserSettingsForm
+            onClose={() => setShowUserSettingsForm(false)}
+            onSubmit={(formData) => {
+              // Handle user settings form submission logic
+              console.log('User settings form submitted with data:', formData);
+              setShowUserSettingsForm(false);
+            }}
+            username={username}
           />
         )}
       </MainWrapper>

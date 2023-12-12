@@ -1,36 +1,31 @@
 package com.example.restockbackend.api;
 
-import com.example.restockbackend.dao.entity.DataEntity;
+import com.example.restockbackend.dto.domain.DataDTO;
 import com.example.restockbackend.service.DataService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/data")
 @CrossOrigin(origins = "http://localhost:3000")
+@RequiredArgsConstructor
 public class DataApi {
 
     private final DataService dataService;
 
-    @Autowired
-    public DataApi(DataService dataService) {
-        this.dataService = dataService;
-    }
-
     @GetMapping("/all")
-    public Iterable<DataEntity> getAll() {
+    public Iterable<DataDTO> getAll() {
         return dataService.findAll();
     }
 
     @GetMapping
-    public Optional<DataEntity> getById(@RequestParam Long id) {
+    public DataDTO getById(@RequestParam Long id) {
         return dataService.findById(id);
     }
 
     @PostMapping
-    public DataEntity addData(@RequestBody DataEntity data) {
+    public DataDTO addData(@RequestBody @Valid DataDTO data) {
         return dataService.save(data);
     }
 }

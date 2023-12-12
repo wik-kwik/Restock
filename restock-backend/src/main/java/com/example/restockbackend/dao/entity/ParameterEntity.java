@@ -1,12 +1,13 @@
 package com.example.restockbackend.dao.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
+@Data
+@Entity
 public class ParameterEntity {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,9 +15,11 @@ public class ParameterEntity {
     private Long id;
 
     @Column(nullable = false)
+    @NotBlank
     private String type;
 
     @Column(nullable = false)
+    @NotBlank
     private String value;
 
     @Column(updatable = false, nullable = false)
