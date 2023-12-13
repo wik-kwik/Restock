@@ -37,6 +37,7 @@ const MainPage = () => {
   // State to manage the visibility of the device creation form
   const [showDeviceForm, setShowDeviceForm] = useState(false);
   const [pendingOrders, setPendingOrders] = useState([]);
+  const [ordersHistory, setOrdersHistory] = useState([]);
   const [showSettingsForm, setShowSettingsForm] = useState(false);
   const [showUserSettingsForm, setShowUserSettingsForm] = useState(false);
   const [username, setUsername] = useState('');
@@ -66,7 +67,7 @@ const MainPage = () => {
         // console.log(jwt_token);
 
         // Fetch pending orders with the token in the headers
-        const response = await fetch('http://localhost:8080/api/orders/all', {
+        const response = await fetch('http://localhost:8080/api/orders/pending', {
           headers: {
             Authorization: `Bearer ${jwt_token}`,
           },
@@ -80,7 +81,29 @@ const MainPage = () => {
       }
     };
 
-    fetchPendingOrders();
+    const fetchOrdersHistory = async () => {
+      try {
+        // Retrieve the token from local storage
+        const jwt_token = localStorage.getItem('jwt_token');
+        // console.log(jwt_token);
+
+        // Fetch pending orders with the token in the headers
+        const response = await fetch('http://localhost:8080/api/orders/history', {
+          headers: {
+            Authorization: `Bearer ${jwt_token}`,
+          },
+        });
+
+        const data = await response.json();
+        setOrdersHistory(data);
+        console.log(data);
+      } catch (error) {
+        console.error('Error fetching pending orders:', error);
+      }
+    };
+
+    fetchPendingOrders()
+    fetchOrdersHistory();
 
   }, []);
   return (
@@ -144,7 +167,7 @@ const MainPage = () => {
             <RectanglesList>
               {pendingOrders.map((order, index) => (
                 <PendingOrdersItem key={index} isGrey={index % 2 === 0}>
-                  <PendingOrdersText>{`Order ${order.id}: ${order.name}`}</PendingOrdersText>
+                  <PendingOrdersText>{`Order : ${order.name}`}</PendingOrdersText>
                   <PendingOrdersButtons>
                     <AcceptButton>Accept</AcceptButton>
                     <RejectButton>Reject</RejectButton>
@@ -157,9 +180,9 @@ const MainPage = () => {
           <PurchaseHistoryContainer>
             <Label>Orders History</Label>
             <RectanglesList>
-              {pendingOrders.map((order, index) => (
+              {ordersHistory.map((order, index) => (
                 <PendingOrdersItem key={index} isGrey={index % 2 === 0}>
-                  <PendingOrdersText>{`Order ${order.id}: ${order.name}`}</PendingOrdersText>
+                  <PendingOrdersText>{`Order : ${order.name}`}</PendingOrdersText>
                 </PendingOrdersItem>
               ))}
             </RectanglesList>
