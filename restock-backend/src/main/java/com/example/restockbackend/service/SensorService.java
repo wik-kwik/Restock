@@ -51,7 +51,7 @@ public class SensorService {
     }
 
     private void deleteRelatedThresholds(Long sensorId) {
-        Iterable<ThresholdEntity> thresholds = thresholdRepo.getAllBySensorId(sensorId);
+        Iterable<ThresholdEntity> thresholds = thresholdRepo.findAllBySensorId(sensorId);
         for (ThresholdEntity threshold: thresholds) {
             threshold.setRemoveDate(LocalDateTime.now());
             thresholdRepo.save(threshold);

@@ -12,9 +12,8 @@ import java.util.Optional;
 public interface ThresholdRepo extends ListCrudRepository<ThresholdEntity, Long> {
 
     @Query("SELECT te FROM ThresholdEntity te INNER JOIN SensorEntity se ON se.id = te.sensorId WHERE te.type = 'U' AND se.sensorToken = :sensorToken")
-    Optional<ThresholdEntity> getValueBySensorId(String sensorToken);
+    Optional<ThresholdEntity> getValueForSensor(String sensorToken);
 
-    @Query("SELECT te FROM ThresholdEntity te WHERE te.sensorId = :id")
-    Iterable<ThresholdEntity> getAllBySensorId(Long id);
+    Iterable<ThresholdEntity> findAllBySensorId(Long id);
 
 }

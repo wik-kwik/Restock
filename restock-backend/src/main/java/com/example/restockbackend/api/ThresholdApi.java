@@ -16,7 +16,7 @@ public class ThresholdApi {
 
     @GetMapping("/sensor") // endpoint used only by sensors
     public double getBySensorId() {
-        return thresholdService.getValueBySensorId();
+        return thresholdService.getValueForSensor();
     }
 
     @GetMapping
