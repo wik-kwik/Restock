@@ -1,7 +1,9 @@
 package com.example.restockbackend.service;
 
 import com.example.restockbackend.dao.SensorRepo;
+import com.example.restockbackend.dao.ThresholdRepo;
 import com.example.restockbackend.dao.entity.SensorEntity;
+import com.example.restockbackend.dao.entity.ThresholdEntity;
 import com.example.restockbackend.dto.domain.SensorDTO;
 import com.example.restockbackend.dto.mapper.SensorMapper;
 import lombok.AllArgsConstructor;
@@ -17,6 +19,8 @@ public class SensorService {
 
     private final SensorRepo sensorRepo;
     private final SensorMapper sensorMapper;
+
+    private final ThresholdRepo thresholdRepo;
 
     public SensorDTO findById(Long id) {
         Optional<SensorEntity> sensorOpt = sensorRepo.findById(id);
@@ -42,6 +46,15 @@ public class SensorService {
             SensorEntity deletedSensor = existingSensor.get();
             deletedSensor.setRemoveDate(LocalDateTime.now());
             sensorRepo.save(deletedSensor);
+            deleteRelatedThresholds(deletedSensor.getId());
+        }
+    }
+
+    private void deleteRelatedThresholds(Long sensorId) {
+        Iterable<ThresholdEntity> thresholds = thresholdRepo.getAllBySensorId(sensorId);
+        for (ThresholdEntity threshold: thresholds) {
+            threshold.setRemoveDate(LocalDateTime.now());
+            thresholdRepo.save(threshold);
         }
     }
 

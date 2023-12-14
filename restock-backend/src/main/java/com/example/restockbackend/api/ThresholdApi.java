@@ -14,13 +14,8 @@ public class ThresholdApi {
 
     private final ThresholdService thresholdService;
 
-    @GetMapping("/all")
-    public Iterable<ThresholdDTO> getAll() {
-        return thresholdService.findAll();
-    }
-
-    @GetMapping("/sensor")
-    public ThresholdDTO getBySensorId() {
+    @GetMapping("/sensor") // endpoint used only by sensors
+    public double getBySensorId() {
         return thresholdService.getValueBySensorId();
     }
 

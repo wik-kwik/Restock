@@ -8,11 +8,13 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-
 @Repository
 public interface ThresholdRepo extends ListCrudRepository<ThresholdEntity, Long> {
 
     @Query("SELECT te FROM ThresholdEntity te INNER JOIN SensorEntity se ON se.id = te.sensorId WHERE te.type = 'U' AND se.sensorToken = :sensorToken")
     Optional<ThresholdEntity> getValueBySensorId(String sensorToken);
+
+    @Query("SELECT te FROM ThresholdEntity te WHERE te.sensorId = :id")
+    Iterable<ThresholdEntity> getAllBySensorId(Long id);
 
 }
