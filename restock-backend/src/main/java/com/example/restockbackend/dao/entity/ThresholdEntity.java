@@ -16,6 +16,11 @@ import java.time.LocalDateTime;
 @Table(name = "thresholds")
 public class ThresholdEntity {
 
+    public interface ThresholdType {
+        String UPDATE = "U";
+        String ORDER = "O";
+    }
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;

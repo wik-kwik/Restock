@@ -10,6 +10,16 @@ import java.time.LocalDateTime;
 @Entity
 public class ParameterEntity {
 
+    public interface ParameterType {
+        String SMART = "S";
+
+        String SUPER_SELLER = "B";
+
+        String BRANDS_ZONE = "Z";
+
+        String SHIPPING_FORM = "F";
+    }
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
