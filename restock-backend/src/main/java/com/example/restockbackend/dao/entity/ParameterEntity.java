@@ -15,7 +15,7 @@ public class ParameterEntity {
 
         String SUPER_SELLER = "B";
 
-        String BRANDS_ZONE = "Z";
+        String BRAND_ZONE = "Z";
 
         String SHIPPING_FORM = "F";
     }
