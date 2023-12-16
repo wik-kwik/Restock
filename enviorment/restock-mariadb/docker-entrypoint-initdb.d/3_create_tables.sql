@@ -12,7 +12,7 @@ CREATE TABLE restock_db.`users`
 CREATE TABLE restock_db.`orders`
 (
     `id`          INT         NOT NULL AUTO_INCREMENT,
-    `status`      VARCHAR(15)  NOT NULL,
+    `status`      VARCHAR(1)  NOT NULL,
     `name`        TEXT        NOT NULL,
     `price`       DOUBLE,
     `offer_id`    INT         NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE restock_db.`sensors`
     `id`               INT         NOT NULL AUTO_INCREMENT,
     `model`            TEXT        NOT NULL,
     `product_name`     TEXT        NOT NULL,
-    `preferred_brand`   TEXT,
+    `preferred_brand`  TEXT,
     `preferred_amount` TEXT,
     `sensor_token`     VARCHAR(30) NOT NULL UNIQUE,
     `create_date`      TIMESTAMP   NOT NULL,
@@ -63,11 +63,25 @@ CREATE TABLE restock_db.`sensor_data`
 CREATE TABLE restock_db.`parameters`
 (
     `id`          INT         NOT NULL AUTO_INCREMENT,
-    `sensor_id`   INT         NOT NULL,
     `type`        VARCHAR(1)  NOT NULL,
     `value`       TEXT        NOT NULL,
     `create_date` TIMESTAMP   NOT NULL,
     `modify_date` TIMESTAMP,
-    FOREIGN KEY (sensor_id) REFERENCES restock_db.`sensors` (id),
+    PRIMARY KEY (`id`)
+);
+
+CREATE TABLE restock_db.`addresses`
+(
+    `id`           INT         NOT NULL AUTO_INCREMENT,
+    `first_name`   TEXT        NOT NULL,
+    `last_name`    TEXT        NOT NULL,
+    `street`       TEXT        NOT NULL,
+    `house_number` TEXT        NOT NULL,
+    `postal_code`  VARCHAR(6)  NOT NULL,
+    `city`         TEXT        NOT NULL,
+    `phone_number` VARCHAR(9)  NOT NULL,
+    `email`        TEXT        NOT NULL,
+    `create_date`  TIMESTAMP   NOT NULL,
+    `modify_date`  TIMESTAMP,
     PRIMARY KEY (`id`)
 );
