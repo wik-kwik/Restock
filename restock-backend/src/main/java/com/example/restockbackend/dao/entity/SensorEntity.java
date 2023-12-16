@@ -22,7 +22,7 @@ public class SensorEntity {
 
     @Column(nullable = false)
     @NotBlank
-    private String model;
+    private String name;
 
     @Column(nullable = false)
     @NotBlank

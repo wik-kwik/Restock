@@ -25,7 +25,7 @@ public class DataEntity {
 
     @Column(nullable = false)
     @NotBlank
-    private String value;
+    private double value;
 
     @Column(updatable = false, nullable = false)
     private LocalDateTime createDate;

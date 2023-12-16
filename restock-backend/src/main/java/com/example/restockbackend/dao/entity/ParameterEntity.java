@@ -20,6 +20,20 @@ public class ParameterEntity {
         String SHIPPING_FORM = "F";
     }
 
+    public interface BooleanValue {
+        String TRUE = "T";
+
+        String FALSE = "F";
+    }
+
+    public interface ShippingForm {
+        String PACZKOMAT = "P";
+
+        String KURIER = "K";
+
+        String ANY = "A";
+    }
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
