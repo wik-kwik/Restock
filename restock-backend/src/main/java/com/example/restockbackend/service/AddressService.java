@@ -9,6 +9,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AddressService {
 
-    AddressRepo addressRepo;
+    private final AddressRepo addressRepo;
 
 }

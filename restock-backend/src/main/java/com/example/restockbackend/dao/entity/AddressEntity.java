@@ -1,12 +1,17 @@
 package com.example.restockbackend.dao.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "addresses")
 public class AddressEntity {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)

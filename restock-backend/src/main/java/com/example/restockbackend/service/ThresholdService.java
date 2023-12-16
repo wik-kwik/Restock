@@ -24,16 +24,16 @@ public class ThresholdService {
         return thresholdMapper.toDto(thresholdEntity);
     }
 
-    public double getValueForUpdate() {
+    public ThresholdDTO getValueForUpdate() {
         Optional<ThresholdEntity> thresholdOpt = thresholdRepo.getValueForUpdate(SecurityUtils.unwrapSensorToken());
         ThresholdEntity thresholdEntity = thresholdOpt.orElseThrow(() -> new IllegalArgumentException("Not found!"));
-        return thresholdEntity.getValue();
+        return thresholdMapper.toDto(thresholdEntity);
     }
 
-    public double getValueForOrder() {
+    public ThresholdDTO getValueForOrder() {
         Optional<ThresholdEntity> thresholdOpt = thresholdRepo.getValueForOrder(SecurityUtils.unwrapSensorToken());
         ThresholdEntity thresholdEntity = thresholdOpt.orElseThrow(() -> new IllegalArgumentException("Not found!"));
-        return thresholdEntity.getValue();
+        return thresholdMapper.toDto(thresholdEntity);
     }
 
     public ThresholdDTO save(ThresholdDTO threshold) {
