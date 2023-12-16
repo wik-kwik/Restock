@@ -24,8 +24,14 @@ public class ThresholdService {
         return thresholdMapper.toDto(thresholdEntity);
     }
 
-    public double getValueForSensor() {
-        Optional<ThresholdEntity> thresholdOpt = thresholdRepo.getValueForSensor(SecurityUtils.unwrapSensorToken());
+    public double getValueForUpdate() {
+        Optional<ThresholdEntity> thresholdOpt = thresholdRepo.getValueForUpdate(SecurityUtils.unwrapSensorToken());
+        ThresholdEntity thresholdEntity = thresholdOpt.orElseThrow(() -> new IllegalArgumentException("Not found!"));
+        return thresholdEntity.getValue();
+    }
+
+    public double getValueForOrder() {
+        Optional<ThresholdEntity> thresholdOpt = thresholdRepo.getValueForOrder(SecurityUtils.unwrapSensorToken());
         ThresholdEntity thresholdEntity = thresholdOpt.orElseThrow(() -> new IllegalArgumentException("Not found!"));
         return thresholdEntity.getValue();
     }

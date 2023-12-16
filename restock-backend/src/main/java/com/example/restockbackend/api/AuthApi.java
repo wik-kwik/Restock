@@ -23,7 +23,7 @@ public class AuthApi {
     }
 
     @PostMapping("/register")
-    public RegisterResponse login(@RequestBody @Valid RegisterRequest registerRequest) {
+    public RegisterResponse register(@RequestBody @Valid RegisterRequest registerRequest) {
         return authService.register(registerRequest);
     }
 
