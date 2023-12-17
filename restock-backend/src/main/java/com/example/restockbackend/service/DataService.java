@@ -43,4 +43,5 @@ public class DataService {
         dataEntity.setCreateDate(LocalDateTime.now());
         return dataMapper.toDto(dataRepo.save(dataEntity));
     }
+
 }

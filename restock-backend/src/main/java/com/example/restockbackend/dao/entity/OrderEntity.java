@@ -1,9 +1,6 @@
 package com.example.restockbackend.dao.entity;
 
-import com.example.restockbackend.dao.enums.OrderStatus;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,25 +14,38 @@ import java.time.LocalDateTime;
 @Table(name = "orders")
 public class OrderEntity {
 
+    public interface OrderStatus {
+        String PENDING = "P";
+        String ACCEPTED = "A";
+        String REJECTED = "R";
+        String IN_DELIVERY = "D";
+        String CLOSED = "C";
+    }
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    @NotNull
-    private OrderStatus status;
+    private String status;
 
     @Column(updatable = false, nullable = false)
-    @NotBlank
+    private String offerId; // id from allegro
+
+    @Column(updatable = false, nullable = false)
     private String name;
 
-    @Column
-    private double price; // set after purchase
+    @Column(updatable = false, nullable = false)
+    private String photoURL;
 
     @Column(updatable = false, nullable = false)
-    @NotBlank
-    private String offerId; // id from allegro
+    private double productPrice;
+
+    @Column(updatable = false, nullable = false)
+    private double deliveryPrice;
+
+    @Column(updatable = false, nullable = false)
+    private int smart;
 
     @Column(updatable = false, nullable = false)
     private LocalDateTime createDate;

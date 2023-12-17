@@ -13,7 +13,7 @@ import javax.naming.AuthenticationException;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://localhost:3000")
 public class AuthApi {
     private final AuthService authService;
 
@@ -23,7 +23,7 @@ public class AuthApi {
     }
 
     @PostMapping("/register")
-    public RegisterResponse login(@RequestBody @Valid RegisterRequest registerRequest) {
+    public RegisterResponse register(@RequestBody @Valid RegisterRequest registerRequest) {
         return authService.register(registerRequest);
     }
 

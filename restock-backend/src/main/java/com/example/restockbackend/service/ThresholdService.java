@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -25,17 +24,16 @@ public class ThresholdService {
         return thresholdMapper.toDto(thresholdEntity);
     }
 
-    public ThresholdDTO getValueBySensorId() {
-        Optional<ThresholdEntity> thresholdOpt = thresholdRepo.getValueBySensorId(SecurityUtils.unwrapSensorToken());
+    public ThresholdDTO getValueForUpdate() {
+        Optional<ThresholdEntity> thresholdOpt = thresholdRepo.getValueForUpdate(SecurityUtils.unwrapSensorToken());
         ThresholdEntity thresholdEntity = thresholdOpt.orElseThrow(() -> new IllegalArgumentException("Not found!"));
         return thresholdMapper.toDto(thresholdEntity);
     }
 
-    public Iterable<ThresholdDTO> findAll() {
-        return thresholdRepo.findAll()
-                .stream()
-                .map(thresholdMapper::toDto)
-                .collect(Collectors.toList());
+    public ThresholdDTO getValueForOrder() {
+        Optional<ThresholdEntity> thresholdOpt = thresholdRepo.getValueForOrder(SecurityUtils.unwrapSensorToken());
+        ThresholdEntity thresholdEntity = thresholdOpt.orElseThrow(() -> new IllegalArgumentException("Not found!"));
+        return thresholdMapper.toDto(thresholdEntity);
     }
 
     public ThresholdDTO save(ThresholdDTO threshold) {

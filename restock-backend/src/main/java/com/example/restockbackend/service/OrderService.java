@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.example.restockbackend.dao.entity.OrderEntity.OrderStatus.*;
+
 @Service
 @RequiredArgsConstructor
 public class OrderService {
@@ -31,6 +33,20 @@ public class OrderService {
 
     public Iterable<OrderDTO> findAll() {
         return orderRepo.findAllByUsername(SecurityUtils.unwrapUsername())
+                .stream()
+                .map(orderMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public Iterable<OrderDTO> findPendingOrders() {
+        return orderRepo.findByStatusIn(SecurityUtils.unwrapUsername(), ACCEPTED, IN_DELIVERY, PENDING)
+                .stream()
+                .map(orderMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public Iterable<OrderDTO> findOrdersHistory() {
+        return orderRepo.findByStatusIn(SecurityUtils.unwrapUsername(), CLOSED, REJECTED)
                 .stream()
                 .map(orderMapper::toDto)
                 .collect(Collectors.toList());

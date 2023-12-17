@@ -8,20 +8,15 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/thresholds")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://localhost:3000")
 @RequiredArgsConstructor
 public class ThresholdApi {
 
     private final ThresholdService thresholdService;
 
-    @GetMapping("/all")
-    public Iterable<ThresholdDTO> getAll() {
-        return thresholdService.findAll();
-    }
-
-    @GetMapping("/sensor")
-    public ThresholdDTO getBySensorId() {
-        return thresholdService.getValueBySensorId();
+    @GetMapping("/sensor") // endpoint used only by sensors
+    public ThresholdDTO getValueForUpdate() {
+        return thresholdService.getValueForUpdate();
     }
 
     @GetMapping
