@@ -53,7 +53,7 @@ export const LoginForm = () => {
   
     try {
       console.log('Attempting login...');
-      const response = await fetch('https://localhost:443/api/auth/login', {
+      const response = await fetch('http://localhost:8080/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

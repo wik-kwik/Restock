@@ -67,7 +67,7 @@ const MainPage = () => {
         // console.log(jwt_token);
 
         // Fetch pending orders with the token in the headers
-        const response = await fetch('https://localhost:443/api/orders/pending', {
+        const response = await fetch('http://localhost:8080/api/orders/pending', {
           headers: {
             Authorization: `Bearer ${jwt_token}`,
           },
@@ -88,7 +88,7 @@ const MainPage = () => {
         // console.log(jwt_token);
 
         // Fetch pending orders with the token in the headers
-        const response = await fetch('https://localhost:443/api/orders/history', {
+        const response = await fetch('http://localhost:8080/api/orders/history', {
           headers: {
             Authorization: `Bearer ${jwt_token}`,
           },
