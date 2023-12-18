@@ -36,7 +36,7 @@ public class OrderEntity {
     private String name;
 
     @Column(updatable = false, nullable = false)
-    private String photoURL;
+    private String photoUrl;
 
     @Column(updatable = false, nullable = false)
     private double productPrice;

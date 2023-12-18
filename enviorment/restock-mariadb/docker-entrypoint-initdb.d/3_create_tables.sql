@@ -15,7 +15,7 @@ CREATE TABLE restock_db.`orders`
     `status`         VARCHAR(1)  NOT NULL,
     `offer_id`       TEXT        NOT NULL,
     `name`           TEXT        NOT NULL,
-    `photo_URL`      TEXT        NOT NULL,
+    `photo_url`      TEXT        NOT NULL,
     `product_price`  DOUBLE      NOT NULL,
     `delivery_price` DOUBLE      NOT NULL,
     `smart`          INT         NOT NULL,
