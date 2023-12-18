@@ -53,6 +53,42 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
+    public void acceptOrder(Long id) {
+        Optional<OrderEntity> orderOpt = orderRepo.findById(id);
+        Optional<UserEntity> userOpt = userRepo.findByUsername(SecurityUtils.unwrapUsername());
+
+        if (orderOpt.isPresent() && userOpt.isPresent()) {
+            OrderEntity orderEntity = orderOpt.get();
+            UserEntity userEntity = userOpt.get();
+
+            orderEntity.setStatus(ACCEPTED);
+            orderEntity.setUserId(userEntity.getId());
+            orderEntity.setModifyDate(LocalDateTime.now());
+
+            orderRepo.save(orderEntity);
+        } else {
+            throw new IllegalArgumentException("Order or user not found!");
+        }
+    }
+
+    public void rejectOrder(Long id) {
+        Optional<OrderEntity> orderOpt = orderRepo.findById(id);
+        Optional<UserEntity> userOpt = userRepo.findByUsername(SecurityUtils.unwrapUsername());
+
+        if (orderOpt.isPresent() && userOpt.isPresent()) {
+            OrderEntity orderEntity = orderOpt.get();
+            UserEntity userEntity = userOpt.get();
+
+            orderEntity.setStatus(REJECTED);
+            orderEntity.setUserId(userEntity.getId());
+            orderEntity.setModifyDate(LocalDateTime.now());
+
+            orderRepo.save(orderEntity);
+        } else {
+            throw new IllegalArgumentException("Order or user not found!");
+        }
+    }
+
     public OrderDTO save(OrderDTO order) {
         OrderEntity orderEntity = orderMapper.fromDto(order);
         Optional<UserEntity> user = userRepo.findByUsername(SecurityUtils.unwrapUsername());
