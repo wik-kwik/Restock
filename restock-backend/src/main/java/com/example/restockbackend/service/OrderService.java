@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -25,14 +26,14 @@ public class OrderService {
     private final OrderMapper orderMapper;
 
     public OrderDTO findById(Long id) {
-        Optional<OrderEntity> orderOpt = orderRepo.findById(SecurityUtils.unwrapUsername(), id);
+        Optional<OrderEntity> orderOpt = orderRepo.findById(id);
         return orderMapper.toDto(
                 orderOpt.orElseThrow(() -> new IllegalArgumentException("Order not found!"))
         );
     }
 
     public Iterable<OrderDTO> findAll() {
-        return orderRepo.findAllByUsername(SecurityUtils.unwrapUsername())
+        return orderRepo.findAll()
                 .stream()
                 .map(orderMapper::toDto)
                 .collect(Collectors.toList());
@@ -56,6 +57,7 @@ public class OrderService {
         OrderEntity orderEntity = orderMapper.fromDto(order);
         Optional<UserEntity> user = userRepo.findByUsername(SecurityUtils.unwrapUsername());
         orderEntity.setUserId(user.orElseThrow(() -> new UsernameNotFoundException("Cannot determinate user name")).getId());
+        orderEntity.setCreateDate(LocalDateTime.now());
         return orderMapper.toDto(orderRepo.save(orderEntity));
     }
 

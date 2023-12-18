@@ -38,6 +38,7 @@ public class ThresholdService {
 
     public ThresholdDTO save(ThresholdDTO threshold) {
         ThresholdEntity thresholdEntity = thresholdMapper.fromDto(threshold);
+        thresholdEntity.setCreateDate(LocalDateTime.now());
         return thresholdMapper.toDto(thresholdRepo.save(thresholdEntity));
     }
 
