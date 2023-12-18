@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Icon } from 'react-icons-kit';
 import { eyeOff } from 'react-icons-kit/feather/eyeOff';
 import { eye } from 'react-icons-kit/feather/eye';
@@ -29,6 +29,7 @@ import {
   ErrorMessage
 } from './LoginFormElements';
 import logoBig from '../../images/logo_big.png';
+import { useAuth } from '../../AuthContext';
 
 export const LoginForm = () => {
   const [rememberMe, setRememberMe] = useState(false);
@@ -40,7 +41,7 @@ export const LoginForm = () => {
   const [showRegisterForm, setShowRegisterForm] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
-
+  const { token, login } = useAuth();
 
   const handleToggle = () => {
     setType((prevType) => (prevType === 'password' ? 'text' : 'password'));
@@ -48,12 +49,20 @@ export const LoginForm = () => {
     setIcon((prevIcon) => (prevIcon === eyeOff ? eye : eyeOff));
   };
 
+  useEffect(() => {
+    // This code will run whenever the token state changes
+    console.log('Token:', token);
+    if (token) {
+      navigate('/home');
+    }
+  }, [token, navigate]);
+
   const handleLogin = async (e) => {
     e.preventDefault(); // Prevent the default form submission behavior
-  
+
     try {
       console.log('Attempting login...');
-      const response = await fetch('https://localhost:443/api/auth/login', {
+      const response = await fetch('http://localhost:8080/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -63,38 +72,33 @@ export const LoginForm = () => {
           password,
         }),
       });
-  
+
       console.log('Response status:', response.status);
-  
       if (!response.ok) {
-        const errorData = await response.json(); // Assuming the API returns an error message in JSON format
+        const errorData = await response.json();
         console.error('Login failed:', errorData.message);
         setError('Login failed. Please try again.');
         return;
       }
-  
+
       // Clear the error message on successful login
       setError('');
-  
+
       // Successful login
       const data = await response.json();
-      const jwt_token = data.jwt; // Assuming the token is returned in the response
+      const jwt_token = data.jwt;
 
-      // console.log('Token before storing:', jwt_token);
-      localStorage.setItem('jwt_token', jwt_token);
+      // Update the token state
+      login(jwt_token);
 
-  
-      // TO DO: Handle the token, e.g., store it in local storage or context
       console.log('Login successful. Token:', jwt_token);
-      navigate('/home'); 
-      // Display a popup for successful login
-      // window.alert('Login successful. Welcome!');
+      navigate('/home');
     } catch (error) {
       console.error('Error during login:', error.message);
       setError('Login failed. Please try again.');
     }
   };
-  
+
   const handleCreateAccountClick = () => {
     setShowRegisterForm(true);
   };
@@ -119,7 +123,7 @@ export const LoginForm = () => {
                 </>
               ) : (
                 <>
-                    {error && <ErrorMessage>{error}</ErrorMessage>}
+                  {error && <ErrorMessage>{error}</ErrorMessage>}
                   <FormLabel>Username</FormLabel>
                   <LoginInput htmlFor="login" id="login" type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
                   <FormLabel>Password</FormLabel>

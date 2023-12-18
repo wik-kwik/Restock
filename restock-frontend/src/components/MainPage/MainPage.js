@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   AppContainer,
   NavbarWrapper,
@@ -32,6 +33,7 @@ import AddDeviceForm from './AddDeviceForm';
 import SettingsForm from './SettingsForm';
 import UserSettingsForm from './UserSettingsForm';
 import logoBig from '../../images/logo_big.png';
+import { useAuth } from '../../AuthContext';
 
 const MainPage = () => {
   // State to manage the visibility of the device creation form
@@ -41,6 +43,10 @@ const MainPage = () => {
   const [showSettingsForm, setShowSettingsForm] = useState(false);
   const [showUserSettingsForm, setShowUserSettingsForm] = useState(false);
   const [username, setUsername] = useState('');
+  const { token } = useAuth();
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+  // const token = localStorage.getItem('token');
 
   // Function to handle the click on the add button
   const handleAddButtonClick = () => {
@@ -56,20 +62,27 @@ const MainPage = () => {
     setShowUserSettingsForm(true);
   };
 
+  const handleLogoutIconClick = () => {
+    logout();
+    navigate('/');
+  };
 
+  console.log('JWT Token:', token);
   // Fetch pending orders from API
 
   useEffect(() => {
     const fetchPendingOrders = async () => {
       try {
         // Retrieve the token from local storage
-        const jwt_token = localStorage.getItem('jwt_token');
-        // console.log(jwt_token);
+        const token = localStorage.getItem('token');
+        
+        // console.log(token);
+        // console.log(token);
 
         // Fetch pending orders with the token in the headers
-        const response = await fetch('https://localhost:443/api/orders/pending', {
+        const response = await fetch('http://localhost:8080/api/orders/pending', {
           headers: {
-            Authorization: `Bearer ${jwt_token}`,
+            Authorization: `Bearer ${token}`,
           },
         });
 
@@ -84,13 +97,13 @@ const MainPage = () => {
     const fetchOrdersHistory = async () => {
       try {
         // Retrieve the token from local storage
-        const jwt_token = localStorage.getItem('jwt_token');
-        // console.log(jwt_token);
+        // const token = localStorage.getItem('token');
+        // console.log(token);
 
         // Fetch pending orders with the token in the headers
-        const response = await fetch('https://localhost:443/api/orders/history', {
+        const response = await fetch('http://localhost:8080/api/orders/history', {
           headers: {
-            Authorization: `Bearer ${jwt_token}`,
+            Authorization: `Bearer ${token}`,
           },
         });
 
@@ -102,8 +115,11 @@ const MainPage = () => {
       }
     };
 
-    fetchPendingOrders()
-    fetchOrdersHistory();
+    // console.log(token);
+    // console.log(token);
+
+    // fetchPendingOrders()
+    // fetchOrdersHistory();
 
   }, []);
   return (
@@ -116,7 +132,7 @@ const MainPage = () => {
           <NavbarIcons>
             <AddressIcon src="your-address-icon.png" alt="Address Icon" onClick={handleAddressIconClick}/>
             <SettingsIcon src="your-logo-icon.png" alt="Logo Icon" onClick={handleSettingsIconClick}/>
-            <LogoutIcon src="your-logout-icon.png" alt="Logout Icon" />
+            <LogoutIcon src="your-logout-icon.png" alt="Logout Icon"  onClick={handleLogoutIconClick} />
           </NavbarIcons>
         </Navbar>
       </NavbarWrapper>

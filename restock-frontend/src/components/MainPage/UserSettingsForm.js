@@ -1,4 +1,3 @@
-// UserSettingsForm.js
 import React, { useState } from 'react';
 import {
   FormWrapper,
@@ -14,10 +13,6 @@ import {
 } from './UserSettingsFormElements';
 
 const UserSettingsForm = ({ onClose, onSubmit, username }) => {
-  const [userSetting1, setUserSetting1] = useState(false);
-  const [userSetting2, setUserSetting2] = useState(false);
-  const [userSetting3, setUserSetting3] = useState('');
-  const [userSetting4, setUserSetting4] = useState('');
 
   const [lastName, setLastName] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -29,10 +24,6 @@ const UserSettingsForm = ({ onClose, onSubmit, username }) => {
 
   const handleSubmit = () => {
     const formData = {
-      userSetting1,
-      userSetting2,
-      userSetting3,
-      userSetting4,
       personalInfo: {
         lastName,
         firstName,

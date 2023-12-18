@@ -1,4 +1,3 @@
-// UserSettingsFormElements.js
 import styled from 'styled-components';
 
 export const FormWrapper = styled.div`
@@ -15,6 +14,7 @@ position: fixed;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  min-width: 20%;
 `;
 
 export const FormTitle = styled.h2`
