@@ -18,6 +18,7 @@ export const FormWrapper = styled.div`
 
 export const FormTitle = styled.h2`
   text-align: center;
+  font-size: 1.3em;
 `;
 
 export const FormInput = styled.input`
@@ -35,6 +36,7 @@ export const FormButton = styled.button`
   border-radius: 4px;
   cursor: pointer;
   background-color: #bdd49d;
+  margin-top: 1em;
 
   &:hover, &:focus {
         background-color: #a4b888;

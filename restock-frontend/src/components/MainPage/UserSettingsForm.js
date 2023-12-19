@@ -45,7 +45,7 @@ const UserSettingsForm = ({ onClose, onSubmit, username }) => {
       <FormTitle>User Settings</FormTitle>
 
       {/* Display the username label */}
-      <SectionLabel>User: {username}</SectionLabel>
+      {/* <SectionLabel>User: {username}</SectionLabel> */}
 
       {/* Checkboxes and dropdowns */}
       {/* ... existing code ... */}

@@ -279,10 +279,12 @@ const MainPage = () => {
                     </OrderDateContainer>
                     <ProductName>{`Product: ${order.name}`}</ProductName>
                   </OrderInfoContainer>
-
+                  <OrderStatusContainer>
+                  <OrderStatusLabel>Status:</OrderStatusLabel>
                   <OrderStatusText isRejected={order.status === 'R'}>
                     {order.status === 'R' ? 'Rejected' : 'Closed'}
                   </OrderStatusText>
+                  </OrderStatusContainer>
                 </PendingOrdersItem>
               ))}
             </RectanglesList>

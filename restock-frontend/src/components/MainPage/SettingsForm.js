@@ -29,7 +29,7 @@ const SettingsForm = ({ onClose, onSubmit }) => {
   return (
     <FormWrapper>
       <CloseButton onClick={onClose}>&times;</CloseButton>
-      <FormTitle>Settings</FormTitle>
+      <FormTitle>Allegro Parameters</FormTitle>
 
       {/* Checkbox for Allegro Smart */}
       <CheckboxLabel>
