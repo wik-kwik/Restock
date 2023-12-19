@@ -74,7 +74,7 @@ const MainPage = () => {
     const fetchPendingOrders = async () => {
       try {
         // Retrieve the token from local storage
-        const token = localStorage.getItem('token');
+        // const token = localStorage.getItem('token');
         
         // console.log(token);
         // console.log(token);
@@ -118,8 +118,8 @@ const MainPage = () => {
     // console.log(token);
     // console.log(token);
 
-    // fetchPendingOrders()
-    // fetchOrdersHistory();
+    fetchPendingOrders()
+    fetchOrdersHistory();
 
   }, []);
   return (
