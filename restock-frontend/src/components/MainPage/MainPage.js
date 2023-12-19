@@ -280,8 +280,8 @@ const MainPage = () => {
                     <ProductName>{`Product: ${order.name}`}</ProductName>
                   </OrderInfoContainer>
 
-                  <OrderStatusText isAccepted={order.status === 'A'} isRejected={order.status === 'R'}>
-                    {order.status === 'A' ? 'Accepted' : order.status === 'R' ? 'Rejected' : 'In Delivery'}
+                  <OrderStatusText isRejected={order.status === 'R'}>
+                    {order.status === 'R' ? 'Rejected' : 'Closed'}
                   </OrderStatusText>
                 </PendingOrdersItem>
               ))}
