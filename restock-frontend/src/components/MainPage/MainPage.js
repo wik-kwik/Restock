@@ -14,10 +14,17 @@ import {
   RightSide,
   PendingOrdersContainer,
   PurchaseHistoryContainer,
-  Rectangle,
   RectanglesList,
   PendingOrdersItem,
+  OrderInfoContainer,
   PendingOrdersText,
+  OrderDate,
+  OrderDetailsContainer,
+  OfferName,
+  OrderText,
+  OrderStatusLabel,
+  OrderStatusText,
+  OrderStatusContainer,
   PendingOrdersButtons,
   AcceptButton,
   RejectButton,
@@ -27,7 +34,9 @@ import {
   SettingsIcon,
   LogoutIcon,
   LogoContainer,
-  LogoImage
+  LogoImage,
+  OrderDateContainer,
+  ProductName
 } from './MainPageElements';
 import AddDeviceForm from './AddDeviceForm';
 import SettingsForm from './SettingsForm';
@@ -46,7 +55,6 @@ const MainPage = () => {
   const { token } = useAuth();
   const { logout } = useAuth();
   const navigate = useNavigate();
-  // const token = localStorage.getItem('token');
 
   // Function to handle the click on the add button
   const handleAddButtonClick = () => {
@@ -58,7 +66,7 @@ const MainPage = () => {
   };
 
   const handleAddressIconClick = () => {
-    setUsername('username'); 
+    setUsername('username');
     setShowUserSettingsForm(true);
   };
 
@@ -67,16 +75,73 @@ const MainPage = () => {
     navigate('/');
   };
 
-  console.log('JWT Token:', token);
+  const handleAcceptOrder = async (orderId) => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/orders/accept?id=${orderId}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        console.log('Order accepted successfully');
+
+        // Update the order status in the pendingOrders state
+        setPendingOrders((prevOrders) =>
+          prevOrders.map((order) =>
+            order.id === orderId ? { ...order, status: order.status.ACCEPTED } : order
+          )
+        );
+
+      } else {
+        console.error('Error accepting order:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error accepting order:', error);
+    }
+  };
+
+  const handleRejectOrder = async (orderId) => {
+    try {
+      // Send a PUT request to reject the order
+      const response = await fetch(`http://localhost:8080/api/orders/reject?id=${orderId}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (response.ok) {
+        // Update the state or perform any other necessary actions
+        console.log('Order rejected successfully');
+  
+        // Find the rejected order in pendingOrders
+        const rejectedOrder = pendingOrders.find((order) => order.id === orderId);
+  
+        // Update the state to remove the rejected order from pendingOrders
+        setPendingOrders((prevOrders) => prevOrders.filter((order) => order.id !== orderId));
+  
+        // Optionally, add the rejected order to the ordersHistory state
+        setOrdersHistory((prevHistory) => [...prevHistory, { ...rejectedOrder, status: 'R' }]);
+      } else {
+        console.error('Error rejecting order:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error rejecting order:', error);
+    }
+  };
+
+
+  // console.log('JWT Token:', token);
 
   // Fetch pending orders from API
 
   useEffect(() => {
     const fetchPendingOrders = async () => {
       try {
-
-        // console.log(token);
-
         // Fetch pending orders with the token in the headers
         const response = await fetch('http://localhost:8080/api/orders/pending', {
           headers: {
@@ -109,6 +174,7 @@ const MainPage = () => {
       }
     };
 
+
     fetchPendingOrders()
     fetchOrdersHistory();
 
@@ -121,9 +187,9 @@ const MainPage = () => {
         </LogoContainer>
         <Navbar>
           <NavbarIcons>
-            <AddressIcon src="your-address-icon.png" alt="Address Icon" onClick={handleAddressIconClick}/>
-            <SettingsIcon src="your-logo-icon.png" alt="Logo Icon" onClick={handleSettingsIconClick}/>
-            <LogoutIcon src="your-logout-icon.png" alt="Logout Icon"  onClick={handleLogoutIconClick} />
+            <AddressIcon src="your-address-icon.png" alt="Address Icon" onClick={handleAddressIconClick} />
+            <SettingsIcon src="your-logo-icon.png" alt="Logo Icon" onClick={handleSettingsIconClick} />
+            <LogoutIcon src="your-logout-icon.png" alt="Logout Icon" onClick={handleLogoutIconClick} />
           </NavbarIcons>
         </Navbar>
       </NavbarWrapper>
@@ -174,11 +240,29 @@ const MainPage = () => {
             <RectanglesList>
               {pendingOrders.map((order, index) => (
                 <PendingOrdersItem key={index} isGrey={index % 2 === 0}>
-                  <PendingOrdersText>{`Order : ${order.name}`}</PendingOrdersText>
-                  <PendingOrdersButtons>
-                    <AcceptButton>Accept</AcceptButton>
-                    <RejectButton>Reject</RejectButton>
-                  </PendingOrdersButtons>
+                  <OrderInfoContainer>
+                    <OrderDateContainer>
+                      <OrderDate>{`Date: ${order.create_date}`}</OrderDate>
+                    </OrderDateContainer>
+                    <ProductName>{`Product: ${order.name}`}</ProductName>
+                    <OrderDetailsContainer>
+                      <OrderText>{`Price: ${order.productPrice}`}</OrderText>
+                      <OrderText>{`SMART: ${order.smart ? 'Yes' : 'No'}`}</OrderText>
+                    </OrderDetailsContainer>
+                  </OrderInfoContainer>
+                  {order.status === 'P' ? (
+                    <PendingOrdersButtons>
+                      <AcceptButton onClick={() => handleAcceptOrder(order.id)}>Accept</AcceptButton>
+                      <RejectButton onClick={() => handleRejectOrder(order.id)}>Reject</RejectButton>
+                    </PendingOrdersButtons>
+                  ) : (
+                    <OrderStatusContainer>
+                      <OrderStatusLabel>Status:</OrderStatusLabel>
+                      <OrderStatusText isAccepted={order.status === 'A'} isRejected={order.status === 'R'}>
+                        {order.status === 'A' ? 'Accepted' : order.status === 'R' ? 'Rejected' : order.status === 'D' ? 'In Delivery' : 'Pending'}
+                      </OrderStatusText>
+                    </OrderStatusContainer>
+                  )}
                 </PendingOrdersItem>
               ))}
             </RectanglesList>
@@ -189,13 +273,22 @@ const MainPage = () => {
             <RectanglesList>
               {ordersHistory.map((order, index) => (
                 <PendingOrdersItem key={index} isGrey={index % 2 === 0}>
-                  <PendingOrdersText>{`Order : ${order.name}`}</PendingOrdersText>
+                  <OrderInfoContainer>
+                    <OrderDateContainer>
+                      <OrderDate>{`Date: ${order.create_date}`}</OrderDate>
+                    </OrderDateContainer>
+                    <ProductName>{`Product: ${order.name}`}</ProductName>
+                  </OrderInfoContainer>
+
+                  <OrderStatusText isAccepted={order.status === 'A'} isRejected={order.status === 'R'}>
+                    {order.status === 'A' ? 'Accepted' : order.status === 'R' ? 'Rejected' : 'In Delivery'}
+                  </OrderStatusText>
                 </PendingOrdersItem>
               ))}
             </RectanglesList>
           </PurchaseHistoryContainer>
         </RightSide>
-        
+
         {/* Pop-up form for creating a device */}
         {showDeviceForm && (
           <AddDeviceForm
@@ -217,8 +310,8 @@ const MainPage = () => {
           />
         )}
 
-         {/* Pop-up form for user settings */}
-         {showUserSettingsForm && (
+        {/* Pop-up form for user settings */}
+        {showUserSettingsForm && (
           <UserSettingsForm
             onClose={() => setShowUserSettingsForm(false)}
             onSubmit={(formData) => {

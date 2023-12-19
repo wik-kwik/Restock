@@ -38,6 +38,7 @@ const UserSettingsForm = ({ onClose, onSubmit, username }) => {
     onClose();
   };
 
+  // console.log(formData);
   return (
     <FormWrapper>
       <CloseButton onClick={onClose}>&times;</CloseButton>
