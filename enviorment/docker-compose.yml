@@ -8,4 +8,6 @@ services:
     environment:
       MARIADB_ROOT_PASSWORD: mysql
     volumes:
-      - ./restock-mariadb/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ./restock-mariadb/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
+      - ./restock-mariadb/etc/mysql/certs:/etc/mysql/certs:ro
+      - ./restock-mariadb/etc/mysql/mariadb.conf.d/50-server.cnf:/etc/mysql/mariadb.conf.d/50-server.cnf:ro
