@@ -91,7 +91,7 @@ const MainPage = () => {
         // Update the order status in the pendingOrders state
         setPendingOrders((prevOrders) =>
           prevOrders.map((order) =>
-            order.id === orderId ? { ...order, status: order.status.ACCEPTED } : order
+            order.id === orderId ? { ...order, status: 'A' } : order
           )
         );
 
@@ -113,17 +113,17 @@ const MainPage = () => {
           'Content-Type': 'application/json',
         },
       });
-  
+
       if (response.ok) {
         // Update the state or perform any other necessary actions
         console.log('Order rejected successfully');
-  
+
         // Find the rejected order in pendingOrders
         const rejectedOrder = pendingOrders.find((order) => order.id === orderId);
-  
+
         // Update the state to remove the rejected order from pendingOrders
         setPendingOrders((prevOrders) => prevOrders.filter((order) => order.id !== orderId));
-  
+
         // Optionally, add the rejected order to the ordersHistory state
         setOrdersHistory((prevHistory) => [...prevHistory, { ...rejectedOrder, status: 'R' }]);
       } else {
@@ -197,7 +197,7 @@ const MainPage = () => {
         <LeftSide>
           <MyDevicesContainer>
             <MyDevicesTitleContainer>
-              <Label>My Products</Label>
+              <Label>My Sensors</Label>
             </MyDevicesTitleContainer>
             {/* Sample Device Boxes with Add Button */}
             <DeviceBox>
@@ -259,7 +259,7 @@ const MainPage = () => {
                     <OrderStatusContainer>
                       <OrderStatusLabel>Status:</OrderStatusLabel>
                       <OrderStatusText isAccepted={order.status === 'A'} isRejected={order.status === 'R'}>
-                        {order.status === 'A' ? 'Accepted' : order.status === 'R' ? 'Rejected' : order.status === 'D' ? 'In Delivery' : 'Pending'}
+                        {order.status === 'A' ? 'Accepted' : order.status === 'R' ? 'Rejected' : 'In Delivery'}
                       </OrderStatusText>
                     </OrderStatusContainer>
                   )}
