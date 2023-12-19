@@ -44,11 +44,9 @@ public class ParameterEntity {
     private Long id;
 
     @Column(nullable = false)
-    @NotBlank
     private String type;
 
     @Column(nullable = false)
-    @NotBlank
     private String value;
 
     @Column(updatable = false, nullable = false)

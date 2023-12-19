@@ -26,15 +26,13 @@ public class ThresholdEntity {
     private Long id;
 
     @Column(updatable = false, nullable = false)
-    @NotNull
     private Long sensorId;
 
     @Column(nullable = false)
-    @NotBlank
     private String type;
 
     @Column(nullable = false)
-    private Double value;
+    private double value;
 
     @Column(updatable = false, nullable = false)
     private LocalDateTime createDate;

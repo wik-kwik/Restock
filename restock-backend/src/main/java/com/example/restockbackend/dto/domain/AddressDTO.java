@@ -1,6 +1,7 @@
 package com.example.restockbackend.dto.domain;
 
-public record AddressDTO(String firstName,
+public record AddressDTO(Long id,
+                         String firstName,
                          String lastName,
                          String street,
                          String houseNumber,
