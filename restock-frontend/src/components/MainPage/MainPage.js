@@ -201,35 +201,35 @@ const MainPage = () => {
             </MyDevicesTitleContainer>
             {/* Sample Device Boxes with Add Button */}
             <DeviceBox>
-              Product 1
+              Sensor 1
               <AddButton onClick={handleAddButtonClick}>+</AddButton>
             </DeviceBox>
             <DeviceBox>
-              Product 2
+              Sensor 2
               <AddButton onClick={handleAddButtonClick}>+</AddButton>
             </DeviceBox>
             <DeviceBox>
-              Product 3
+              Sensor 3
               <AddButton onClick={handleAddButtonClick}>+</AddButton>
             </DeviceBox>
             <DeviceBox>
-              Product 4
+              Sensor 4
               <AddButton onClick={handleAddButtonClick}>+</AddButton>
             </DeviceBox>
             <DeviceBox>
-              Product 5
+              Sensor 5
               <AddButton onClick={handleAddButtonClick}>+</AddButton>
             </DeviceBox>
             <DeviceBox>
-              Product 6
+              Sensor 6
               <AddButton onClick={handleAddButtonClick}>+</AddButton>
             </DeviceBox>
             <DeviceBox>
-              Product 7
+              Sensor 7
               <AddButton onClick={handleAddButtonClick}>+</AddButton>
             </DeviceBox>
             <DeviceBox>
-              Product 8
+              Sensor 8
               <AddButton onClick={handleAddButtonClick}>+</AddButton>
             </DeviceBox>
           </MyDevicesContainer>
@@ -242,7 +242,7 @@ const MainPage = () => {
                 <PendingOrdersItem key={index} isGrey={index % 2 === 0}>
                   <OrderInfoContainer>
                     <OrderDateContainer>
-                      <OrderDate>{`Date: ${order.create_date}`}</OrderDate>
+                      <OrderDate>{`Date: ${order.createDate}`}</OrderDate>
                     </OrderDateContainer>
                     <ProductName>{`Product: ${order.name}`}</ProductName>
                     <OrderDetailsContainer>
@@ -275,7 +275,7 @@ const MainPage = () => {
                 <PendingOrdersItem key={index} isGrey={index % 2 === 0}>
                   <OrderInfoContainer>
                     <OrderDateContainer>
-                      <OrderDate>{`Date: ${order.create_date}`}</OrderDate>
+                      <OrderDate>{`Date: ${order.createDate}`}</OrderDate>
                     </OrderDateContainer>
                     <ProductName>{`Product: ${order.name}`}</ProductName>
                   </OrderInfoContainer>
