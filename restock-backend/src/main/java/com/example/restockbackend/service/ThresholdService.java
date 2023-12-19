@@ -30,12 +30,6 @@ public class ThresholdService {
         return thresholdMapper.toDto(thresholdEntity);
     }
 
-    public ThresholdDTO getValueForOrder() {
-        Optional<ThresholdEntity> thresholdOpt = thresholdRepo.getValueForOrder(SecurityUtils.unwrapSensorToken());
-        ThresholdEntity thresholdEntity = thresholdOpt.orElseThrow(() -> new IllegalArgumentException("Not found!"));
-        return thresholdMapper.toDto(thresholdEntity);
-    }
-
     public ThresholdDTO save(ThresholdDTO threshold) {
         ThresholdEntity thresholdEntity = thresholdMapper.fromDto(threshold);
         thresholdEntity.setCreateDate(LocalDateTime.now());
