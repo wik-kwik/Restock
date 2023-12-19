@@ -68,15 +68,13 @@ const MainPage = () => {
   };
 
   console.log('JWT Token:', token);
+
   // Fetch pending orders from API
 
   useEffect(() => {
     const fetchPendingOrders = async () => {
       try {
-        // Retrieve the token from local storage
-        const token = localStorage.getItem('token');
-        
-        // console.log(token);
+
         // console.log(token);
 
         // Fetch pending orders with the token in the headers
@@ -96,10 +94,6 @@ const MainPage = () => {
 
     const fetchOrdersHistory = async () => {
       try {
-        // Retrieve the token from local storage
-        // const token = localStorage.getItem('token');
-        // console.log(token);
-
         // Fetch pending orders with the token in the headers
         const response = await fetch('http://localhost:8080/api/orders/history', {
           headers: {
@@ -115,11 +109,8 @@ const MainPage = () => {
       }
     };
 
-    // console.log(token);
-    // console.log(token);
-
-    // fetchPendingOrders()
-    // fetchOrdersHistory();
+    fetchPendingOrders()
+    fetchOrdersHistory();
 
   }, []);
   return (

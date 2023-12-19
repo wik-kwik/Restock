@@ -37,6 +37,7 @@ public class SensorService {
 
     public SensorDTO save(SensorDTO sensor) {
         SensorEntity sensorEntity = sensorMapper.fromDto(sensor);
+        sensorEntity.setCreateDate(LocalDateTime.now());
         return sensorMapper.toDto(sensorRepo.save(sensorEntity));
     }
 

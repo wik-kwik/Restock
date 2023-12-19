@@ -25,6 +25,7 @@ public class UserService implements UserDetailsService {
     }
 
     public UserEntity save(UserEntity user) {
+        user.setCreateDate(LocalDateTime.now());
         return userRepo.save(user);
     }
 

@@ -43,4 +43,13 @@ public class OrderApi {
         return orderService.save(order);
     }
 
+    @PutMapping("/accept")
+    public void acceptOrder(@RequestParam Long id) {
+        orderService.acceptOrder(id);
+    }
+
+    @PutMapping("/reject")
+    public void rejectOrder(@RequestParam Long id) {
+        orderService.rejectOrder(id);
+    }
 }
