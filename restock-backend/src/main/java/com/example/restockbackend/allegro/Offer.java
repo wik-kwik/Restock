@@ -17,11 +17,11 @@ public class Offer {
 
     private final String photoURL;
 
-    private final boolean isSmart;
-
     private final double productPrice;
 
     private final double deliveryPrice;
+
+    private final boolean isSmart;
 
 
     public Offer(Object offerJson) {
@@ -38,8 +38,6 @@ public class Offer {
         JSONArray images = (JSONArray) offerInfo.get("images");
         photoURL = (String) images.stream().map(url -> ((JSONObject) url).get("url")).findFirst().orElseGet(String::new);
 
-        isSmart = AllegroClient.getInstance().isSmartOffer();
-
         JSONObject sellingMode = (JSONObject) offerInfo.get("sellingMode");
         JSONObject price = (JSONObject) sellingMode.get("price");
         productPrice = Double.parseDouble((String) price.get("amount"));
@@ -47,14 +45,12 @@ public class Offer {
         JSONObject delivery = (JSONObject) offerInfo.get("delivery");
         JSONObject lowestPrice = (JSONObject) delivery.get("lowestPrice");
         deliveryPrice =  Double.parseDouble((String) lowestPrice.get("amount"));
+
+        isSmart = AllegroClient.getInstance().isSmartOffer() && productPrice >= 45.00;
     }
 
     public double getFinalPrice() {
-        if (isSmart && productPrice >= 45.00) {
-            return productPrice;
-        } else {
-            return productPrice + deliveryPrice;
-        }
+        return isSmart ? productPrice : productPrice + deliveryPrice;
     }
 
 }
