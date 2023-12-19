@@ -90,7 +90,7 @@ export const LoginForm = () => {
       // Update the token state
       login(jwt_token);
 
-      console.log('Login successful. Token:', jwt_token);
+      // console.log('Login successful. Token:', jwt_token);
       navigate('/home');
     } catch (error) {
       console.error('Error during login:', error.message);

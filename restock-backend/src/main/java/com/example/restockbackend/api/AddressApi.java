@@ -23,7 +23,7 @@ public class AddressApi {
         return addressService.findById(id);
     }
 
-    @PostMapping
+    @PutMapping
     public AddressDTO addAddress(@RequestBody AddressDTO address) {
         return addressService.save(address);
     }

@@ -44,6 +44,23 @@ import UserSettingsForm from './UserSettingsForm';
 import logoBig from '../../images/logo_big.png';
 import { useAuth } from '../../AuthContext';
 
+const formatCreateDate = (dateString) => {
+  try {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
+    const formattedDate = new Date(dateString).toLocaleString(undefined, options);
+
+    // Check if the date is valid after formatting
+    if (formattedDate !== 'Invalid Date') {
+      return formattedDate;
+    } else {
+      throw new Error('Invalid date string');
+    }
+  } catch (error) {
+    console.error('Error formatting date:', error);
+    return 'Invalid Date';
+  }
+};
+
 const MainPage = () => {
   // State to manage the visibility of the device creation form
   const [showDeviceForm, setShowDeviceForm] = useState(false);
@@ -52,6 +69,7 @@ const MainPage = () => {
   const [showSettingsForm, setShowSettingsForm] = useState(false);
   const [showUserSettingsForm, setShowUserSettingsForm] = useState(false);
   const [username, setUsername] = useState('');
+  const [createDate, setCreateDate] = useState('');
   const { token } = useAuth();
   const { logout } = useAuth();
   const navigate = useNavigate();
@@ -74,6 +92,8 @@ const MainPage = () => {
     logout();
     navigate('/');
   };
+  
+  
 
   const handleAcceptOrder = async (orderId) => {
     try {
@@ -134,12 +154,10 @@ const MainPage = () => {
     }
   };
 
-
-  // console.log('JWT Token:', token);
-
   // Fetch pending orders from API
 
   useEffect(() => {
+    console.log('Token changed:', token);
     const fetchPendingOrders = async () => {
       try {
         // Fetch pending orders with the token in the headers
@@ -151,7 +169,8 @@ const MainPage = () => {
 
         const data = await response.json();
         setPendingOrders(data);
-        console.log(data);
+        setCreateDate(data.createDate);
+        // console.log(data);
       } catch (error) {
         console.error('Error fetching pending orders:', error);
       }
@@ -168,17 +187,17 @@ const MainPage = () => {
 
         const data = await response.json();
         setOrdersHistory(data);
-        console.log(data);
+        // console.log(data);
       } catch (error) {
         console.error('Error fetching pending orders:', error);
       }
     };
 
-
-    fetchPendingOrders()
+    // Fetch data when the component mounts and when the token changes
+    fetchPendingOrders();
     fetchOrdersHistory();
+  }, [token]);
 
-  }, []);
   return (
     <AppContainer>
       <NavbarWrapper>
@@ -242,12 +261,13 @@ const MainPage = () => {
                 <PendingOrdersItem key={index} isGrey={index % 2 === 0}>
                   <OrderInfoContainer>
                     <OrderDateContainer>
-                      <OrderDate>{`Date: ${order.createDate}`}</OrderDate>
+                      {/* <OrderDate>{`Date: ${order.createDate}`}</OrderDate> */}
+                      <OrderDate>{`Date: ${formatCreateDate(order.createDate)}`}</OrderDate>
                     </OrderDateContainer>
                     <ProductName>{`Product: ${order.name}`}</ProductName>
                     <OrderDetailsContainer>
-                      <OrderText>{`Price: ${order.productPrice}`}</OrderText>
-                      <OrderText>{`SMART: ${order.smart ? 'Yes' : 'No'}`}</OrderText>
+                      <OrderText>{`Price: ${order.productPrice}`} PLN</OrderText>
+                      {/* <OrderText>{`SMART: ${order.smart ? 'Yes' : 'No'}`}</OrderText> */}
                     </OrderDetailsContainer>
                   </OrderInfoContainer>
                   {order.status === 'P' ? (
@@ -275,7 +295,7 @@ const MainPage = () => {
                 <PendingOrdersItem key={index} isGrey={index % 2 === 0}>
                   <OrderInfoContainer>
                     <OrderDateContainer>
-                      <OrderDate>{`Date: ${order.createDate}`}</OrderDate>
+                    <OrderDate>{`Date: ${formatCreateDate(order.createDate)}`}</OrderDate>
                     </OrderDateContainer>
                     <ProductName>{`Product: ${order.name}`}</ProductName>
                   </OrderInfoContainer>
