@@ -38,7 +38,7 @@ const SettingsForm = ({ onClose, onSubmit }) => {
           checked={allegroSmart}
           onChange={() => setAllegroSmart(!allegroSmart)}
         />
-        Allegro Smart
+        Allegro Smart!
       </CheckboxLabel>
 
       {/* Checkbox for Super Sprzedawca */}
@@ -58,12 +58,12 @@ const SettingsForm = ({ onClose, onSubmit }) => {
           checked={strefaMarek}
           onChange={() => setStrefaMarek(!strefaMarek)}
         />
-        Strefa Marek
+        Strefa marek
       </CheckboxLabel>
 
       {/* Dropdown for Delivery Method */}
       <DropdownLabel>
-        Delivery Method:
+        Delivery method:
         <DropdownSelect
           value={deliveryMethod}
           onChange={(e) => setDeliveryMethod(e.target.value)}
