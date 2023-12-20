@@ -12,16 +12,20 @@ import com.example.restockbackend.dto.domain.DataDTO;
 import com.example.restockbackend.dto.mapper.DataMapper;
 import com.example.restockbackend.security.SecurityUtils;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class DataService {
+
+    private final Logger LOGGER = LoggerFactory.getLogger(DataService.class);
 
     private final DataRepo dataRepo;
 
@@ -32,18 +36,6 @@ public class DataService {
     private final ThresholdRepo thresholdRepo;
 
     private final OrderService orderService;
-
-    public DataDTO findById(Long id) {
-        DataEntity dataEntity = dataRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Data not found"));
-        return dataMapper.toDto(dataEntity);
-    }
-
-    public List<DataDTO> findAll() {
-        return dataRepo.findAll()
-                .stream()
-                .map(dataMapper::toDto)
-                .collect(Collectors.toList());
-    }
 
     public DataDTO save(DataDTO data) {
         DataEntity dataEntity = dataMapper.fromDto(data);
@@ -58,6 +50,7 @@ public class DataService {
     private void processData(Long sensorId, double dataValue) {
         Optional<ThresholdEntity> thresholdOpt = thresholdRepo.getValueForOrder(sensorId);
         Optional<SensorEntity> sensorOpt = sensorRepo.findById(sensorId);
+
         if (thresholdOpt.isEmpty() || sensorOpt.isEmpty()) {
             return;
         }
@@ -67,11 +60,13 @@ public class DataService {
         if(dataValue <= thresholdValue) {
             try {
                 Offer offer = AllegroClient.getInstance().getTheBestOffer(sensor.getProductName(), sensor.getPreferredBrand(), sensor.getPreferredAmount());
-                if (offer != null) {
+                if (offer != null && !orderService.existsOpenOrderWithOfferId(offer.getId())) {
                     orderService.createNewOrder(offer);
                 }
-            } catch (Exception ignored) {
+            } catch (IOException | ParseException e) {
+                LOGGER.info("Error during parsing JSON with Allegro offers");
             }
+
         }
     }
 

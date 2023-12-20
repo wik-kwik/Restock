@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -33,17 +34,21 @@ public class OrderService {
     }
 
     public Iterable<OrderDTO> findPendingOrders() {
-        return orderRepo.findByStatusIn(ACCEPTED, IN_DELIVERY, PENDING)
+        return orderRepo.findByStatusIn(Arrays.asList(ACCEPTED, IN_DELIVERY, PENDING))
                 .stream()
                 .map(orderMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     public Iterable<OrderDTO> findOrdersHistory() {
-        return orderRepo.findByStatusIn(CLOSED, REJECTED)
+        return orderRepo.findByStatusIn(Arrays.asList(CLOSED, REJECTED))
                 .stream()
                 .map(orderMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    public boolean existsOpenOrderWithOfferId(String offerId) {
+        return orderRepo.existsByStatusInAndOfferId(Arrays.asList(ACCEPTED, IN_DELIVERY, PENDING), offerId);
     }
 
     public void changeStatus(Long id, String status) {
@@ -71,7 +76,7 @@ public class OrderService {
     public void createNewOrder(Offer offer) {
         OrderEntity orderEntity = new OrderEntity();
         orderEntity.setStatus(PENDING);
-        orderEntity.setOfferId(offer.getId().toString());
+        orderEntity.setOfferId(offer.getId());
         orderEntity.setName(offer.getName());
         orderEntity.setPhotoUrl(offer.getPhotoURL());
         orderEntity.setProductPrice(offer.getProductPrice());

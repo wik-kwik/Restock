@@ -7,7 +7,7 @@ import org.json.simple.JSONObject;
 @Getter
 public class Offer {
 
-    private final Long id;
+    private final String id;
 
     private final String sellerLogin;
 
@@ -27,7 +27,7 @@ public class Offer {
     public Offer(Object offerJson) {
         JSONObject offerInfo = (JSONObject) offerJson;
 
-        id = Long.parseLong((String) offerInfo.get("id"));
+        id = (String) offerInfo.get("id");
 
         JSONObject seller = (JSONObject) offerInfo.get("seller");
         sellerLogin = (String) seller.get("login");
