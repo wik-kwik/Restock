@@ -14,8 +14,8 @@ public interface ThresholdRepo extends ListCrudRepository<ThresholdEntity, Long>
     @Query("SELECT te FROM ThresholdEntity te INNER JOIN SensorEntity se ON se.id = te.sensorId WHERE te.removeDate IS NULL AND te.type = 'U' AND se.sensorToken = :sensorToken")
     Optional<ThresholdEntity> getValueForUpdate(String sensorToken);
 
-    @Query("SELECT te FROM ThresholdEntity te INNER JOIN SensorEntity se ON se.id = te.sensorId WHERE te.removeDate IS NULL AND te.type = 'O' AND se.sensorToken = :sensorToken")
-    Optional<ThresholdEntity> getValueForOrder(String sensorToken);
+    @Query("SELECT te FROM ThresholdEntity te WHERE te.removeDate IS NULL AND te.type = 'O' AND te.sensorId = :sensorId")
+    Optional<ThresholdEntity> getValueForOrder(Long sensorId);
 
     Iterable<ThresholdEntity> findAllBySensorId(Long id);
 

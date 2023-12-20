@@ -1,11 +1,15 @@
 package com.example.restockbackend.dto.domain;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
-public record OrderDTO(@NotNull String status,
-                       @NotBlank String name,
-                       double price,
-                       @NotBlank String offerId
+public record OrderDTO(Long id,
+                       String status,
+                       String offerId,
+                       String name,
+                       String photoUrl,
+                       double productPrice,
+                       double deliveryPrice,
+                       int smart,
+                       LocalDateTime createDate
 ) {
 }

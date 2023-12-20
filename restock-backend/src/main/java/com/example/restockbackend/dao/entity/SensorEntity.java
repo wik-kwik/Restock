@@ -21,11 +21,9 @@ public class SensorEntity {
     private Long id;
 
     @Column(nullable = false)
-    @NotBlank
     private String name;
 
     @Column(nullable = false)
-    @NotBlank
     private String productName;
 
     @Column

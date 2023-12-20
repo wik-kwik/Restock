@@ -2,7 +2,6 @@ package com.example.restockbackend.dao.entity;
 
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,7 +23,6 @@ public class DataEntity {
     private Long sensorId;
 
     @Column(nullable = false)
-    @NotBlank
     private double value;
 
     @Column(updatable = false, nullable = false)

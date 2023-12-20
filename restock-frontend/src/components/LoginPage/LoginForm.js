@@ -49,13 +49,12 @@ export const LoginForm = () => {
     setIcon((prevIcon) => (prevIcon === eyeOff ? eye : eyeOff));
   };
 
-  useEffect(() => {
-    // This code will run whenever the token state changes
-    console.log('Token:', token);
-    if (token) {
-      navigate('/home');
-    }
-  }, [token, navigate]);
+  // useEffect(() => {
+  //   console.log('Token:', token);
+  //   if (token) {
+  //     navigate('/home');
+  //   }
+  // }, [token, navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault(); // Prevent the default form submission behavior
@@ -91,7 +90,7 @@ export const LoginForm = () => {
       // Update the token state
       login(jwt_token);
 
-      console.log('Login successful. Token:', jwt_token);
+      // console.log('Login successful. Token:', jwt_token);
       navigate('/home');
     } catch (error) {
       console.error('Error during login:', error.message);

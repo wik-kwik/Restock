@@ -1,5 +1,6 @@
 package com.example.restockbackend.service;
 
+import com.example.restockbackend.allegro.Offer;
 import com.example.restockbackend.dao.OrderRepo;
 import com.example.restockbackend.dao.UserRepo;
 import com.example.restockbackend.dao.entity.OrderEntity;
@@ -8,7 +9,6 @@ import com.example.restockbackend.dto.domain.OrderDTO;
 import com.example.restockbackend.dto.mapper.OrderMapper;
 import com.example.restockbackend.security.SecurityUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -32,36 +32,33 @@ public class OrderService {
         );
     }
 
-    public Iterable<OrderDTO> findAll() {
-        return orderRepo.findAll()
-                .stream()
-                .map(orderMapper::toDto)
-                .collect(Collectors.toList());
-    }
-
     public Iterable<OrderDTO> findPendingOrders() {
-        return orderRepo.findByStatusIn(SecurityUtils.unwrapUsername(), ACCEPTED, IN_DELIVERY, PENDING)
+        return orderRepo.findByStatusIn(ACCEPTED, IN_DELIVERY, PENDING)
                 .stream()
                 .map(orderMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     public Iterable<OrderDTO> findOrdersHistory() {
-        return orderRepo.findByStatusIn(SecurityUtils.unwrapUsername(), CLOSED, REJECTED)
+        return orderRepo.findByStatusIn(CLOSED, REJECTED)
                 .stream()
                 .map(orderMapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    public void acceptOrder(Long id) {
+    public void changeStatus(Long id, String status) {
         Optional<OrderEntity> orderOpt = orderRepo.findById(id);
         Optional<UserEntity> userOpt = userRepo.findByUsername(SecurityUtils.unwrapUsername());
+
+        if (orderOpt.isPresent() && !orderOpt.get().getStatus().equals(PENDING)) {
+            throw new IllegalArgumentException("Order status cannot be changed - forbidden for other status than PENDING!");
+        }
 
         if (orderOpt.isPresent() && userOpt.isPresent()) {
             OrderEntity orderEntity = orderOpt.get();
             UserEntity userEntity = userOpt.get();
 
-            orderEntity.setStatus(ACCEPTED);
+            orderEntity.setStatus(status);
             orderEntity.setUserId(userEntity.getId());
             orderEntity.setModifyDate(LocalDateTime.now());
 
@@ -71,30 +68,17 @@ public class OrderService {
         }
     }
 
-    public void rejectOrder(Long id) {
-        Optional<OrderEntity> orderOpt = orderRepo.findById(id);
-        Optional<UserEntity> userOpt = userRepo.findByUsername(SecurityUtils.unwrapUsername());
-
-        if (orderOpt.isPresent() && userOpt.isPresent()) {
-            OrderEntity orderEntity = orderOpt.get();
-            UserEntity userEntity = userOpt.get();
-
-            orderEntity.setStatus(REJECTED);
-            orderEntity.setUserId(userEntity.getId());
-            orderEntity.setModifyDate(LocalDateTime.now());
-
-            orderRepo.save(orderEntity);
-        } else {
-            throw new IllegalArgumentException("Order or user not found!");
-        }
-    }
-
-    public OrderDTO save(OrderDTO order) {
-        OrderEntity orderEntity = orderMapper.fromDto(order);
-        Optional<UserEntity> user = userRepo.findByUsername(SecurityUtils.unwrapUsername());
-        orderEntity.setUserId(user.orElseThrow(() -> new UsernameNotFoundException("Cannot determinate user name")).getId());
+    public void createNewOrder(Offer offer) {
+        OrderEntity orderEntity = new OrderEntity();
+        orderEntity.setStatus(PENDING);
+        orderEntity.setOfferId(offer.getId().toString());
+        orderEntity.setName(offer.getName());
+        orderEntity.setPhotoUrl(offer.getPhotoURL());
+        orderEntity.setProductPrice(offer.getProductPrice());
+        orderEntity.setDeliveryPrice(offer.getDeliveryPrice());
+        orderEntity.setSmart(offer.isSmart() ? 1 : 0);
         orderEntity.setCreateDate(LocalDateTime.now());
-        return orderMapper.toDto(orderRepo.save(orderEntity));
+        orderRepo.save(orderEntity);
     }
 
 }

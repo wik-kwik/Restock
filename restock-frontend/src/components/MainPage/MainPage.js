@@ -14,10 +14,17 @@ import {
   RightSide,
   PendingOrdersContainer,
   PurchaseHistoryContainer,
-  Rectangle,
   RectanglesList,
   PendingOrdersItem,
+  OrderInfoContainer,
   PendingOrdersText,
+  OrderDate,
+  OrderDetailsContainer,
+  OfferName,
+  OrderText,
+  OrderStatusLabel,
+  OrderStatusText,
+  OrderStatusContainer,
   PendingOrdersButtons,
   AcceptButton,
   RejectButton,
@@ -27,13 +34,32 @@ import {
   SettingsIcon,
   LogoutIcon,
   LogoContainer,
-  LogoImage
+  LogoImage,
+  OrderDateContainer,
+  ProductName
 } from './MainPageElements';
 import AddDeviceForm from './AddDeviceForm';
 import SettingsForm from './SettingsForm';
 import UserSettingsForm from './UserSettingsForm';
 import logoBig from '../../images/logo_big.png';
 import { useAuth } from '../../AuthContext';
+
+const formatCreateDate = (dateString) => {
+  try {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
+    const formattedDate = new Date(dateString).toLocaleString(undefined, options);
+
+    // Check if the date is valid after formatting
+    if (formattedDate !== 'Invalid Date') {
+      return formattedDate;
+    } else {
+      throw new Error('Invalid date string');
+    }
+  } catch (error) {
+    console.error('Error formatting date:', error);
+    return 'Invalid Date';
+  }
+};
 
 const MainPage = () => {
   // State to manage the visibility of the device creation form
@@ -43,10 +69,10 @@ const MainPage = () => {
   const [showSettingsForm, setShowSettingsForm] = useState(false);
   const [showUserSettingsForm, setShowUserSettingsForm] = useState(false);
   const [username, setUsername] = useState('');
+  const [createDate, setCreateDate] = useState('');
   const { token } = useAuth();
   const { logout } = useAuth();
   const navigate = useNavigate();
-  // const token = localStorage.getItem('token');
 
   // Function to handle the click on the add button
   const handleAddButtonClick = () => {
@@ -58,7 +84,7 @@ const MainPage = () => {
   };
 
   const handleAddressIconClick = () => {
-    setUsername('username'); 
+    setUsername('username');
     setShowUserSettingsForm(true);
   };
 
@@ -66,17 +92,74 @@ const MainPage = () => {
     logout();
     navigate('/');
   };
+  
+  
 
-  console.log('JWT Token:', token);
+  const handleAcceptOrder = async (orderId) => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/orders/accept?id=${orderId}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        console.log('Order accepted successfully');
+
+        // Update the order status in the pendingOrders state
+        setPendingOrders((prevOrders) =>
+          prevOrders.map((order) =>
+            order.id === orderId ? { ...order, status: 'A' } : order
+          )
+        );
+
+      } else {
+        console.error('Error accepting order:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error accepting order:', error);
+    }
+  };
+
+  const handleRejectOrder = async (orderId) => {
+    try {
+      // Send a PUT request to reject the order
+      const response = await fetch(`http://localhost:8080/api/orders/reject?id=${orderId}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        // Update the state or perform any other necessary actions
+        console.log('Order rejected successfully');
+
+        // Find the rejected order in pendingOrders
+        const rejectedOrder = pendingOrders.find((order) => order.id === orderId);
+
+        // Update the state to remove the rejected order from pendingOrders
+        setPendingOrders((prevOrders) => prevOrders.filter((order) => order.id !== orderId));
+
+        // Optionally, add the rejected order to the ordersHistory state
+        setOrdersHistory((prevHistory) => [...prevHistory, { ...rejectedOrder, status: 'R' }]);
+      } else {
+        console.error('Error rejecting order:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error rejecting order:', error);
+    }
+  };
 
   // Fetch pending orders from API
 
   useEffect(() => {
+    console.log('Token changed:', token);
     const fetchPendingOrders = async () => {
       try {
-
-        // console.log(token);
-
         // Fetch pending orders with the token in the headers
         const response = await fetch('http://localhost:8080/api/orders/pending', {
           headers: {
@@ -86,7 +169,8 @@ const MainPage = () => {
 
         const data = await response.json();
         setPendingOrders(data);
-        console.log(data);
+        setCreateDate(data.createDate);
+        // console.log(data);
       } catch (error) {
         console.error('Error fetching pending orders:', error);
       }
@@ -103,16 +187,17 @@ const MainPage = () => {
 
         const data = await response.json();
         setOrdersHistory(data);
-        console.log(data);
+        // console.log(data);
       } catch (error) {
         console.error('Error fetching pending orders:', error);
       }
     };
 
-    fetchPendingOrders()
+    // Fetch data when the component mounts and when the token changes
+    fetchPendingOrders();
     fetchOrdersHistory();
+  }, [token]);
 
-  }, []);
   return (
     <AppContainer>
       <NavbarWrapper>
@@ -121,9 +206,9 @@ const MainPage = () => {
         </LogoContainer>
         <Navbar>
           <NavbarIcons>
-            <AddressIcon src="your-address-icon.png" alt="Address Icon" onClick={handleAddressIconClick}/>
-            <SettingsIcon src="your-logo-icon.png" alt="Logo Icon" onClick={handleSettingsIconClick}/>
-            <LogoutIcon src="your-logout-icon.png" alt="Logout Icon"  onClick={handleLogoutIconClick} />
+            <AddressIcon src="your-address-icon.png" alt="Address Icon" onClick={handleAddressIconClick} />
+            <SettingsIcon src="your-logo-icon.png" alt="Logo Icon" onClick={handleSettingsIconClick} />
+            <LogoutIcon src="your-logout-icon.png" alt="Logout Icon" onClick={handleLogoutIconClick} />
           </NavbarIcons>
         </Navbar>
       </NavbarWrapper>
@@ -131,39 +216,39 @@ const MainPage = () => {
         <LeftSide>
           <MyDevicesContainer>
             <MyDevicesTitleContainer>
-              <Label>My Products</Label>
+              <Label>My Sensors</Label>
             </MyDevicesTitleContainer>
             {/* Sample Device Boxes with Add Button */}
             <DeviceBox>
-              Product 1
+              Sensor 1
               <AddButton onClick={handleAddButtonClick}>+</AddButton>
             </DeviceBox>
             <DeviceBox>
-              Product 2
+              Sensor 2
               <AddButton onClick={handleAddButtonClick}>+</AddButton>
             </DeviceBox>
             <DeviceBox>
-              Product 3
+              Sensor 3
               <AddButton onClick={handleAddButtonClick}>+</AddButton>
             </DeviceBox>
             <DeviceBox>
-              Product 4
+              Sensor 4
               <AddButton onClick={handleAddButtonClick}>+</AddButton>
             </DeviceBox>
             <DeviceBox>
-              Product 5
+              Sensor 5
               <AddButton onClick={handleAddButtonClick}>+</AddButton>
             </DeviceBox>
             <DeviceBox>
-              Product 6
+              Sensor 6
               <AddButton onClick={handleAddButtonClick}>+</AddButton>
             </DeviceBox>
             <DeviceBox>
-              Product 7
+              Sensor 7
               <AddButton onClick={handleAddButtonClick}>+</AddButton>
             </DeviceBox>
             <DeviceBox>
-              Product 8
+              Sensor 8
               <AddButton onClick={handleAddButtonClick}>+</AddButton>
             </DeviceBox>
           </MyDevicesContainer>
@@ -174,11 +259,30 @@ const MainPage = () => {
             <RectanglesList>
               {pendingOrders.map((order, index) => (
                 <PendingOrdersItem key={index} isGrey={index % 2 === 0}>
-                  <PendingOrdersText>{`Order : ${order.name}`}</PendingOrdersText>
-                  <PendingOrdersButtons>
-                    <AcceptButton>Accept</AcceptButton>
-                    <RejectButton>Reject</RejectButton>
-                  </PendingOrdersButtons>
+                  <OrderInfoContainer>
+                    <OrderDateContainer>
+                      {/* <OrderDate>{`Date: ${order.createDate}`}</OrderDate> */}
+                      <OrderDate>{`Date: ${formatCreateDate(order.createDate)}`}</OrderDate>
+                    </OrderDateContainer>
+                    <ProductName>{`Product: ${order.name}`}</ProductName>
+                    <OrderDetailsContainer>
+                      <OrderText>{`Price: ${order.smart ? order.productPrice : order.productPrice + order.deliveryPrice} PLN`}</OrderText>
+                      <OrderText>{`${order.smart ? ', delivery free with SMART!' : ', including delivery cost: '+ order.deliveryPrice + ' PLN'}`}</OrderText>
+                    </OrderDetailsContainer>
+                  </OrderInfoContainer>
+                  {order.status === 'P' ? (
+                    <PendingOrdersButtons>
+                      <AcceptButton onClick={() => handleAcceptOrder(order.id)}>Accept</AcceptButton>
+                      <RejectButton onClick={() => handleRejectOrder(order.id)}>Reject</RejectButton>
+                    </PendingOrdersButtons>
+                  ) : (
+                    <OrderStatusContainer>
+                      <OrderStatusLabel>Status:</OrderStatusLabel>
+                      <OrderStatusText isAccepted={order.status === 'A'} isRejected={order.status === 'R'}>
+                        {order.status === 'A' ? 'Accepted' : order.status === 'R' ? 'Rejected' : 'In delivery'}
+                      </OrderStatusText>
+                    </OrderStatusContainer>
+                  )}
                 </PendingOrdersItem>
               ))}
             </RectanglesList>
@@ -189,13 +293,24 @@ const MainPage = () => {
             <RectanglesList>
               {ordersHistory.map((order, index) => (
                 <PendingOrdersItem key={index} isGrey={index % 2 === 0}>
-                  <PendingOrdersText>{`Order : ${order.name}`}</PendingOrdersText>
+                  <OrderInfoContainer>
+                    <OrderDateContainer>
+                    <OrderDate>{`Date: ${formatCreateDate(order.createDate)}`}</OrderDate>
+                    </OrderDateContainer>
+                    <ProductName>{`Product: ${order.name}`}</ProductName>
+                  </OrderInfoContainer>
+                  <OrderStatusContainer>
+                  <OrderStatusLabel>Status:</OrderStatusLabel>
+                  <OrderStatusText isRejected={order.status === 'R'}>
+                    {order.status === 'R' ? 'Rejected' : 'Closed'}
+                  </OrderStatusText>
+                  </OrderStatusContainer>
                 </PendingOrdersItem>
               ))}
             </RectanglesList>
           </PurchaseHistoryContainer>
         </RightSide>
-        
+
         {/* Pop-up form for creating a device */}
         {showDeviceForm && (
           <AddDeviceForm
@@ -217,8 +332,8 @@ const MainPage = () => {
           />
         )}
 
-         {/* Pop-up form for user settings */}
-         {showUserSettingsForm && (
+        {/* Pop-up form for user settings */}
+        {showUserSettingsForm && (
           <UserSettingsForm
             onClose={() => setShowUserSettingsForm(false)}
             onSubmit={(formData) => {

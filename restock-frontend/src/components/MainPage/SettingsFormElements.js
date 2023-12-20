@@ -6,7 +6,8 @@ export const FormWrapper = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #afaca7;
+  /* background-color: #afaca7; */
+  background-color: #9ea98f;
   padding: 3em;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -30,15 +31,18 @@ export const FormInput = styled.input`
 `;
 
 export const FormButton = styled.button`
-  color: white;
+  color: black;
   padding: 10px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  background-color: #bdd49d;
+  background-color: #c7aca7;
+  margin-top: 1em;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 
-  &:hover, &:focus {
-    background-color: #a4b888;
+  &:hover,
+  &:focus {
+    background-color: #d8c1c6;
   }
 `;
 
@@ -65,11 +69,14 @@ export const CheckboxInput = styled.input`
 export const DropdownLabel = styled.label`
   display: block;
   margin: 10px 0;
+
 `;
 
 export const DropdownSelect = styled.select`
+  color: black;
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  background-color: #e9dbde;
 `;

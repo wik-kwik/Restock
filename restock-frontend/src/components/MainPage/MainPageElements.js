@@ -189,10 +189,12 @@ export const PendingOrdersItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  /* flex-direction: column; */
   padding: 0 20px;
   background-color: ${(props) => (props.isGrey ? '#afaca7' : '#fcf5ec')};
   border-radius: 8px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    /* border: solid pink 2px; */
 `;
 
 export const PendingOrdersText = styled.p`
@@ -228,4 +230,83 @@ export const RejectButton = styled.button`
   &:hover, &:focus {
         background-color: #b8756f;
     }
+`;
+
+// export const PendingOrdersItem = styled.div`
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   height: 3em;  // Set the height to 3em
+//   padding: 0 20px;
+//   background-color: ${(props) => (props.isGrey ? '#afaca7' : '#fcf5ec')};
+//   border-radius: 8px;
+//   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+// `;
+
+export const OrderInfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  /* height: 100%; */
+  
+`;
+
+export const OrderDateContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const OrderDate = styled.p`
+  font-size: 0.8em;
+  margin-bottom: 5px;
+`;
+
+export const OrderStatus = styled.p`
+  font-size: 0.8em;
+  color: ${(props) =>
+    props.isAccepted ? 'green' : props.isRejected ? 'red' : 'black'};
+  /* margin-bottom: 5px; */
+`;
+
+export const OrderDetailsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  /* border: solid pink 2px; */
+  margin-top: -0.9em;
+  /* height: 100%;  */
+`;
+
+export const ProductName = styled.p`
+  font-size: 1em;
+  margin-top: 0.7em;
+  /* border: solid pink 2px; */
+`;
+
+export const OfferName = styled.p`
+  font-size: 0.8em;
+  /* border: solid pink 2px; */
+  /* margin-bottom: 2px; */
+`;
+
+export const OrderText = styled.p`
+  font-size: 0.9em;
+  /* border: solid pink 2px; */
+  /* margin-bottom: 2px; */
+`;
+
+export const OrderStatusContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const OrderStatusLabel = styled.p`
+  font-size: 1em;
+  margin-right: 5px;
+`;
+
+export const OrderStatusText = styled.p`
+  font-size: 1em;
+  color: ${(props) =>
+    props.isAccepted ? 'green' : props.isRejected ? 'red' : 'black'};
 `;

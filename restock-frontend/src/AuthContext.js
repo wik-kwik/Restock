@@ -17,8 +17,6 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('jwt_token');
   };
 
-  console.log('Current token:', token);
-
   return (
     <AuthContext.Provider value={{ token, login, logout }}>
       {children}
