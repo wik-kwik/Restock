@@ -266,8 +266,8 @@ const MainPage = () => {
                     </OrderDateContainer>
                     <ProductName>{`Product: ${order.name}`}</ProductName>
                     <OrderDetailsContainer>
-                      <OrderText>{`Price: ${order.productPrice}`} PLN</OrderText>
-                      {/* <OrderText>{`SMART: ${order.smart ? 'Yes' : 'No'}`}</OrderText> */}
+                      <OrderText>{`Price: ${order.smart ? order.productPrice : order.productPrice + order.deliveryPrice} PLN`}</OrderText>
+                      <OrderText>{`${order.smart ? ', delivery free with SMART!' : ', including delivery cost: '+ order.deliveryPrice + ' PLN'}`}</OrderText>
                     </OrderDetailsContainer>
                   </OrderInfoContainer>
                   {order.status === 'P' ? (
@@ -279,7 +279,7 @@ const MainPage = () => {
                     <OrderStatusContainer>
                       <OrderStatusLabel>Status:</OrderStatusLabel>
                       <OrderStatusText isAccepted={order.status === 'A'} isRejected={order.status === 'R'}>
-                        {order.status === 'A' ? 'Accepted' : order.status === 'R' ? 'Rejected' : 'In Delivery'}
+                        {order.status === 'A' ? 'Accepted' : order.status === 'R' ? 'Rejected' : 'In delivery'}
                       </OrderStatusText>
                     </OrderStatusContainer>
                   )}
