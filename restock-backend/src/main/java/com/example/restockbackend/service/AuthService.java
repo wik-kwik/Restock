@@ -25,6 +25,9 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public RegisterResponse register(RegisterRequest registerRequest) {
+        if (userService.existsByUsername(registerRequest.username())) {
+            throw new IllegalArgumentException("User with name \"" + registerRequest.username() + "\" already exists!");
+        }
         UserEntity user = new UserEntity();
         user.setUsername(registerRequest.username());
         user.setPassword(passwordEncoder.encode(registerRequest.password()));
