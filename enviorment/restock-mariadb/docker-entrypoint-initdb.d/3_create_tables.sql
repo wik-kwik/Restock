@@ -29,8 +29,10 @@ CREATE TABLE restock_db.`orders`
 CREATE TABLE restock_db.`sensors`
 (
     `id`               INT         NOT NULL AUTO_INCREMENT,
+    `mac_address`      TEXT        NOT NULL,
+    `type`             VARCHAR(1)  NOT NULL,
     `name`             TEXT        NOT NULL,
-    `product_name`     TEXT        NOT NULL,
+    `product`          TEXT,
     `preferred_brand`  TEXT,
     `preferred_amount` TEXT,
     `sensor_token`     VARCHAR(30) NOT NULL UNIQUE,
@@ -45,7 +47,7 @@ CREATE TABLE restock_db.`thresholds`
     `id`          INT         NOT NULL AUTO_INCREMENT,
     `sensor_id`   INT         NOT NULL,
     `type`        VARCHAR(1)  NOT NULL,
-    `value`       DOUBLE      NOT NULL,
+    `value`       DOUBLE,
     `create_date` TIMESTAMP   NOT NULL,
     `modify_date` TIMESTAMP,
     `remove_date` TIMESTAMP,

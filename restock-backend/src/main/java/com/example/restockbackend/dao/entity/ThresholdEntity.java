@@ -1,8 +1,6 @@
 package com.example.restockbackend.dao.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,7 +29,7 @@ public class ThresholdEntity {
     @Column(nullable = false)
     private String type;
 
-    @Column(nullable = false)
+    @Column
     private double value;
 
     @Column(updatable = false, nullable = false)
