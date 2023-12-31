@@ -8,9 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
-
 
 @Service
 @RequiredArgsConstructor
@@ -24,16 +21,13 @@ public class AddressService {
         return addressMapper.toDto(addressEntity);
     }
 
-    public List<AddressDTO> findAll() {
-        return addressRepo.findAll()
-                .stream()
-                .map(addressMapper::toDto)
-                .collect(Collectors.toList());
-    }
-
     public AddressDTO save(AddressDTO address) {
         AddressEntity addressEntity = addressMapper.fromDto(address);
-        addressEntity.setCreateDate(LocalDateTime.now());
+        if (addressRepo.count() > 0) {
+            addressEntity.setModifyDate(LocalDateTime.now());
+        } else {
+            addressEntity.setCreateDate(LocalDateTime.now());
+        }
         return addressMapper.toDto(addressRepo.save(addressEntity));
     }
 
