@@ -29,7 +29,9 @@ public class ParameterService {
     public ParameterDTO save(ParameterDTO parameter) {
         ParameterEntity parameterEntity = parameterMapper.fromDto(parameter);
         parameterEntity.setModifyDate(LocalDateTime.now());
-        return parameterMapper.toDto(parameterRepo.save(parameterEntity));
+        ParameterDTO parameterDTO = parameterMapper.toDto(parameterRepo.save(parameterEntity));
+        loadParameters();
+        return parameterDTO;
     }
 
     @EventListener(ApplicationReadyEvent.class)
