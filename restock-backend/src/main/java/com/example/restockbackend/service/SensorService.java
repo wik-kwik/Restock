@@ -13,6 +13,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -51,7 +52,7 @@ public class SensorService {
             sensorEntity.setMacAddress(newSensor.mac());
             sensorEntity.setType(newSensor.type());
             sensorEntity.setName(NEW_SENSOR_NAME);
-            sensorEntity.setSensorToken(generateRandomString());
+            sensorEntity.setSensorToken(generateNewToken());
             sensorEntity.setCreateDate(LocalDateTime.now());
 
             Long newSensorId = sensorRepo.save(sensorEntity).getId();
@@ -77,8 +78,13 @@ public class SensorService {
         }
     }
 
-    private String generateRandomString() {
-        return RandomStringUtils.random(TOKEN_LENGTH, true, true);
+    private String generateNewToken() {
+        String token = null;
+        List<String> existingTokens = sensorRepo.findAll().stream().map(SensorEntity::getSensorToken).toList();
+        while (token == null || existingTokens.contains(token)) {
+            token = RandomStringUtils.random(TOKEN_LENGTH, true, true);
+        }
+        return token;
     }
 
     private void createThresholdsForSensor(Long sensorId, String sensorType) {
