@@ -1,5 +1,7 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { CiUser, CiSettings, CiLogout } from "react-icons/ci";
+import { RiMoreLine } from "react-icons/ri";
+
 
 export const AppContainer = styled.div`
   display: flex;
@@ -9,11 +11,6 @@ export const AppContainer = styled.div`
 `;
 
 export const NavbarWrapper = styled.div`
-  /* display: flex;
-  justify-content: right;
-  align-items: right;
-  background-color: #9ea98f;
-  padding: 0.2em; */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -23,11 +20,6 @@ export const NavbarWrapper = styled.div`
 
 
 export const LogoContainer = styled.div`
-  /* max-width: 100%;
-  max-height: 100%;
-  display: flex;
-  align-items: left;
-  justify-content: left; */
   display: flex;
   align-items: center;
 `;
@@ -80,22 +72,50 @@ export const SettingsIcon = styled(CiSettings)`
   margin-right: 10px;
 `;
 
+export const ViewAllIconWrapper = styled.div`
+  display: flex;
+  justify-content: right;
+`;
+
+export const ViewAllIcon = styled(RiMoreLine)`
+  width: 1.5em;
+  height: 1.5em;
+  cursor: pointer;
+  /* margin-top: 1em; */
+`;
 
 export const MainWrapper = styled.div`
   display: flex;
+  flex-direction: row;
   flex: 1;
-  //   min-height: 100vh;
   background-color: #FAF1E4;
-  overflow: hidden; /* You may need to add overflow: hidden here as well */
+  overflow: hidden;
+  padding: 1em;
+  gap: 0.5em;
 
   @media screen and (max-width: 815px) {
     flex-direction: column;
   }
 `;
 
+
+// export const MainWrapper = styled.div`
+//   display: flex;
+//   justify-content: space-between;
+//   min-height: 100vh;
+//   background-color: #FAF1E4;
+//   overflow: hidden;
+
+//   @media screen and (max-width: 815px) {
+//     flex-direction: column;
+//   }
+// `;
+
+
 export const Label = styled.h2`
   font-size: 1.5em;
   color: #333;
+  /* padding-top: 0.3em; */
 `;
 
 export const LeftSide = styled.div`
@@ -103,26 +123,38 @@ export const LeftSide = styled.div`
   padding: 20px;
 `;
 
+export const RightSide = styled.div`
+  flex: 1;
+  padding: 20px;
+`;
+
+
 export const MyDevicesContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 1em;
   background-color: #f0f0f0;
-  padding: 2em;
+  padding: 1em;
   border-radius: 8px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   background-color: #e0d9cf;
   margin-top: 2em;
+  width: 50%;
+  min-height: 100%;
+
+  @media screen and (max-width: 815px) {
+    width: 90%;
+  }
 `;
 
 export const MyDevicesTitleContainer = styled.div`
   min-width: 100%;
-  margin-left: 8em;
+  /* margin-left: 8em; */
 
-  @media screen and (max-width: 815px) {
+  /* @media screen and (max-width: 815px) {
     margin-left: 0em;
-  }
+  } */
 `;
 
 
@@ -151,18 +183,24 @@ export const AddButton = styled.button`
   cursor: pointer;
 `;
 
-export const RightSide = styled.div`
-  flex: 1;
-  padding: 20px;
-`;
 
 export const PendingOrdersContainer = styled.div`
   background-color: #e0d9cf;
   padding: 20px;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
   border-radius: 8px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   margin-top: 2em;
+  width: 30%;
+  min-height: 100%;
+
+  /* display: flex;
+  flex-direction: column;
+  align-items: center; */
+
+  @media screen and (max-width: 815px) {
+    width: 90%;
+  }
 `;
 
 export const PurchaseHistoryContainer = styled.div`
@@ -171,6 +209,17 @@ export const PurchaseHistoryContainer = styled.div`
   border-radius: 8px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   margin-top: 2em;
+  width: 30%;
+  mix-blend-mode: 100%;
+
+  /* display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex:1; */
+
+  @media screen and (max-width: 815px) {
+    width: 90%;
+  }
 `;
 
 export const RectanglesList = styled.ul`
@@ -183,6 +232,7 @@ export const RectanglesList = styled.ul`
 export const Rectangle = styled.li`
   width: 100%;
   height: 3.5em;
+  
 `;
 
 export const PendingOrdersItem = styled.div`
@@ -194,7 +244,15 @@ export const PendingOrdersItem = styled.div`
   background-color: ${(props) => (props.isGrey ? '#afaca7' : '#fcf5ec')};
   border-radius: 8px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  height: 7em;
     /* border: solid pink 2px; */
+    
+
+    @media screen and (max-width: 815px) {
+    width: 90%;
+  }
+    
 `;
 
 export const PendingOrdersText = styled.p`
@@ -207,7 +265,7 @@ export const PendingOrdersButtons = styled.div`
 `;
 
 export const AcceptButton = styled.button`
-  background-color: #bdd49d;
+  background-color: #86a660;
   color: white;
   padding: 10px;
   border: none;
@@ -295,6 +353,7 @@ export const OrderText = styled.p`
   /* margin-bottom: 2px; */
 `;
 
+
 export const OrderStatusContainer = styled.div`
   display: flex;
   align-items: center;
@@ -308,5 +367,24 @@ export const OrderStatusLabel = styled.p`
 export const OrderStatusText = styled.p`
   font-size: 1em;
   color: ${(props) =>
-    props.isAccepted ? 'green' : props.isRejected ? 'red' : 'black'};
+    props.isAccepted ? 'green' : props.isRejected ? 'white' : 'white'};
+  /* background-color: ${(props) =>
+    props.isAccepted ? '#86a660' : props.isRejected ? '#d48881' : '#8fa9a7'}; */
+
+background-color: ${(props) =>
+    props.isAccepted
+      ? '#86a660' // Green for 'Accepted'
+      : props.isRejected
+      ? '#d48881' // Red for 'Rejected'
+      : props.isClosed
+      ? 'grey' // Your color for 'Closed'
+      : '#c4d1b4'}; // Default color for 'In delivery'
+  padding: 5px 10px;
+  border-radius: 5px;
+
+  ${(props) =>
+    props.isAccepted &&
+    css`
+      color: white;
+    `}
 `;

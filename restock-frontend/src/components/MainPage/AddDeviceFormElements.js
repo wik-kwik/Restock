@@ -15,6 +15,10 @@ export const FormWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  @media screen and (max-width: 815px) {
+    width: 70%;
+  }
 `;
 
 export const FormTitle = styled.h2`
@@ -29,7 +33,7 @@ export const FormInput = styled.input`
   /* border: 1px solid #ccc;
   border-radius: 4px; */
     height: 2em;
-    background: #e9dbde;
+    background: #FAF1E4;
     border: 0.11em solid;
     border-radius: 0.5em;
     border-color: grey;

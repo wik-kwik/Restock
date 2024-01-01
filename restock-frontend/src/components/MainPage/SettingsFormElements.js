@@ -1,4 +1,3 @@
-// SettingsFormElements.js
 import styled from 'styled-components';
 
 export const FormWrapper = styled.div`
@@ -16,6 +15,10 @@ export const FormWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  @media screen and (max-width: 815px) {
+    width: 60%;
+  }
 `;
 
 export const FormTitle = styled.h2`
@@ -28,6 +31,7 @@ export const FormInput = styled.input`
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  background-color: #FAF1E4;
 `;
 
 export const FormButton = styled.button`
