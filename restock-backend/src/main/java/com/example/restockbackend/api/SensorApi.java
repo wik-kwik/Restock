@@ -23,11 +23,6 @@ public class SensorApi {
     }
 
     @GetMapping
-    public SensorDTO getById(@RequestParam Long id) {
-        return sensorService.findById(id);
-    }
-
-    @GetMapping
     public SensorWithThresholdsDTO getSensorWithThresholdsById(@RequestParam Long id) {
         return sensorService.findSensorWithThresholdsById(id);
     }

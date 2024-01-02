@@ -8,7 +8,9 @@ import com.example.restockbackend.dto.auth.NewSensorRequest;
 import com.example.restockbackend.dto.auth.NewSensorResponse;
 import com.example.restockbackend.dto.domain.SensorWithThresholdsDTO;
 import com.example.restockbackend.dto.domain.SensorDTO;
+import com.example.restockbackend.dto.domain.ThresholdDTO;
 import com.example.restockbackend.dto.mapper.SensorMapper;
+import com.example.restockbackend.dto.mapper.ThresholdMapper;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
@@ -30,12 +32,7 @@ public class SensorService {
     private final SensorMapper sensorMapper;
 
     private final ThresholdRepo thresholdRepo;
-
-    public SensorDTO findById(Long id) {
-        Optional<SensorEntity> sensorOpt = sensorRepo.findById(id);
-        SensorEntity sensorEntity = sensorOpt.orElseThrow(() -> new IllegalArgumentException("Sensor not found"));
-        return sensorMapper.toDto(sensorEntity);
-    }
+    private final ThresholdMapper thresholdMapper;
 
     public Iterable<SensorDTO> findAll() {
         return sensorRepo.findAll()
@@ -51,8 +48,11 @@ public class SensorService {
             SensorDTO sensorDTO = sensorMapper.toDto(sensorEntity);
 
             Iterable<ThresholdEntity> thresholds = thresholdRepo.findAllBySensorId(id);
+            Iterable<ThresholdDTO> thresholdDTOs = thresholdMapper.toDtoList(thresholds);
 
-            return new SensorWithThresholdsDTO(sensorDTO, thresholds);
+            return new SensorWithThresholdsDTO(
+                    sensorDTO,
+                    thresholdDTOs);
         } else {
             throw new IllegalArgumentException("Sensor not found");
         }

@@ -23,14 +23,14 @@ public class ParameterService {
 
     private final ParameterMapper parameterMapper;
 
-    public List<ParameterDTO> findAllParameters() {
+    public Iterable<ParameterDTO> findAllParameters() {
         return parameterRepo.findAll()
                 .stream()
                 .map(parameterMapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    public List<ParameterDTO> updateParameters(List<ParameterDTO> parameterList) {
+    public Iterable<ParameterDTO> updateParameters(List<ParameterDTO> parameterList) {
         List<ParameterEntity> updatedParameters = new ArrayList<>();
         for (ParameterDTO parameter : parameterList) {
             ParameterEntity parameterEntity = parameterRepo.getByType(parameter.getType())
@@ -41,7 +41,7 @@ public class ParameterService {
 
             updatedParameters.add(parameterRepo.save(parameterEntity));
         }
-        List<ParameterDTO> parameterDTOS =  parameterMapper.toDtoList(updatedParameters);
+        Iterable<ParameterDTO> parameterDTOS =  parameterMapper.toDtoList(updatedParameters);
         loadParameters();
         return parameterDTOS;
     }
