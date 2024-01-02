@@ -78,8 +78,8 @@ const SettingsForm = ({ onClose, onSubmit }) => {
         }
       });
 
-      // Make a POST request to save the updated parameters
-      const postResponse = await fetch('http://localhost:8080/api/parameters/all', {
+      // Make a PUT request to save the updated parameters
+      const postResponse = await fetch('http://localhost:8080/api/parameters', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
