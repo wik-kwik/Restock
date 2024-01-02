@@ -29,7 +29,7 @@ public class ThresholdEntity {
     @Column(nullable = false)
     private String type;
 
-    @Column
+    @Column(nullable = false)
     private double value;
 
     @Column(updatable = false, nullable = false)
