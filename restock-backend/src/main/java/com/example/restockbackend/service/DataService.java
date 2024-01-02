@@ -39,7 +39,7 @@ public class DataService {
 
     public DataDTO save(DataDTO data) {
         DataEntity dataEntity = dataMapper.fromDto(data);
-        Optional<SensorEntity> sensorEntityOpt = sensorRepo.findBySensorToken(SecurityUtils.unwrapSensorToken());
+        Optional<SensorEntity> sensorEntityOpt = sensorRepo.findBySensorTokenAndRemoveDateIsNull(SecurityUtils.unwrapSensorToken());
         SensorEntity sensor = sensorEntityOpt.orElseThrow(() -> new IllegalArgumentException("Sensor not found"));
         dataEntity.setSensorId(sensor.getId());
         dataEntity.setCreateDate(LocalDateTime.now());

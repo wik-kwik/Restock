@@ -21,11 +21,11 @@ public class UserService implements UserDetailsService {
     private final UserMapper userMapper;
 
     public boolean existsByUsername(String username) {
-        return userRepo.findByUsername(username).isPresent();
+        return userRepo.findByUsernameAndRemoveDateIsNull(username).isPresent();
     }
 
     public Optional<UserEntity> findById(Long id) {
-        return userRepo.findById(id);
+        return userRepo.findByIdAndRemoveDateIsNull(id);
     }
 
     public UserEntity save(UserEntity user) {
@@ -44,7 +44,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity user = userRepo.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Cannot find user: " + username));
+        UserEntity user = userRepo.findByUsernameAndRemoveDateIsNull(username).orElseThrow(() -> new UsernameNotFoundException("Cannot find user: " + username));
         return mapToUserDetails(user);
     }
 

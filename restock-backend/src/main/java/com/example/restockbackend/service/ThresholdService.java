@@ -19,7 +19,7 @@ public class ThresholdService {
     private final ThresholdMapper thresholdMapper;
 
     public ThresholdDTO findById(Long id) {
-        Optional<ThresholdEntity> thresholdOpt = thresholdRepo.findById(id);
+        Optional<ThresholdEntity> thresholdOpt = thresholdRepo.findByIdAndRemoveDateIsNull(id);
         ThresholdEntity thresholdEntity = thresholdOpt.orElseThrow(() -> new IllegalArgumentException("Not found!"));
         return thresholdMapper.toDto(thresholdEntity);
     }
@@ -41,7 +41,7 @@ public class ThresholdService {
     }
 
     public void deleteById(Long id) {
-        Optional<ThresholdEntity> existingThreshold = thresholdRepo.findById(id);
+        Optional<ThresholdEntity> existingThreshold = thresholdRepo.findByIdAndRemoveDateIsNull(id);
         if (existingThreshold.isPresent()) {
             ThresholdEntity deletedThreshold = existingThreshold.get();
             deletedThreshold.setRemoveDate(LocalDateTime.now());

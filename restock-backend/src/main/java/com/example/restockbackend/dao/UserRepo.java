@@ -9,5 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepo extends CrudRepository<UserEntity, Long> {
-    Optional<UserEntity> findByUsername(String username);
+    Optional<UserEntity> findByUsernameAndRemoveDateIsNull(String username);
+    Optional<UserEntity> findByIdAndRemoveDateIsNull(Long id);
 }

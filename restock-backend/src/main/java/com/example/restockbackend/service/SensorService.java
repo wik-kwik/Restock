@@ -6,8 +6,8 @@ import com.example.restockbackend.dao.entity.SensorEntity;
 import com.example.restockbackend.dao.entity.ThresholdEntity;
 import com.example.restockbackend.dto.auth.NewSensorRequest;
 import com.example.restockbackend.dto.auth.NewSensorResponse;
-import com.example.restockbackend.dto.domain.SensorWithThresholdsDTO;
 import com.example.restockbackend.dto.domain.SensorDTO;
+import com.example.restockbackend.dto.domain.SensorWithThresholdsDTO;
 import com.example.restockbackend.dto.domain.ThresholdDTO;
 import com.example.restockbackend.dto.mapper.SensorMapper;
 import com.example.restockbackend.dto.mapper.ThresholdMapper;
@@ -25,8 +25,8 @@ import java.util.stream.Stream;
 @AllArgsConstructor
 public class SensorService {
 
-    private final int TOKEN_LENGTH = 25;
-    private final String NEW_SENSOR_NAME = "NEW SENSOR";
+    private static final int TOKEN_LENGTH = 25;
+    private static final String NEW_SENSOR_NAME = "NEW SENSOR";
 
     private final SensorRepo sensorRepo;
     private final SensorMapper sensorMapper;
@@ -34,20 +34,26 @@ public class SensorService {
     private final ThresholdRepo thresholdRepo;
     private final ThresholdMapper thresholdMapper;
 
+    public SensorDTO findById(Long id) {
+        Optional<SensorEntity> sensorOpt = sensorRepo.findByIdAndRemoveDateIsNull(id);
+        SensorEntity sensorEntity = sensorOpt.orElseThrow(() -> new IllegalArgumentException("Sensor not found"));
+        return sensorMapper.toDto(sensorEntity);
+    }
+
     public Iterable<SensorDTO> findAll() {
-        return sensorRepo.findAll()
+        return sensorRepo.findByRemoveDateIsNull()
                 .stream()
                 .map(sensorMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     public SensorWithThresholdsDTO findSensorWithThresholdsById(Long id) {
-        Optional<SensorEntity> sensorOpt = sensorRepo.findById(id);
+        Optional<SensorEntity> sensorOpt = sensorRepo.findByIdAndRemoveDateIsNull(id);
         if (sensorOpt.isPresent()) {
             SensorEntity sensorEntity = sensorOpt.get();
             SensorDTO sensorDTO = sensorMapper.toDto(sensorEntity);
 
-            Iterable<ThresholdEntity> thresholds = thresholdRepo.findAllBySensorId(id);
+            Iterable<ThresholdEntity> thresholds = thresholdRepo.findAllBySensorIdAndRemoveDateIsNull(id);
             Iterable<ThresholdDTO> thresholdDTOs = thresholdMapper.toDtoList(thresholds);
 
             return new SensorWithThresholdsDTO(
@@ -59,7 +65,7 @@ public class SensorService {
     }
 
     public NewSensorResponse register(NewSensorRequest newSensor) {
-        Optional<SensorEntity> sensorOpt = sensorRepo.findByMacAddress(newSensor.mac());
+        Optional<SensorEntity> sensorOpt = sensorRepo.findByMacAddressAndRemoveDateIsNull(newSensor.mac());
         if (sensorOpt.isPresent()) {
             return new NewSensorResponse(sensorOpt.get().getSensorToken());
         } else {
@@ -84,7 +90,7 @@ public class SensorService {
     }
 
     public void deleteById(Long id) {
-        Optional<SensorEntity> existingSensor = sensorRepo.findById(id);
+        Optional<SensorEntity> existingSensor = sensorRepo.findByIdAndRemoveDateIsNull(id);
         if (existingSensor.isPresent()) {
             SensorEntity deletedSensor = existingSensor.get();
             deletedSensor.setRemoveDate(LocalDateTime.now());
@@ -118,7 +124,7 @@ public class SensorService {
     }
 
     private void deleteRelatedThresholds(Long sensorId) {
-        Iterable<ThresholdEntity> thresholds = thresholdRepo.findAllBySensorId(sensorId);
+        Iterable<ThresholdEntity> thresholds = thresholdRepo.findAllBySensorIdAndRemoveDateIsNull(sensorId);
         for (ThresholdEntity threshold: thresholds) {
             threshold.setRemoveDate(LocalDateTime.now());
             thresholdRepo.save(threshold);

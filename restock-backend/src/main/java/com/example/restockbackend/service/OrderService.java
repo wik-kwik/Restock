@@ -53,7 +53,7 @@ public class OrderService {
 
     public void changeStatus(Long id, String status) {
         Optional<OrderEntity> orderOpt = orderRepo.findById(id);
-        Optional<UserEntity> userOpt = userRepo.findByUsername(SecurityUtils.unwrapUsername());
+        Optional<UserEntity> userOpt = userRepo.findByUsernameAndRemoveDateIsNull(SecurityUtils.unwrapUsername());
 
         if (orderOpt.isPresent() && !orderOpt.get().getStatus().equals(PENDING)) {
             throw new IllegalArgumentException("Order status cannot be changed - forbidden for other status than PENDING!");
