@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.Length;
 
 public record SensorDTO(Long id,
                         String name,
+                        String location,
                         String product,
                         String preferredBrand,
                         String preferredAmount,

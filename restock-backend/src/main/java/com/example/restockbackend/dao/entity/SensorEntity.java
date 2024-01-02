@@ -34,6 +34,9 @@ public class SensorEntity {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
+    private String location;
+
     @Column
     private String product;
 

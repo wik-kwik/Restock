@@ -32,6 +32,7 @@ CREATE TABLE restock_db.`sensors`
     `mac_address`      TEXT        NOT NULL,
     `type`             VARCHAR(1)  NOT NULL,
     `name`             TEXT        NOT NULL,
+    `location`         TEXT    	   NOT NULL,
     `product`          TEXT,
     `preferred_brand`  TEXT,
     `preferred_amount` TEXT,
