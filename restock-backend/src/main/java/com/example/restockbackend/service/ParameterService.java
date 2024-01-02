@@ -11,7 +11,9 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,15 +23,27 @@ public class ParameterService {
 
     private final ParameterMapper parameterMapper;
 
-    public ParameterDTO findByType(String type) {
-        ParameterEntity parameterEntity = parameterRepo.getByType(type).orElseThrow(() -> new IllegalArgumentException("Parameter not found"));
-        return parameterMapper.toDto(parameterEntity);
+    public List<ParameterDTO> findAllParameters() {
+        return parameterRepo.findAll()
+                .stream()
+                .map(parameterMapper::toDto)
+                .collect(Collectors.toList());
     }
 
-    public ParameterDTO save(ParameterDTO parameter) {
-        ParameterEntity parameterEntity = parameterMapper.fromDto(parameter);
-        parameterEntity.setModifyDate(LocalDateTime.now());
-        return parameterMapper.toDto(parameterRepo.save(parameterEntity));
+    public List<ParameterDTO> updateParameters(List<ParameterDTO> parameterList) {
+        List<ParameterEntity> updatedParameters = new ArrayList<>();
+        for (ParameterDTO parameter : parameterList) {
+            ParameterEntity parameterEntity = parameterRepo.getByType(parameter.getType())
+                    .orElseThrow(() -> new IllegalArgumentException("Parameter not found"));
+
+            parameterEntity.setValue(parameter.getValue());
+            parameterEntity.setModifyDate(LocalDateTime.now());
+
+            updatedParameters.add(parameterRepo.save(parameterEntity));
+        }
+        List<ParameterDTO> parameterDTOS =  parameterMapper.toDtoList(updatedParameters);
+        loadParameters();
+        return parameterDTOS;
     }
 
     @EventListener(ApplicationReadyEvent.class)

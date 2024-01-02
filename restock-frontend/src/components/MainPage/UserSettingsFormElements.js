@@ -14,8 +14,12 @@ export const FormWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  max-width: 18%; /* Adjusted max-width for a narrower form */
-  width: 100%; /* Ensures the form takes the full width of the parent container */
+  max-width: 18%; 
+  width: 100%; 
+
+  @media screen and (max-width: 815px) {
+    max-width: 70%;
+  }
 `;
 
 export const FormTitle = styled.h2`
@@ -44,7 +48,7 @@ export const FormInput = styled.input`
   margin-right: 2em; */
     width: 100%;
     height: 2em;
-    background: #e9dbde;
+    background-color: #FAF1E4;
     border: 0.11em solid;
     border-radius: 0.5em;
     border-color: grey;

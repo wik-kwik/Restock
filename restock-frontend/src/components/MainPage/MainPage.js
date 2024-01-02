@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import OrderDetails from './OrderDetails/OrderDetails';
 import {
   AppContainer,
   NavbarWrapper,
   MainWrapper,
   Label,
-  LeftSide,
   MyDevicesContainer,
   MyDevicesTitleContainer,
   MyDevicesTitle,
   DeviceBox,
   AddButton,
-  RightSide,
   PendingOrdersContainer,
   PurchaseHistoryContainer,
   RectanglesList,
@@ -20,7 +19,6 @@ import {
   PendingOrdersText,
   OrderDate,
   OrderDetailsContainer,
-  OfferName,
   OrderText,
   OrderStatusLabel,
   OrderStatusText,
@@ -33,6 +31,8 @@ import {
   AddressIcon,
   SettingsIcon,
   LogoutIcon,
+  ViewAllIcon,
+  ViewAllIconWrapper,
   LogoContainer,
   LogoImage,
   OrderDateContainer,
@@ -43,26 +43,11 @@ import SettingsForm from './SettingsForm';
 import UserSettingsForm from './UserSettingsForm';
 import logoBig from '../../images/logo_big.png';
 import { useAuth } from '../../AuthContext';
+import { formatCreateDate } from '../FormatCreateDate';
 
-const formatCreateDate = (dateString) => {
-  try {
-    const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
-    const formattedDate = new Date(dateString).toLocaleString(undefined, options);
-
-    // Check if the date is valid after formatting
-    if (formattedDate !== 'Invalid Date') {
-      return formattedDate;
-    } else {
-      throw new Error('Invalid date string');
-    }
-  } catch (error) {
-    console.error('Error formatting date:', error);
-    return 'Invalid Date';
-  }
-};
+const MAX_DISPLAY_RECORDS = 6;
 
 const MainPage = () => {
-  // State to manage the visibility of the device creation form
   const [showDeviceForm, setShowDeviceForm] = useState(false);
   const [pendingOrders, setPendingOrders] = useState([]);
   const [ordersHistory, setOrdersHistory] = useState([]);
@@ -73,27 +58,36 @@ const MainPage = () => {
   const { token } = useAuth();
   const { logout } = useAuth();
   const navigate = useNavigate();
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [showOrderDetails, setShowOrderDetails] = useState(false);
+  const [activePopup, setActivePopup] = useState(null);
 
-  // Function to handle the click on the add button
   const handleAddButtonClick = () => {
     setShowDeviceForm(true);
+    setActivePopup('addDeviceForm');
   };
 
   const handleSettingsIconClick = () => {
     setShowSettingsForm(true);
+    setActivePopup('settingsForm');
   };
 
   const handleAddressIconClick = () => {
     setUsername('username');
     setShowUserSettingsForm(true);
+    setActivePopup('userSettingsForm');
   };
 
   const handleLogoutIconClick = () => {
     logout();
     navigate('/');
   };
-  
-  
+
+  // const handleClose = () => {
+  //   setActivePopup(null);
+  //   onClose();
+  // };
+
 
   const handleAcceptOrder = async (orderId) => {
     try {
@@ -170,11 +164,11 @@ const MainPage = () => {
         const data = await response.json();
         setPendingOrders(data);
         setCreateDate(data.createDate);
-        // console.log(data);
       } catch (error) {
         console.error('Error fetching pending orders:', error);
       }
     };
+
 
     const fetchOrdersHistory = async () => {
       try {
@@ -213,61 +207,83 @@ const MainPage = () => {
         </Navbar>
       </NavbarWrapper>
       <MainWrapper>
-        <LeftSide>
-          <MyDevicesContainer>
-            <MyDevicesTitleContainer>
-              <Label>My Sensors</Label>
-            </MyDevicesTitleContainer>
-            {/* Sample Device Boxes with Add Button */}
-            <DeviceBox>
-              Sensor 1
-              <AddButton onClick={handleAddButtonClick}>+</AddButton>
-            </DeviceBox>
-            <DeviceBox>
-              Sensor 2
-              <AddButton onClick={handleAddButtonClick}>+</AddButton>
-            </DeviceBox>
-            <DeviceBox>
-              Sensor 3
-              <AddButton onClick={handleAddButtonClick}>+</AddButton>
-            </DeviceBox>
-            <DeviceBox>
-              Sensor 4
-              <AddButton onClick={handleAddButtonClick}>+</AddButton>
-            </DeviceBox>
-            <DeviceBox>
-              Sensor 5
-              <AddButton onClick={handleAddButtonClick}>+</AddButton>
-            </DeviceBox>
-            <DeviceBox>
-              Sensor 6
-              <AddButton onClick={handleAddButtonClick}>+</AddButton>
-            </DeviceBox>
-            <DeviceBox>
-              Sensor 7
-              <AddButton onClick={handleAddButtonClick}>+</AddButton>
-            </DeviceBox>
-            <DeviceBox>
-              Sensor 8
-              <AddButton onClick={handleAddButtonClick}>+</AddButton>
-            </DeviceBox>
-          </MyDevicesContainer>
-        </LeftSide>
-        <RightSide>
-          <PendingOrdersContainer>
-            <Label>Pending Orders</Label>
-            <RectanglesList>
-              {pendingOrders.map((order, index) => (
-                <PendingOrdersItem key={index} isGrey={index % 2 === 0}>
+        {/* <LeftSide> */}
+        <MyDevicesContainer>
+          <MyDevicesTitleContainer>
+            <Label>My Sensors</Label>
+          </MyDevicesTitleContainer>
+          {/* Sample Device Boxes with Add Button */}
+          <DeviceBox>
+            Sensor 1
+            <AddButton onClick={handleAddButtonClick}>+</AddButton>
+          </DeviceBox>
+          <DeviceBox>
+            Sensor 2
+            <AddButton onClick={handleAddButtonClick}>+</AddButton>
+          </DeviceBox>
+          <DeviceBox>
+            Sensor 3
+            <AddButton onClick={handleAddButtonClick}>+</AddButton>
+          </DeviceBox>
+          <DeviceBox>
+            Sensor 4
+            <AddButton onClick={handleAddButtonClick}>+</AddButton>
+          </DeviceBox>
+          <DeviceBox>
+            Sensor 5
+            <AddButton onClick={handleAddButtonClick}>+</AddButton>
+          </DeviceBox>
+          <DeviceBox>
+            Sensor 6
+            <AddButton onClick={handleAddButtonClick}>+</AddButton>
+          </DeviceBox>
+          <DeviceBox>
+            Sensor 7
+            <AddButton onClick={handleAddButtonClick}>+</AddButton>
+          </DeviceBox>
+          <DeviceBox>
+            Sensor 8
+            <AddButton onClick={handleAddButtonClick}>+</AddButton>
+          </DeviceBox>
+        </MyDevicesContainer>
+        {/* </LeftSide>
+        <RightSide> */}
+        <PendingOrdersContainer>
+          <Label>Pending Orders</Label>
+          <RectanglesList>
+            {/* {pendingOrders.sort((a, b) => a.status.localeCompare(b.status)).slice(0, MAX_DISPLAY_RECORDS).map((order, index) => ( */}
+            {pendingOrders
+              .sort((a, b) => {
+                // Sort by status first ('P' comes first), then by other criteria if needed
+                if (a.status === 'P' && b.status !== 'P') {
+                  return -1; // 'P' comes before any other status
+                } else if (a.status !== 'P' && b.status === 'P') {
+                  return 1; // 'P' comes before any other status
+                } else {
+                  // If both have the same status or neither is 'P', sort by another criteria if needed
+                  // For example, sorting by createDate in descending order
+                  return new Date(b.createDate).getTime() - new Date(a.createDate).getTime();
+                }
+              })
+              .slice(0, MAX_DISPLAY_RECORDS)
+              .map((order, index) => (
+                <PendingOrdersItem
+                  key={index}
+                  isGrey={index % 2 === 0}
+                  onClick={() => {
+                    setSelectedOrder(order);
+                    setShowOrderDetails(true);
+                    setActivePopup('orderDetails');
+                  }}
+                >
                   <OrderInfoContainer>
                     <OrderDateContainer>
-                      {/* <OrderDate>{`Date: ${order.createDate}`}</OrderDate> */}
                       <OrderDate>{`Date: ${formatCreateDate(order.createDate)}`}</OrderDate>
                     </OrderDateContainer>
                     <ProductName>{`Product: ${order.name}`}</ProductName>
                     <OrderDetailsContainer>
                       <OrderText>{`Price: ${order.smart ? order.productPrice : order.productPrice + order.deliveryPrice} PLN`}</OrderText>
-                      <OrderText>{`${order.smart ? ', delivery free with SMART!' : ', including delivery cost: '+ order.deliveryPrice + ' PLN'}`}</OrderText>
+                      <OrderText>{`${order.smart ? ', delivery free with SMART!' : ', including delivery cost: ' + order.deliveryPrice + ' PLN'}`}</OrderText>
                     </OrderDetailsContainer>
                   </OrderInfoContainer>
                   {order.status === 'P' ? (
@@ -277,7 +293,6 @@ const MainPage = () => {
                     </PendingOrdersButtons>
                   ) : (
                     <OrderStatusContainer>
-                      <OrderStatusLabel>Status:</OrderStatusLabel>
                       <OrderStatusText isAccepted={order.status === 'A'} isRejected={order.status === 'R'}>
                         {order.status === 'A' ? 'Accepted' : order.status === 'R' ? 'Rejected' : 'In delivery'}
                       </OrderStatusText>
@@ -285,60 +300,89 @@ const MainPage = () => {
                   )}
                 </PendingOrdersItem>
               ))}
-            </RectanglesList>
-          </PendingOrdersContainer>
+          </RectanglesList>
+          {pendingOrders.length > MAX_DISPLAY_RECORDS && (
+            <ViewAllIconWrapper>
+              <ViewAllIcon onClick={() => navigate('/pending_orders', { state: { pendingOrdersData: pendingOrders } })} />
+            </ViewAllIconWrapper>
+          )}
+        </PendingOrdersContainer>
+        {/* Render OrderDetails pop-up when selectedOrder is not null */}
+        {showOrderDetails && (
+          <OrderDetails
+            order={selectedOrder}
+            onClose={() => {
+              setShowOrderDetails(false);
+              setSelectedOrder(null);
+            }}
+          />
+        )}
 
-          <PurchaseHistoryContainer>
-            <Label>Orders History</Label>
-            <RectanglesList>
-              {ordersHistory.map((order, index) => (
-                <PendingOrdersItem key={index} isGrey={index % 2 === 0}>
-                  <OrderInfoContainer>
-                    <OrderDateContainer>
+        <PurchaseHistoryContainer>
+          <Label>Orders History</Label>
+          <RectanglesList>
+            {ordersHistory.slice(0, MAX_DISPLAY_RECORDS).map((order, index) => (
+              
+              <PendingOrdersItem
+                  key={index}
+                  isGrey={index % 2 === 0}
+                  onClick={() => {
+                    setSelectedOrder(order);
+                    setShowOrderDetails(true);
+                    setActivePopup('orderDetails');
+                  }}
+                >
+                <OrderInfoContainer>
+                  <OrderDateContainer>
                     <OrderDate>{`Date: ${formatCreateDate(order.createDate)}`}</OrderDate>
-                    </OrderDateContainer>
-                    <ProductName>{`Product: ${order.name}`}</ProductName>
-                  </OrderInfoContainer>
-                  <OrderStatusContainer>
-                  <OrderStatusLabel>Status:</OrderStatusLabel>
-                  <OrderStatusText isRejected={order.status === 'R'}>
+                  </OrderDateContainer>
+                  <ProductName>{`Product: ${order.name}`}</ProductName>
+                </OrderInfoContainer>
+                <OrderStatusContainer>
+                  <OrderStatusText isRejected={order.status === 'R'} isClosed={order.status === 'C'}>
                     {order.status === 'R' ? 'Rejected' : 'Closed'}
                   </OrderStatusText>
-                  </OrderStatusContainer>
-                </PendingOrdersItem>
-              ))}
-            </RectanglesList>
-          </PurchaseHistoryContainer>
-        </RightSide>
+                </OrderStatusContainer>
+              </PendingOrdersItem>
+            ))}
+          </RectanglesList>
+          {ordersHistory.length > MAX_DISPLAY_RECORDS && (
+            <ViewAllIconWrapper>
+              <ViewAllIcon onClick={() => navigate('/orders_history', { state: { ordersHistoryData: ordersHistory } })} />
+              </ViewAllIconWrapper>
+          )}
+        </PurchaseHistoryContainer>
+        {/* </RightSide> */}
 
-        {/* Pop-up form for creating a device */}
-        {showDeviceForm && (
+     {/* Pop-up form for creating a device */}
+     {activePopup === 'addDeviceForm' && (
           <AddDeviceForm
-            onClose={() => setShowDeviceForm(false)} // Function to close the form
+            onClose={() => setActivePopup(null)}
             onSubmit={(formData) => {
               console.log('Form submitted with data:', formData);
-              setShowDeviceForm(false); // Close the form after submission
+              setActivePopup(null);
+              setShowDeviceForm(false);
             }}
           />
         )}
         {/* Pop-up form for settings */}
-        {showSettingsForm && (
+        {activePopup === 'settingsForm' && (
           <SettingsForm
-            onClose={() => setShowSettingsForm(false)}
+            onClose={() => setActivePopup(null)}
             onSubmit={(formData) => {
               console.log('Settings form submitted with data:', formData);
+              setActivePopup(null);
               setShowSettingsForm(false);
             }}
           />
         )}
-
         {/* Pop-up form for user settings */}
-        {showUserSettingsForm && (
+        {activePopup === 'userSettingsForm' && (
           <UserSettingsForm
-            onClose={() => setShowUserSettingsForm(false)}
+            onClose={() => setActivePopup(null)}
             onSubmit={(formData) => {
-              // Handle user settings form submission logic
               console.log('User settings form submitted with data:', formData);
+              setActivePopup(null);
               setShowUserSettingsForm(false);
             }}
             username={username}

@@ -31,8 +31,12 @@ public class ThresholdService {
     }
 
     public ThresholdDTO save(ThresholdDTO threshold) {
-        ThresholdEntity thresholdEntity = thresholdMapper.fromDto(threshold);
-        thresholdEntity.setCreateDate(LocalDateTime.now());
+        ThresholdEntity thresholdEntity = thresholdMapper.fromDto(threshold);;
+        if (thresholdRepo.existsById(threshold.id())) {
+            thresholdEntity.setModifyDate(LocalDateTime.now());
+        } else {
+            thresholdEntity.setCreateDate(LocalDateTime.now());
+        }
         return thresholdMapper.toDto(thresholdRepo.save(thresholdEntity));
     }
 

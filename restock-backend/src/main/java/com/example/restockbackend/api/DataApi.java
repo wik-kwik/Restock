@@ -14,18 +14,9 @@ public class DataApi {
 
     private final DataService dataService;
 
-    @GetMapping("/all")
-    public Iterable<DataDTO> getAll() {
-        return dataService.findAll();
-    }
-
-    @GetMapping
-    public DataDTO getById(@RequestParam Long id) {
-        return dataService.findById(id);
-    }
-
     @PostMapping
     public DataDTO addData(@RequestBody @Valid DataDTO data) {
         return dataService.save(data);
     }
+
 }

@@ -1,7 +1,9 @@
 package com.example.restockbackend.api;
 
 
+import com.example.restockbackend.dto.auth.NewSensorRequest;
 import com.example.restockbackend.dto.domain.SensorDTO;
+import com.example.restockbackend.dto.auth.NewSensorResponse;
 import com.example.restockbackend.service.SensorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +27,8 @@ public class SensorApi {
     }
 
     @PostMapping
-    public SensorDTO addSensor(@RequestBody SensorDTO sensor) {
-        return sensorService.save(sensor);
+    public NewSensorResponse addSensor(@RequestBody NewSensorRequest newSensor) {
+        return sensorService.register(newSensor);
     }
 
     @PutMapping

@@ -20,6 +20,10 @@ public class UserService implements UserDetailsService {
     private final UserRepo userRepo;
     private final UserMapper userMapper;
 
+    public boolean existsByUsername(String username) {
+        return userRepo.findByUsername(username).isPresent();
+    }
+
     public Optional<UserEntity> findById(Long id) {
         return userRepo.findById(id);
     }

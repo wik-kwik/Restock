@@ -16,15 +16,26 @@ import java.time.LocalDateTime;
 @Table(name = "sensors")
 public class SensorEntity {
 
+    public interface SensorType {
+        String DISTANCE_SENSOR = "D";
+        String PHYSICAL_BUTTON = "B";
+    }
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String macAddress;
 
     @Column(nullable = false)
-    private String productName;
+    private String type;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column
+    private String product;
 
     @Column
     private String preferredBrand; // optional

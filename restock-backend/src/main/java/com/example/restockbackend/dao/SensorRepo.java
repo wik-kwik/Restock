@@ -10,5 +10,9 @@ import java.util.Optional;
 
 @Repository
 public interface SensorRepo extends ListCrudRepository<SensorEntity, Long> {
+
     Optional<SensorEntity> findBySensorToken(String token);
+
+    Optional<SensorEntity> findByMacAddress(String mac);
+
 }

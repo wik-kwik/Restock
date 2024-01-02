@@ -13,18 +13,13 @@ public class AddressApi {
 
     private final AddressService addressService;
 
-    @GetMapping("/all")
-    public Iterable<AddressDTO> getAll() {
-        return addressService.findAll();
-    }
-
     @GetMapping
     public AddressDTO getById(@RequestParam Long id) {
         return addressService.findById(id);
     }
 
     @PutMapping
-    public AddressDTO addAddress(@RequestBody AddressDTO address) {
+    public AddressDTO saveAddress(@RequestBody AddressDTO address) {
         return addressService.save(address);
     }
 }
