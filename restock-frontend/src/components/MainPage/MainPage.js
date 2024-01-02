@@ -280,10 +280,12 @@ const MainPage = () => {
                     <OrderDateContainer>
                       <OrderDate>{`Date: ${formatCreateDate(order.createDate)}`}</OrderDate>
                     </OrderDateContainer>
-                    <ProductName>{`Product: ${order.name}`}</ProductName>
+                    {/* <ProductName>{<strong>{order.name}</strong>}</ProductName> */}
+                    <ProductName><strong>{order.name.split(' ').slice(0, 4).join(' ')}</strong></ProductName>
                     <OrderDetailsContainer>
-                      <OrderText>{`Price: ${order.smart ? order.productPrice : order.productPrice + order.deliveryPrice} PLN`}</OrderText>
-                      <OrderText>{`${order.smart ? ', delivery free with SMART!' : ', including delivery cost: ' + order.deliveryPrice + ' PLN'}`}</OrderText>
+                      {/* <OrderText>{`Price: ${order.smart ? order.productPrice : order.productPrice + order.deliveryPrice} PLN`}</OrderText>
+                      <OrderText>{`${order.smart ? ', delivery free with SMART!' : ', including delivery cost: ' + order.deliveryPrice + ' PLN'}`}</OrderText> */}
+                      <OrderText>{`${order.smart ? order.productPrice : order.productPrice + order.deliveryPrice} PLN${order.smart ? ', delivery free with SMART!' : ', including delivery cost: ' + order.deliveryPrice + ' PLN'}`}</OrderText>
                     </OrderDetailsContainer>
                   </OrderInfoContainer>
                   {order.status === 'P' ? (
@@ -336,7 +338,8 @@ const MainPage = () => {
                   <OrderDateContainer>
                     <OrderDate>{`Date: ${formatCreateDate(order.createDate)}`}</OrderDate>
                   </OrderDateContainer>
-                  <ProductName>{`Product: ${order.name}`}</ProductName>
+                  {/* <ProductName>{`Product: ${order.name}`}</ProductName> */}
+                  <ProductName><strong>{order.name.split(' ').slice(0, 4).join(' ')}</strong></ProductName>
                 </OrderInfoContainer>
                 <OrderStatusContainer>
                   <OrderStatusText isRejected={order.status === 'R'} isClosed={order.status === 'C'}>
