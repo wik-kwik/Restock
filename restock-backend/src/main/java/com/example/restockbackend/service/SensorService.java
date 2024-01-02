@@ -6,6 +6,7 @@ import com.example.restockbackend.dao.entity.SensorEntity;
 import com.example.restockbackend.dao.entity.ThresholdEntity;
 import com.example.restockbackend.dto.auth.NewSensorRequest;
 import com.example.restockbackend.dto.auth.NewSensorResponse;
+import com.example.restockbackend.dto.domain.SensorWithThresholdsDTO;
 import com.example.restockbackend.dto.domain.SensorDTO;
 import com.example.restockbackend.dto.mapper.SensorMapper;
 import lombok.AllArgsConstructor;
@@ -41,6 +42,20 @@ public class SensorService {
                 .stream()
                 .map(sensorMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    public SensorWithThresholdsDTO findSensorWithThresholdsById(Long id) {
+        Optional<SensorEntity> sensorOpt = sensorRepo.findById(id);
+        if (sensorOpt.isPresent()) {
+            SensorEntity sensorEntity = sensorOpt.get();
+            SensorDTO sensorDTO = sensorMapper.toDto(sensorEntity);
+
+            Iterable<ThresholdEntity> thresholds = thresholdRepo.findAllBySensorId(id);
+
+            return new SensorWithThresholdsDTO(sensorDTO, thresholds);
+        } else {
+            throw new IllegalArgumentException("Sensor not found");
+        }
     }
 
     public NewSensorResponse register(NewSensorRequest newSensor) {
