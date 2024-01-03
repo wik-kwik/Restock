@@ -1,7 +1,6 @@
 package com.example.restockbackend.dao.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,9 +33,6 @@ public class SensorEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String location;
-
     @Column
     private String product;
 
@@ -44,10 +40,9 @@ public class SensorEntity {
     private String preferredBrand; // optional
 
     @Column
-    private String preferredAmount; // optional: kg or numbers
+    private String preferredAmount; // optional: e.g. kg or numbers
 
     @Column(nullable = false, unique = true)
-    @NotBlank
     @Length(min = 5, max = 30)
     private String sensorToken;
 

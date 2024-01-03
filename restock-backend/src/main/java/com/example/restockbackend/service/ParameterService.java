@@ -33,10 +33,10 @@ public class ParameterService {
     public Iterable<ParameterDTO> updateParameters(List<ParameterDTO> parameterList) {
         List<ParameterEntity> updatedParameters = new ArrayList<>();
         for (ParameterDTO parameter : parameterList) {
-            ParameterEntity parameterEntity = parameterRepo.getByType(parameter.getType())
+            ParameterEntity parameterEntity = parameterRepo.getByType(parameter.type())
                     .orElseThrow(() -> new IllegalArgumentException("Parameter not found"));
 
-            parameterEntity.setValue(parameter.getValue());
+            parameterEntity.setValue(parameter.value());
             parameterEntity.setModifyDate(LocalDateTime.now());
 
             updatedParameters.add(parameterRepo.save(parameterEntity));
