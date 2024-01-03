@@ -44,34 +44,41 @@ export const FormInput = styled.input`
     
 `;
 
+export const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  padding: 0.3em;
+  gap: 0.3em;
+`;
+
 export const FormButton = styled.button`
-    /* color: black;
-  padding: 10px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  background-color: #c7aca7;
-  margin-top: 1em;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-
-  &:hover,
-  &:focus {
-    background-color: #d8c1c6;
-  } */
-
   color: black;
   padding: 10px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  background-color: #c7aca7;
+  background-color: #86a660;
   margin-top: 1em;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 
-  &:hover,
-  &:focus {
-    background-color: #d8c1c6;
-  }
+  &:hover, &:focus {
+        background-color: #a4b888;
+    }
+`;
+
+export const RemoveButton = styled.button`
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #d48881;
+  margin-top: 1em;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+
+  &:hover, &:focus {
+        background-color: #b8756f;
+    }
 `;
 
 export const CloseButton = styled.span`
