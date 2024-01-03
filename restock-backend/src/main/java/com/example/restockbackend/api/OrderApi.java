@@ -26,11 +26,6 @@ public class OrderApi {
         return orderService.findOrdersHistory();
     }
 
-    @GetMapping
-    public OrderDTO getById(@RequestParam Long id) {
-        return orderService.findById(id);
-    }
-
     @PutMapping("/accept")
     public void acceptOrder(@RequestParam Long id) {
         orderService.changeStatus(id, ACCEPTED);

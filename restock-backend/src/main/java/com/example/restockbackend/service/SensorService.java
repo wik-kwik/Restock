@@ -34,12 +34,6 @@ public class SensorService {
     private final ThresholdRepo thresholdRepo;
     private final ThresholdMapper thresholdMapper;
 
-    public SensorDTO findById(Long id) {
-        Optional<SensorEntity> sensorOpt = sensorRepo.findByIdAndRemoveDateIsNull(id);
-        SensorEntity sensorEntity = sensorOpt.orElseThrow(() -> new IllegalArgumentException("Sensor not found"));
-        return sensorMapper.toDto(sensorEntity);
-    }
-
     public Iterable<SensorDTO> findAll() {
         return sensorRepo.findByRemoveDateIsNull()
                 .stream()

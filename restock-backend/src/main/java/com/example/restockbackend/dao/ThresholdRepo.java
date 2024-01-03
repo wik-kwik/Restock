@@ -18,6 +18,5 @@ public interface ThresholdRepo extends ListCrudRepository<ThresholdEntity, Long>
     Optional<ThresholdEntity> getValueForOrder(Long sensorId);
 
     Iterable<ThresholdEntity> findAllBySensorIdAndRemoveDateIsNull(Long id);
-    Optional<ThresholdEntity> findByIdAndRemoveDateIsNull(Long id);
 
 }

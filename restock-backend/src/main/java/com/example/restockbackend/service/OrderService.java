@@ -26,13 +26,6 @@ public class OrderService {
     private final UserRepo userRepo;
     private final OrderMapper orderMapper;
 
-    public OrderDTO findById(Long id) {
-        Optional<OrderEntity> orderOpt = orderRepo.findById(id);
-        return orderMapper.toDto(
-                orderOpt.orElseThrow(() -> new IllegalArgumentException("Order not found!"))
-        );
-    }
-
     public Iterable<OrderDTO> findPendingOrders() {
         return orderRepo.findByStatusIn(Arrays.asList(ACCEPTED, IN_DELIVERY, PENDING))
                 .stream()

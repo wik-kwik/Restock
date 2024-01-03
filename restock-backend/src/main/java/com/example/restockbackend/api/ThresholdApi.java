@@ -14,28 +14,9 @@ public class ThresholdApi {
 
     private final ThresholdService thresholdService;
 
-    @GetMapping("/sensor") // endpoint used only by sensors
-    public ThresholdDTO getValueForUpdate() {
+    @GetMapping() // endpoint used only by sensors
+    public ThresholdDTO getThresholdForUpdate() {
         return thresholdService.getValueForUpdate();
     }
 
-    @GetMapping
-    public ThresholdDTO getById(@RequestParam Long id) {
-        return thresholdService.findById(id);
-    }
-
-    @PostMapping
-    public ThresholdDTO addThreshold(@RequestBody ThresholdDTO threshold) {
-        return thresholdService.save(threshold);
-    }
-
-    @PutMapping
-    public ThresholdDTO updateThreshold(@RequestBody ThresholdDTO threshold) {
-        return thresholdService.save(threshold);
-    }
-
-    @DeleteMapping
-    public void deleteThreshold(@RequestParam Long id) {
-        thresholdService.deleteById(id);
-    }
 }
