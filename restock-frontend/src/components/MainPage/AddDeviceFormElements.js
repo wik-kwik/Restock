@@ -15,6 +15,7 @@ export const FormWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 18%;
 
   @media screen and (max-width: 815px) {
     width: 70%;
@@ -79,4 +80,18 @@ export const CloseButton = styled.span`
   right: 10px;
   font-size: 20px;
   cursor: pointer;
+`;
+
+export const FormGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0.2em;
+  /* margin-bottom: 15px; */
+`;
+
+export const FormLabel = styled.label`
+  font-size: 0.9em;
+  margin-bottom: 5px;
+  
 `;

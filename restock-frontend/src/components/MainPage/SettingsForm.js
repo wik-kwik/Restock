@@ -54,7 +54,7 @@ const SettingsForm = ({ onClose, onSubmit }) => {
       setStrefaMarek(data.find(param => param.type === ParameterType.BRAND_ZONE)?.value === BooleanValue.TRUE);
       setDeliveryMethod(data.find(param => param.type === ParameterType.SHIPPING_FORM)?.value || '');
   
-      console.log(data);
+      // console.log(data);
     } catch (error) {
       console.error('Error fetching existing parameters:', error);
     }
@@ -90,7 +90,7 @@ const SettingsForm = ({ onClose, onSubmit }) => {
 
       // Handle the response or propagate to parent component
       const postData = await postResponse.json();
-      console.log('Updated parameters:', postData);
+      // console.log('Updated parameters:', postData);
 
       // Trigger the onSubmit callback with the updated parameters
       onSubmit(updatedParameters);
