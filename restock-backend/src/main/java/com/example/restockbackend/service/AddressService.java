@@ -17,7 +17,7 @@ public class AddressService {
     private final AddressMapper addressMapper;
 
     public AddressDTO findById(Long id) {
-        AddressEntity addressEntity = addressRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Address not found"));
+        AddressEntity addressEntity = addressRepo.findById(id).orElse(new AddressEntity());
         return addressMapper.toDto(addressEntity);
     }
 

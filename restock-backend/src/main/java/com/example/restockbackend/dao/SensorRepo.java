@@ -15,7 +15,9 @@ public interface SensorRepo extends ListCrudRepository<SensorEntity, Long> {
     Optional<SensorEntity> findBySensorTokenAndRemoveDateIsNull(String token);
 
     Optional<SensorEntity> findByMacAddressAndRemoveDateIsNull(String mac);
+
     Optional<SensorEntity> findByIdAndRemoveDateIsNull(Long id);
+
     List<SensorEntity> findByRemoveDateIsNull();
 
 }
