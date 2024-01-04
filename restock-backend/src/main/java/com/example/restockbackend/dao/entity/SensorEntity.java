@@ -4,9 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -24,10 +24,10 @@ public class SensorEntity {
     @Id
     private Long id;
 
-    @Column(nullable = false)
+    @Column(updatable = false, nullable = false)
     private String macAddress;
 
-    @Column(nullable = false)
+    @Column(updatable = false, nullable = false)
     private String type;
 
     @Column(nullable = false)
@@ -37,13 +37,15 @@ public class SensorEntity {
     private String product;
 
     @Column
-    private String preferredBrand; // optional
+    private String preferredBrand;
 
     @Column
-    private String preferredAmount; // optional: e.g. kg or numbers
+    private String preferredAmount; // e.g. kg or numbers
 
-    @Column(nullable = false, unique = true)
-    @Length(min = 5, max = 30)
+    @OneToMany(mappedBy = "sensorEntity")
+    private List<ThresholdEntity> thresholds;
+
+    @Column(updatable = false, nullable = false)
     private String sensorToken;
 
     @Column(updatable = false, nullable = false)

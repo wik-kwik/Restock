@@ -2,7 +2,6 @@ package com.example.restockbackend.api;
 
 
 import com.example.restockbackend.dto.auth.NewSensorRequest;
-import com.example.restockbackend.dto.domain.SensorWithThresholdsDTO;
 import com.example.restockbackend.dto.domain.SensorDTO;
 import com.example.restockbackend.dto.auth.NewSensorResponse;
 import com.example.restockbackend.service.SensorService;
@@ -23,8 +22,8 @@ public class SensorApi {
     }
 
     @GetMapping
-    public SensorWithThresholdsDTO getSensorWithThresholdsById(@RequestParam Long id) {
-        return sensorService.findSensorWithThresholdsById(id);
+    public SensorDTO getSensorById(@RequestParam Long id) {
+        return sensorService.findById(id);
     }
 
     @PostMapping
