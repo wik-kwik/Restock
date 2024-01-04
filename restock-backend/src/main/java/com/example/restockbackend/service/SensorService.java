@@ -66,6 +66,11 @@ public class SensorService {
     public SensorDTO save(SensorDTO sensor) {
         Optional<SensorEntity> sensorOpt = sensorRepo.findByIdAndRemoveDateIsNull(sensor.id());
         SensorEntity sensorEntity = sensorOpt.orElseThrow(() -> new IllegalArgumentException("Sensor not found"));
+
+        if (sensor.equals(sensorMapper.toDto(sensorEntity))) {
+            return sensor;
+        }
+
         sensorEntity.setName(sensor.name());
         sensorEntity.setProduct(sensor.product());
         sensorEntity.setPreferredBrand(sensor.preferredBrand());

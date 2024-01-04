@@ -24,7 +24,11 @@ public class AddressService {
     public AddressDTO save(AddressDTO address) {
         AddressEntity addressEntity = addressMapper.fromDto(address);
         if (addressRepo.existsById(address.id())) {
-            addressEntity.setModifyDate(LocalDateTime.now());
+            if (address.equals(addressMapper.toDto(addressRepo.findById(address.id()).get()))) {
+                return address;
+            } else {
+                addressEntity.setModifyDate(LocalDateTime.now());
+            }
         } else {
             addressEntity.setCreateDate(LocalDateTime.now());
         }

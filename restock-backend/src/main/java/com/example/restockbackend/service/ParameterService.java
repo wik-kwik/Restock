@@ -36,9 +36,12 @@ public class ParameterService {
             ParameterEntity parameterEntity = parameterRepo.getByType(parameter.type())
                     .orElseThrow(() -> new IllegalArgumentException("Parameter not found"));
 
+            if (parameter.value().equals(parameterEntity.getValue())) {
+                continue;
+            }
+
             parameterEntity.setValue(parameter.value());
             parameterEntity.setModifyDate(LocalDateTime.now());
-
             updatedParameters.add(parameterRepo.save(parameterEntity));
         }
         Iterable<ParameterDTO> parameterDTOS =  parameterMapper.toDtoList(updatedParameters);
