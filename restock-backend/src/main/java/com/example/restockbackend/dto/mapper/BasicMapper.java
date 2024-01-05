@@ -7,5 +7,5 @@ public interface BasicMapper<DTO, E> {
 
     E fromDto(DTO dto);
 
-    List<DTO> toDtoList(List<E> entityList);
+    Iterable<DTO> toDtoList(Iterable<E> entityList);
 }

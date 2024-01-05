@@ -21,7 +21,7 @@ public class ParameterApi {
     }
 
     @PutMapping
-    public List<ParameterDTO> updateAllParameters(@RequestBody List<ParameterDTO> parameterList) {
+    public Iterable<ParameterDTO> updateAllParameters(@RequestBody List<ParameterDTO> parameterList) {
         return parameterService.updateParameters(parameterList);
     }
 }

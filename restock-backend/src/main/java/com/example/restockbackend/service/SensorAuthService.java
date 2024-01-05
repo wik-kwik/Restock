@@ -15,7 +15,7 @@ public class SensorAuthService {
     }
 
     public boolean validateSensorToken(String token) {
-        return sensorRepo.findBySensorToken(token).isPresent();
+        return sensorRepo.findBySensorTokenAndRemoveDateIsNull(token).isPresent();
     }
 
 }

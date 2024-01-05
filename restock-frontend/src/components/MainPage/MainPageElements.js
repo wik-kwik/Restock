@@ -316,7 +316,7 @@ export const OrderDateContainer = styled.div`
 
 export const OrderDate = styled.p`
   font-size: 0.8em;
-  margin-bottom: 5px;
+  margin-bottom: 0.1em;
 `;
 
 export const OrderStatus = styled.p`
@@ -349,6 +349,7 @@ export const OfferName = styled.p`
 
 export const OrderText = styled.p`
   font-size: 0.9em;
+  min-width: 100%;
   /* border: solid pink 2px; */
   /* margin-bottom: 2px; */
 `;

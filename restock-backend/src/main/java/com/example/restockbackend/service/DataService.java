@@ -4,10 +4,8 @@ import com.example.restockbackend.allegro.AllegroClient;
 import com.example.restockbackend.allegro.Offer;
 import com.example.restockbackend.dao.DataRepo;
 import com.example.restockbackend.dao.SensorRepo;
-import com.example.restockbackend.dao.ThresholdRepo;
 import com.example.restockbackend.dao.entity.DataEntity;
 import com.example.restockbackend.dao.entity.SensorEntity;
-import com.example.restockbackend.dao.entity.ThresholdEntity;
 import com.example.restockbackend.dto.domain.DataDTO;
 import com.example.restockbackend.dto.mapper.DataMapper;
 import com.example.restockbackend.security.SecurityUtils;
@@ -21,6 +19,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static com.example.restockbackend.dao.entity.ThresholdEntity.ThresholdType.UPDATE;
+
 @Service
 @RequiredArgsConstructor
 public class DataService {
@@ -33,13 +33,11 @@ public class DataService {
 
     private final SensorRepo sensorRepo;
 
-    private final ThresholdRepo thresholdRepo;
-
     private final OrderService orderService;
 
     public DataDTO save(DataDTO data) {
         DataEntity dataEntity = dataMapper.fromDto(data);
-        Optional<SensorEntity> sensorEntityOpt = sensorRepo.findBySensorToken(SecurityUtils.unwrapSensorToken());
+        Optional<SensorEntity> sensorEntityOpt = sensorRepo.findBySensorTokenAndRemoveDateIsNull(SecurityUtils.unwrapSensorToken());
         SensorEntity sensor = sensorEntityOpt.orElseThrow(() -> new IllegalArgumentException("Sensor not found"));
         dataEntity.setSensorId(sensor.getId());
         dataEntity.setCreateDate(LocalDateTime.now());
@@ -48,15 +46,14 @@ public class DataService {
     }
 
     private void processData(Long sensorId, double dataValue) {
-        Optional<ThresholdEntity> thresholdOpt = thresholdRepo.getValueForOrder(sensorId);
-        Optional<SensorEntity> sensorOpt = sensorRepo.findById(sensorId);
+        Optional<SensorEntity> sensorOpt = sensorRepo.findByIdAndRemoveDateIsNull(sensorId);
 
-        if (thresholdOpt.isEmpty() || sensorOpt.isEmpty()) {
+        if (sensorOpt.isEmpty()) {
             return;
         }
 
-        double thresholdValue = thresholdOpt.get().getValue();
         SensorEntity sensor = sensorOpt.get();
+        double thresholdValue = sensor.getThresholds().stream().filter(t -> t.getType().equals(UPDATE)).findFirst().orElseThrow().getValue();
         if (sensor.getProduct() != null && dataValue <= thresholdValue) {
             try {
                 Offer offer = AllegroClient.getInstance().getTheBestOffer(sensor.getProduct(), sensor.getPreferredBrand(), sensor.getPreferredAmount());

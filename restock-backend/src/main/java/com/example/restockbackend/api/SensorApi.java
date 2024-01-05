@@ -22,7 +22,7 @@ public class SensorApi {
     }
 
     @GetMapping
-    public SensorDTO getById(@RequestParam Long id) {
+    public SensorDTO getSensorById(@RequestParam Long id) {
         return sensorService.findById(id);
     }
 

@@ -61,10 +61,30 @@ const MainPage = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [showOrderDetails, setShowOrderDetails] = useState(false);
   const [activePopup, setActivePopup] = useState(null);
+  const [numberOfSensors, setNumberOfSensors] = useState(0);
+  const [sensorData, setSensorData] = useState(null);
+  const [selectedSensorId, setSelectedSensorId] = useState(null);
 
-  const handleAddButtonClick = () => {
-    setShowDeviceForm(true);
-    setActivePopup('addDeviceForm');
+  const handleAddButtonClick = async (sensorId) => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/sensors?id=${sensorId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const sensorData = await response.json();
+        setShowDeviceForm(true);
+        setActivePopup('addDeviceForm');
+        setSensorData(sensorData);
+        setSelectedSensorId(sensorId); // Set the selected sensorId
+      } else {
+        console.error('Error fetching sensor data:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error fetching sensor data:', error);
+    }
   };
 
   const handleSettingsIconClick = () => {
@@ -83,13 +103,14 @@ const MainPage = () => {
     navigate('/');
   };
 
-  // const handleClose = () => {
-  //   setActivePopup(null);
-  //   onClose();
-  // };
+  const handleOrderDetails = (order) => {
+    setSelectedOrder(order);
+    setShowOrderDetails(true);
+    setActivePopup('orderDetails');
+  };
 
-
-  const handleAcceptOrder = async (orderId) => {
+  const handleAcceptOrder = async (event, orderId) => {
+    event.stopPropagation();
     try {
       const response = await fetch(`http://localhost:8080/api/orders/accept?id=${orderId}`, {
         method: 'PUT',
@@ -117,7 +138,8 @@ const MainPage = () => {
     }
   };
 
-  const handleRejectOrder = async (orderId) => {
+  const handleRejectOrder = async (event, orderId) => {
+    event.stopPropagation();
     try {
       // Send a PUT request to reject the order
       const response = await fetch(`http://localhost:8080/api/orders/reject?id=${orderId}`, {
@@ -148,13 +170,12 @@ const MainPage = () => {
     }
   };
 
-  // Fetch pending orders from API
 
   useEffect(() => {
     console.log('Token changed:', token);
+
     const fetchPendingOrders = async () => {
       try {
-        // Fetch pending orders with the token in the headers
         const response = await fetch('http://localhost:8080/api/orders/pending', {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -169,10 +190,8 @@ const MainPage = () => {
       }
     };
 
-
     const fetchOrdersHistory = async () => {
       try {
-        // Fetch pending orders with the token in the headers
         const response = await fetch('http://localhost:8080/api/orders/history', {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -181,16 +200,105 @@ const MainPage = () => {
 
         const data = await response.json();
         setOrdersHistory(data);
-        // console.log(data);
       } catch (error) {
-        console.error('Error fetching pending orders:', error);
+        console.error('Error fetching orders history:', error);
       }
     };
 
-    // Fetch data when the component mounts and when the token changes
+    const fetchNumberOfSensors = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/api/sensors/all', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await response.json();
+        setNumberOfSensors(data.length);
+        // console.log('Number of sensors:', data.length);
+      } catch (error) {
+        console.error('Error fetching number of sensors:', error);
+      }
+    };
+
+    // Call the function to fetch the number of sensors
+    fetchNumberOfSensors();
+
+    // Fetch pending orders when the component mounts and when the token changes
     fetchPendingOrders();
+
+    // Fetch orders history when the component mounts and when the token changes
     fetchOrdersHistory();
   }, [token]);
+
+  // Fetch pending orders from API
+
+
+
+  // useEffect(() => {
+  //   console.log('Token changed:', token);
+  //   const fetchPendingOrders = async () => {
+  //     try {
+  //       // Fetch pending orders with the token in the headers
+  //       const response = await fetch('http://localhost:8080/api/orders/pending', {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
+
+  //       const data = await response.json();
+  //       setPendingOrders(data);
+  //       setCreateDate(data.createDate);
+  //     } catch (error) {
+  //       console.error('Error fetching pending orders:', error);
+  //     }
+  //   };
+
+
+  //   useEffect(() => {
+  //     // Fetch the number of sensors from the API
+  //     const fetchNumberOfSensors = async () => {
+  //       try {
+  //         const response = await fetch('http://localhost:8080/api/sensors/all', {
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //         });
+
+  //         const data = await response.json();
+  //         setNumberOfSensors(data.length);
+  //       } catch (error) {
+  //         console.error('Error fetching number of sensors:', error);
+  //       }
+  //     };
+
+  //     // Call the function to fetch the number of sensors
+  //     fetchNumberOfSensors();
+  //     // ... (other useEffect logic)
+  //   }, [token]);
+
+
+  //   const fetchOrdersHistory = async () => {
+  //     try {
+  //       // Fetch pending orders with the token in the headers
+  //       const response = await fetch('http://localhost:8080/api/orders/history', {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
+
+  //       const data = await response.json();
+  //       setOrdersHistory(data);
+  //       // console.log(data);
+  //     } catch (error) {
+  //       console.error('Error fetching pending orders:', error);
+  //     }
+  //   };
+
+  //   // Fetch data when the component mounts and when the token changes
+  //   fetchPendingOrders();
+  //   fetchOrdersHistory();
+  // }, [token]);
 
   return (
     <AppContainer>
@@ -212,39 +320,24 @@ const MainPage = () => {
           <MyDevicesTitleContainer>
             <Label>My Sensors</Label>
           </MyDevicesTitleContainer>
-          {/* Sample Device Boxes with Add Button */}
-          <DeviceBox>
-            Sensor 1
-            <AddButton onClick={handleAddButtonClick}>+</AddButton>
-          </DeviceBox>
-          <DeviceBox>
-            Sensor 2
-            <AddButton onClick={handleAddButtonClick}>+</AddButton>
-          </DeviceBox>
-          <DeviceBox>
-            Sensor 3
-            <AddButton onClick={handleAddButtonClick}>+</AddButton>
-          </DeviceBox>
-          <DeviceBox>
-            Sensor 4
-            <AddButton onClick={handleAddButtonClick}>+</AddButton>
-          </DeviceBox>
-          <DeviceBox>
-            Sensor 5
-            <AddButton onClick={handleAddButtonClick}>+</AddButton>
-          </DeviceBox>
-          <DeviceBox>
-            Sensor 6
-            <AddButton onClick={handleAddButtonClick}>+</AddButton>
-          </DeviceBox>
-          <DeviceBox>
-            Sensor 7
-            <AddButton onClick={handleAddButtonClick}>+</AddButton>
-          </DeviceBox>
-          <DeviceBox>
-            Sensor 8
-            <AddButton onClick={handleAddButtonClick}>+</AddButton>
-          </DeviceBox>
+          {[...Array(8).keys()].map((index) => {
+            const isClickable = index === 0 || index < numberOfSensors;
+            return (
+              <DeviceBox
+                key={index}
+                style={{
+                  opacity: isClickable ? 1 : 0.5,
+                  cursor: isClickable ? 'pointer' : 'not-allowed',
+                }}
+                onClick={() => isClickable && handleAddButtonClick(index + 1)} // Pass the sensorId
+              >
+                Sensor {index + 1}
+                {isClickable && (
+                  <AddButton onClick={() => handleAddButtonClick(index + 1)}>+</AddButton>
+                )}
+              </DeviceBox>
+            );
+          })}
         </MyDevicesContainer>
         {/* </LeftSide>
         <RightSide> */}
@@ -267,29 +360,35 @@ const MainPage = () => {
               })
               .slice(0, MAX_DISPLAY_RECORDS)
               .map((order, index) => (
-                <PendingOrdersItem
-                  key={index}
-                  isGrey={index % 2 === 0}
-                  onClick={() => {
-                    setSelectedOrder(order);
-                    setShowOrderDetails(true);
-                    setActivePopup('orderDetails');
-                  }}
-                >
+<PendingOrdersItem
+  key={index}
+  isGrey={index % 2 === 0}
+  onClick={(event) => {
+    // Check if the click is not on the Accept or Reject buttons
+    if (!event.target.matches('.AcceptButton, .RejectButton')) {
+      setSelectedOrder(order);
+      setShowOrderDetails(true);
+      setActivePopup('orderDetails');
+    }
+  }}
+>
                   <OrderInfoContainer>
                     <OrderDateContainer>
                       <OrderDate>{`Date: ${formatCreateDate(order.createDate)}`}</OrderDate>
                     </OrderDateContainer>
-                    <ProductName>{`Product: ${order.name}`}</ProductName>
+                    {/* <ProductName>{<strong>{order.name}</strong>}</ProductName> */}
+                    <ProductName><strong>{order.name.split(' ').slice(0, 4).join(' ')}</strong></ProductName>
                     <OrderDetailsContainer>
-                      <OrderText>{`Price: ${order.smart ? order.productPrice : order.productPrice + order.deliveryPrice} PLN`}</OrderText>
-                      <OrderText>{`${order.smart ? ', delivery free with SMART!' : ', including delivery cost: ' + order.deliveryPrice + ' PLN'}`}</OrderText>
+                      {/* <OrderText>{`Price: ${order.smart ? order.productPrice : order.productPrice + order.deliveryPrice} PLN`}</OrderText>
+                      <OrderText>{`${order.smart ? ', delivery free with SMART!' : ', including delivery cost: ' + order.deliveryPrice + ' PLN'}`}</OrderText> */}
+                      <OrderText>{`${order.smart ? order.productPrice : order.productPrice + order.deliveryPrice} PLN${order.smart ? ', delivery free with SMART!' : ', including delivery cost: ' + order.deliveryPrice + ' PLN'}`}</OrderText>
                     </OrderDetailsContainer>
                   </OrderInfoContainer>
                   {order.status === 'P' ? (
                     <PendingOrdersButtons>
-                      <AcceptButton onClick={() => handleAcceptOrder(order.id)}>Accept</AcceptButton>
-                      <RejectButton onClick={() => handleRejectOrder(order.id)}>Reject</RejectButton>
+<AcceptButton onClick={(event) => handleAcceptOrder(event, order.id)}>Accept</AcceptButton>
+<RejectButton onClick={(event) => handleRejectOrder(event, order.id)}>Reject</RejectButton>
+
                     </PendingOrdersButtons>
                   ) : (
                     <OrderStatusContainer>
@@ -322,21 +421,22 @@ const MainPage = () => {
           <Label>Orders History</Label>
           <RectanglesList>
             {ordersHistory.slice(0, MAX_DISPLAY_RECORDS).map((order, index) => (
-              
+
               <PendingOrdersItem
-                  key={index}
-                  isGrey={index % 2 === 0}
-                  onClick={() => {
-                    setSelectedOrder(order);
-                    setShowOrderDetails(true);
-                    setActivePopup('orderDetails');
-                  }}
-                >
+                key={index}
+                isGrey={index % 2 === 0}
+                onClick={() => {
+                  setSelectedOrder(order);
+                  setShowOrderDetails(true);
+                  setActivePopup('orderDetails');
+                }}
+              >
                 <OrderInfoContainer>
                   <OrderDateContainer>
                     <OrderDate>{`Date: ${formatCreateDate(order.createDate)}`}</OrderDate>
                   </OrderDateContainer>
-                  <ProductName>{`Product: ${order.name}`}</ProductName>
+                  {/* <ProductName>{`Product: ${order.name}`}</ProductName> */}
+                  <ProductName><strong>{order.name.split(' ').slice(0, 4).join(' ')}</strong></ProductName>
                 </OrderInfoContainer>
                 <OrderStatusContainer>
                   <OrderStatusText isRejected={order.status === 'R'} isClosed={order.status === 'C'}>
@@ -349,20 +449,27 @@ const MainPage = () => {
           {ordersHistory.length > MAX_DISPLAY_RECORDS && (
             <ViewAllIconWrapper>
               <ViewAllIcon onClick={() => navigate('/orders_history', { state: { ordersHistoryData: ordersHistory } })} />
-              </ViewAllIconWrapper>
+            </ViewAllIconWrapper>
           )}
         </PurchaseHistoryContainer>
         {/* </RightSide> */}
 
-     {/* Pop-up form for creating a device */}
-     {activePopup === 'addDeviceForm' && (
+        {/* Pop-up form for creating a device */}
+        {activePopup === 'addDeviceForm' && (
           <AddDeviceForm
-            onClose={() => setActivePopup(null)}
+            onClose={() => {
+              setActivePopup(null);
+              setSensorData(null);
+              setSelectedSensorId(null); // Reset selected sensorId when closing the form
+            }}
             onSubmit={(formData) => {
               console.log('Form submitted with data:', formData);
               setActivePopup(null);
               setShowDeviceForm(false);
+              setSensorData(null);
+              setSelectedSensorId(null); // Reset selected sensorId after form submission
             }}
+            sensorId={selectedSensorId} // Pass selectedSensorId as a prop to AddDeviceForm
           />
         )}
         {/* Pop-up form for settings */}

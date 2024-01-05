@@ -23,10 +23,11 @@ public class ThresholdEntity {
     @Id
     private Long id;
 
-    @Column(updatable = false, nullable = false)
-    private Long sensorId;
+    @ManyToOne
+    @JoinColumn(name = "sensor_id", updatable = false, nullable = false)
+    private SensorEntity sensorEntity;
 
-    @Column(nullable = false)
+    @Column(updatable = false, nullable = false)
     private String type;
 
     @Column(nullable = false)

@@ -18,14 +18,9 @@ import java.util.Optional;
 public class UserService implements UserDetailsService {
 
     private final UserRepo userRepo;
-    private final UserMapper userMapper;
 
     public boolean existsByUsername(String username) {
-        return userRepo.findByUsername(username).isPresent();
-    }
-
-    public Optional<UserEntity> findById(Long id) {
-        return userRepo.findById(id);
+        return userRepo.findByUsernameAndRemoveDateIsNull(username).isPresent();
     }
 
     public UserEntity save(UserEntity user) {
@@ -33,18 +28,9 @@ public class UserService implements UserDetailsService {
         return userRepo.save(user);
     }
 
-    public void deleteById(Long id) {
-        Optional<UserEntity> existingUser = userRepo.findById(id);
-        if (existingUser.isPresent()) {
-            UserEntity deletedUser = existingUser.get();
-            deletedUser.setRemoveDate(LocalDateTime.now());
-            userRepo.save(deletedUser);
-        }
-    }
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity user = userRepo.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Cannot find user: " + username));
+        UserEntity user = userRepo.findByUsernameAndRemoveDateIsNull(username).orElseThrow(() -> new UsernameNotFoundException("Cannot find user: " + username));
         return mapToUserDetails(user);
     }
 

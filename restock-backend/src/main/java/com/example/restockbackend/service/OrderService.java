@@ -26,13 +26,6 @@ public class OrderService {
     private final UserRepo userRepo;
     private final OrderMapper orderMapper;
 
-    public OrderDTO findById(Long id) {
-        Optional<OrderEntity> orderOpt = orderRepo.findById(id);
-        return orderMapper.toDto(
-                orderOpt.orElseThrow(() -> new IllegalArgumentException("Order not found!"))
-        );
-    }
-
     public Iterable<OrderDTO> findPendingOrders() {
         return orderRepo.findByStatusIn(Arrays.asList(ACCEPTED, IN_DELIVERY, PENDING))
                 .stream()
@@ -53,7 +46,7 @@ public class OrderService {
 
     public void changeStatus(Long id, String status) {
         Optional<OrderEntity> orderOpt = orderRepo.findById(id);
-        Optional<UserEntity> userOpt = userRepo.findByUsername(SecurityUtils.unwrapUsername());
+        Optional<UserEntity> userOpt = userRepo.findByUsernameAndRemoveDateIsNull(SecurityUtils.unwrapUsername());
 
         if (orderOpt.isPresent() && !orderOpt.get().getStatus().equals(PENDING)) {
             throw new IllegalArgumentException("Order status cannot be changed - forbidden for other status than PENDING!");
