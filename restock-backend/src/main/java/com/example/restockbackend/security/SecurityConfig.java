@@ -58,7 +58,7 @@ public class SecurityConfig {
     @Order(1)
     public SecurityFilterChain sensorApiSecurityFilterChain(HttpSecurity http, SensorAuthService sensorAuthService) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .securityMatchers(matcher -> matcher.requestMatchers("/api/data/**", "/api/thresholds/sensor"))
+                .securityMatchers(matcher -> matcher.requestMatchers("/api/data", "/api/thresholds"))
                 .cors(Customizer.withDefaults())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
