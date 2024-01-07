@@ -20,11 +20,11 @@ public class SensorRegisterFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Sensor ")) {
+        if (authHeader == null || !authHeader.startsWith("Register ")) {
             filterChain.doFilter(request, response);
             return;
         }
-        final String sensorRegisterToken = authHeader.substring(7);
+        final String sensorRegisterToken = authHeader.substring(9);
         if (this.sensorRegisterToken.equals(sensorRegisterToken)) {
             SecurityContext context = SecurityContextHolder.createEmptyContext();
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(

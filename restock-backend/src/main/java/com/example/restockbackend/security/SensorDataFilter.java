@@ -15,7 +15,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @RequiredArgsConstructor
-public class SensorFilter extends OncePerRequestFilter {
+public class SensorDataFilter extends OncePerRequestFilter {
     private final SensorAuthService sensorAuthService;
 
     @Override

@@ -83,7 +83,7 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
-                .addFilterBefore(new SensorFilter(sensorAuthService), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new SensorDataFilter(sensorAuthService), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
