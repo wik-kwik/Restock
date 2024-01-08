@@ -12,16 +12,29 @@ import {
 } from './AddDeviceFormElements';
 import { useAuth } from '../../AuthContext';
 
-const AddDeviceForm = ({ onClose, onSubmit, sensorId }) => {
+const AddDeviceForm = ({ onClose, onSubmit, onRemove, sensorId }) => {
 
   const [sensorData, setSensorData] = useState({
     id: '',
+    type: '',
     name: '',
     productName: '',
     preferredAmount: '',
     preferredBrand: '',
     thresholdForUpdate: '',
     thresholdForOrder: '',
+  });
+
+  const [displayName, setDisplayName] = useState(''); // Separate state for static display name
+
+
+  const [inputErrors, setInputErrors] = useState({
+    name: '',
+    thresholdForUpdate: '',
+    thresholdForOrder: '',
+    productName: '',
+    preferredAmount: '',
+    preferredBrand: '',
   });
 
   const { token } = useAuth();
@@ -36,7 +49,8 @@ const AddDeviceForm = ({ onClose, onSubmit, sensorId }) => {
         });
         const sensorData = await response.json();
         setSensorData(sensorData);
-        // console.log(sensorData);
+        console.log(sensorData);
+        setDisplayName(sensorData.name); // Set static display name
       } catch (error) {
         console.error('Error fetching sensor data:', error);
       }
@@ -59,6 +73,8 @@ const AddDeviceForm = ({ onClose, onSubmit, sensorId }) => {
       if (!response.ok) {
         throw new Error(`Failed to remove sensor. Status: ${response.status}`);
       }
+
+      onRemove();
   
       onClose();
     } catch (error) {
@@ -103,7 +119,7 @@ const AddDeviceForm = ({ onClose, onSubmit, sensorId }) => {
       <CloseButton onClick={onClose}>&times;</CloseButton>
 
       <FormTitle>
-        <strong>{sensorData.name}</strong> sensor settings
+      <strong>{displayName}</strong> sensor settings {/* Use the static display name */}
       </FormTitle>
 
       {/* Name Input */}
@@ -117,9 +133,8 @@ const AddDeviceForm = ({ onClose, onSubmit, sensorId }) => {
           onChange={(e) => setSensorData({ ...sensorData, name: e.target.value })}
         />
       </FormGroup>
-
  {/* Threshold for Update Input */}
-      <FormGroup>
+ <FormGroup>
         <FormLabel htmlFor="thresholdForUpdate">Threshold for Update</FormLabel>
         <FormInput
           type="text"
@@ -127,6 +142,8 @@ const AddDeviceForm = ({ onClose, onSubmit, sensorId }) => {
           placeholder="Threshold for Update"
           value={sensorData.thresholdForUpdate}
           onChange={(e) => setSensorData({ ...sensorData, thresholdForUpdate: e.target.value })}
+          style={{ opacity: sensorData.type === 'B' ? 0.5 : 1, cursor: sensorData.type === 'B' ? 'not-allowed' : 'auto' }}
+          disabled={sensorData.type === 'B'}
         />
       </FormGroup>
 
@@ -139,6 +156,8 @@ const AddDeviceForm = ({ onClose, onSubmit, sensorId }) => {
           placeholder="Threshold for Order"
           value={sensorData.thresholdForOrder}
           onChange={(e) => setSensorData({ ...sensorData, thresholdForOrder: e.target.value })}
+          style={{ opacity: sensorData.type === 'B' ? 0.5 : 1, cursor: sensorData.type === 'B' ? 'not-allowed' : 'auto' }}
+          disabled={sensorData.type === 'B'}
         />
       </FormGroup>
 

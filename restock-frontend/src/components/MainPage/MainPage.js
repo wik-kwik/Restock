@@ -185,7 +185,7 @@ const MainPage = () => {
 
         if (response.ok) {
           const updatedData = await response.json();
-          
+
           // Update the state with the new data
           setAllSensorsData(updatedData);
 
@@ -201,6 +201,37 @@ const MainPage = () => {
     // Call the function to fetch updated data
     fetchUpdatedData();
   };
+  const handleRemoveSensor = async () => {
+    // Perform any necessary updates or actions based on the removed sensor
+    console.log('Sensor removed. Refreshing data...');
+    const fetchUpdatedData = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/api/sensors/all', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+  
+        if (response.ok) {
+          const updatedData = await response.json();
+  
+          // Update the state with the new data
+          setAllSensorsData(updatedData);
+  
+          // Update the number of sensors
+          setNumberOfSensors(updatedData.length);
+        } else {
+          console.error('Failed to fetch updated data:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching updated data:', error);
+      }
+    };
+  
+    // Call the function to fetch updated data
+    fetchUpdatedData();
+  };
+
 
 
   useEffect(() => {
@@ -280,30 +311,30 @@ const MainPage = () => {
       <MainWrapper>
         {/* <LeftSide> */}
         <MyDevicesContainer>
-  <MyDevicesTitleContainer>
-    <Label>My Sensors</Label>
-  </MyDevicesTitleContainer>
-  {[...Array(8).keys()].map((index) => {
-    const sensor = allSensorsData[index]; // Get the sensor data for the current index
-    const isClickable = index < numberOfSensors; // Check if the sensor is active
+          <MyDevicesTitleContainer>
+            <Label>My Sensors</Label>
+          </MyDevicesTitleContainer>
+          {[...Array(8).keys()].map((index) => {
+            const sensor = allSensorsData[index]; // Get the sensor data for the current index
+            const isClickable = index < numberOfSensors; // Check if the sensor is active
 
-    return (
-      <DeviceBox
-        key={index}
-        style={{
-          opacity: isClickable ? 1 : 0.5,
-          cursor: isClickable ? 'pointer' : 'not-allowed',
-        }}
-        onClick={() => isClickable && handleAddButtonClick(sensor.id)} // Pass the sensorId
-      >
-        {sensor ? `Sensor ${sensor.name}` : `Inactive Sensor ${index + 1}`}
-        {isClickable && (
-          <AddButton onClick={() => handleAddButtonClick(sensor.id)}>+</AddButton>
-        )}
-      </DeviceBox>
-    );
-  })}
-</MyDevicesContainer>
+            return (
+              <DeviceBox
+                key={index}
+                style={{
+                  opacity: isClickable ? 1 : 0.5,
+                  cursor: isClickable ? 'pointer' : 'not-allowed',
+                }}
+                onClick={() => isClickable && handleAddButtonClick(sensor.id)} // Pass the sensorId
+              >
+                {sensor ? `Sensor ${sensor.name}` : `Inactive Sensor ${index + 1}`}
+                {isClickable && (
+                  <AddButton onClick={() => handleAddButtonClick(sensor.id)}>+</AddButton>
+                )}
+              </DeviceBox>
+            );
+          })}
+        </MyDevicesContainer>
         {/* </LeftSide>
         <RightSide> */}
         <PendingOrdersContainer>
@@ -325,18 +356,18 @@ const MainPage = () => {
               })
               .slice(0, MAX_DISPLAY_RECORDS)
               .map((order, index) => (
-<PendingOrdersItem
-  key={index}
-  isGrey={index % 2 === 0}
-  onClick={(event) => {
-    // Check if the click is not on the Accept or Reject buttons
-    if (!event.target.matches('.AcceptButton, .RejectButton')) {
-      setSelectedOrder(order);
-      setShowOrderDetails(true);
-      setActivePopup('orderDetails');
-    }
-  }}
->
+                <PendingOrdersItem
+                  key={index}
+                  isGrey={index % 2 === 0}
+                  onClick={(event) => {
+                    // Check if the click is not on the Accept or Reject buttons
+                    if (!event.target.matches('.AcceptButton, .RejectButton')) {
+                      setSelectedOrder(order);
+                      setShowOrderDetails(true);
+                      setActivePopup('orderDetails');
+                    }
+                  }}
+                >
                   <OrderInfoContainer>
                     <OrderDateContainer>
                       <OrderDate>{`Date: ${formatCreateDate(order.createDate)}`}</OrderDate>
@@ -351,8 +382,8 @@ const MainPage = () => {
                   </OrderInfoContainer>
                   {order.status === 'P' ? (
                     <PendingOrdersButtons>
-<AcceptButton onClick={(event) => handleAcceptOrder(event, order.id)}>Accept</AcceptButton>
-<RejectButton onClick={(event) => handleRejectOrder(event, order.id)}>Reject</RejectButton>
+                      <AcceptButton onClick={(event) => handleAcceptOrder(event, order.id)}>Accept</AcceptButton>
+                      <RejectButton onClick={(event) => handleRejectOrder(event, order.id)}>Reject</RejectButton>
 
                     </PendingOrdersButtons>
                   ) : (
@@ -421,22 +452,24 @@ const MainPage = () => {
 
         {/* Pop-up form for creating a device */}
         {activePopup === 'addDeviceForm' && (
-    <AddDeviceForm
-    onClose={() => {
-      setActivePopup(null);
-      setSensorData(null);
-      setSelectedSensorId(null); // Reset selected sensorId when closing the form
-    }}
-    onSubmit={(formData) => {
-      // Pass the form data to the handleAddDeviceFormSubmit function
-      handleAddDeviceFormSubmit(formData);
+          <AddDeviceForm
+            onClose={() => {
+              setActivePopup(null);
+              setSensorData(null);
+              setSelectedSensorId(null); // Reset selected sensorId when closing the form
+            }}
+            onSubmit={(formData) => {
+              // Pass the form data to the handleAddDeviceFormSubmit function
+              handleAddDeviceFormSubmit(formData);
 
-      // Continue with the existing logic
-      setActivePopup(null);
-      setShowDeviceForm(false);
-      setSensorData(null);
-      setSelectedSensorId(null); // Reset selected sensorId after form submission
-    }}
+              // Continue with the existing logic
+              setActivePopup(null);
+              setShowDeviceForm(false);
+              setSensorData(null);
+              setSelectedSensorId(null); // Reset selected sensorId after form submission
+            }}
+            onRemove={handleRemoveSensor} // Pass the callback to handle sensor removal
+
             sensorId={selectedSensorId} // Pass selectedSensorId as a prop to AddDeviceForm
           />
         )}
