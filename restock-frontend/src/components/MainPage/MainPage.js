@@ -64,6 +64,8 @@ const MainPage = () => {
   const [numberOfSensors, setNumberOfSensors] = useState(0);
   const [sensorData, setSensorData] = useState(null);
   const [selectedSensorId, setSelectedSensorId] = useState(null);
+  const [allSensorsData, setAllSensorsData] = useState([]);
+
 
   const handleAddButtonClick = async (sensorId) => {
     try {
@@ -170,6 +172,36 @@ const MainPage = () => {
     }
   };
 
+  const handleAddDeviceFormSubmit = (formData) => {
+    // Perform any necessary updates or actions based on the submitted form data
+    console.log('Form submitted with data:', formData);
+    const fetchUpdatedData = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/api/sensors/all', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const updatedData = await response.json();
+          
+          // Update the state with the new data
+          setAllSensorsData(updatedData);
+
+          // Optionally, perform other actions based on the updated data
+        } else {
+          console.error('Failed to fetch updated data:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching updated data:', error);
+      }
+    };
+
+    // Call the function to fetch updated data
+    fetchUpdatedData();
+  };
+
 
   useEffect(() => {
     console.log('Token changed:', token);
@@ -215,10 +247,10 @@ const MainPage = () => {
 
         const data = await response.json();
         setNumberOfSensors(data.length);
-        // console.log('Number of sensors:', data.length);
+        setAllSensorsData(data); // Store all sensor data in state
       } catch (error) {
         console.error('Error fetching number of sensors:', error);
-      }
+      };
     };
 
     // Call the function to fetch the number of sensors
@@ -230,75 +262,6 @@ const MainPage = () => {
     // Fetch orders history when the component mounts and when the token changes
     fetchOrdersHistory();
   }, [token]);
-
-  // Fetch pending orders from API
-
-
-
-  // useEffect(() => {
-  //   console.log('Token changed:', token);
-  //   const fetchPendingOrders = async () => {
-  //     try {
-  //       // Fetch pending orders with the token in the headers
-  //       const response = await fetch('http://localhost:8080/api/orders/pending', {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       });
-
-  //       const data = await response.json();
-  //       setPendingOrders(data);
-  //       setCreateDate(data.createDate);
-  //     } catch (error) {
-  //       console.error('Error fetching pending orders:', error);
-  //     }
-  //   };
-
-
-  //   useEffect(() => {
-  //     // Fetch the number of sensors from the API
-  //     const fetchNumberOfSensors = async () => {
-  //       try {
-  //         const response = await fetch('http://localhost:8080/api/sensors/all', {
-  //           headers: {
-  //             Authorization: `Bearer ${token}`,
-  //           },
-  //         });
-
-  //         const data = await response.json();
-  //         setNumberOfSensors(data.length);
-  //       } catch (error) {
-  //         console.error('Error fetching number of sensors:', error);
-  //       }
-  //     };
-
-  //     // Call the function to fetch the number of sensors
-  //     fetchNumberOfSensors();
-  //     // ... (other useEffect logic)
-  //   }, [token]);
-
-
-  //   const fetchOrdersHistory = async () => {
-  //     try {
-  //       // Fetch pending orders with the token in the headers
-  //       const response = await fetch('http://localhost:8080/api/orders/history', {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       });
-
-  //       const data = await response.json();
-  //       setOrdersHistory(data);
-  //       // console.log(data);
-  //     } catch (error) {
-  //       console.error('Error fetching pending orders:', error);
-  //     }
-  //   };
-
-  //   // Fetch data when the component mounts and when the token changes
-  //   fetchPendingOrders();
-  //   fetchOrdersHistory();
-  // }, [token]);
 
   return (
     <AppContainer>
@@ -317,28 +280,30 @@ const MainPage = () => {
       <MainWrapper>
         {/* <LeftSide> */}
         <MyDevicesContainer>
-          <MyDevicesTitleContainer>
-            <Label>My Sensors</Label>
-          </MyDevicesTitleContainer>
-          {[...Array(8).keys()].map((index) => {
-            const isClickable = index === 0 || index < numberOfSensors;
-            return (
-              <DeviceBox
-                key={index}
-                style={{
-                  opacity: isClickable ? 1 : 0.5,
-                  cursor: isClickable ? 'pointer' : 'not-allowed',
-                }}
-                onClick={() => isClickable && handleAddButtonClick(index + 1)} // Pass the sensorId
-              >
-                Sensor {index + 1}
-                {isClickable && (
-                  <AddButton onClick={() => handleAddButtonClick(index + 1)}>+</AddButton>
-                )}
-              </DeviceBox>
-            );
-          })}
-        </MyDevicesContainer>
+  <MyDevicesTitleContainer>
+    <Label>My Sensors</Label>
+  </MyDevicesTitleContainer>
+  {[...Array(8).keys()].map((index) => {
+    const sensor = allSensorsData[index]; // Get the sensor data for the current index
+    const isClickable = index < numberOfSensors; // Check if the sensor is active
+
+    return (
+      <DeviceBox
+        key={index}
+        style={{
+          opacity: isClickable ? 1 : 0.5,
+          cursor: isClickable ? 'pointer' : 'not-allowed',
+        }}
+        onClick={() => isClickable && handleAddButtonClick(sensor.id)} // Pass the sensorId
+      >
+        {sensor ? `Sensor ${sensor.name}` : `Inactive Sensor ${index + 1}`}
+        {isClickable && (
+          <AddButton onClick={() => handleAddButtonClick(sensor.id)}>+</AddButton>
+        )}
+      </DeviceBox>
+    );
+  })}
+</MyDevicesContainer>
         {/* </LeftSide>
         <RightSide> */}
         <PendingOrdersContainer>
@@ -456,19 +421,22 @@ const MainPage = () => {
 
         {/* Pop-up form for creating a device */}
         {activePopup === 'addDeviceForm' && (
-          <AddDeviceForm
-            onClose={() => {
-              setActivePopup(null);
-              setSensorData(null);
-              setSelectedSensorId(null); // Reset selected sensorId when closing the form
-            }}
-            onSubmit={(formData) => {
-              console.log('Form submitted with data:', formData);
-              setActivePopup(null);
-              setShowDeviceForm(false);
-              setSensorData(null);
-              setSelectedSensorId(null); // Reset selected sensorId after form submission
-            }}
+    <AddDeviceForm
+    onClose={() => {
+      setActivePopup(null);
+      setSensorData(null);
+      setSelectedSensorId(null); // Reset selected sensorId when closing the form
+    }}
+    onSubmit={(formData) => {
+      // Pass the form data to the handleAddDeviceFormSubmit function
+      handleAddDeviceFormSubmit(formData);
+
+      // Continue with the existing logic
+      setActivePopup(null);
+      setShowDeviceForm(false);
+      setSensorData(null);
+      setSelectedSensorId(null); // Reset selected sensorId after form submission
+    }}
             sensorId={selectedSensorId} // Pass selectedSensorId as a prop to AddDeviceForm
           />
         )}
