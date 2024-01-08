@@ -2,6 +2,7 @@ version: "3.8"
 services:
   restock-mariadb:
     container_name: restock-mariadb
+    hostname: restock-mariadb
     image: mariadb:11.1.2
     ports:
       - "3306:3306"
@@ -11,3 +12,45 @@ services:
       - ./restock-mariadb/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
       - ./restock-mariadb/etc/mysql/certs:/etc/mysql/certs:ro
       - ./restock-mariadb/etc/mysql/mariadb.conf.d/50-server.cnf:/etc/mysql/mariadb.conf.d/50-server.cnf:ro
+    networks:
+      - restock-network
+    healthcheck:
+      test: mariadb -u root --password=$$MARIADB_ROOT_PASSWORD -e 'show tables from restock_db'
+      start_period: 3s
+      interval: 5s
+      timeout: 5s
+      retries: 55
+
+  restock-backend:
+    container_name: restock-backend
+    hostname: restock-backend
+    build:
+      context: ../restock-backend/
+    ports:
+      - "8080:8080"
+    command:
+      - "--spring.config.location=/mnt/restock-conf/application.properties"
+    volumes:
+      - ./restock-backend/conf/application.properties:/mnt/restock-conf/application.properties:ro
+    networks:
+      - restock-network
+    depends_on:
+      restock-mariadb:
+        condition: service_healthy
+
+  restock-frontend:
+    container_name: restock-frontend
+    hostname: restock-frontend
+    build:
+      context: ../restock-frontend/
+    ports:
+      - "3000:80"
+    networks:
+      - restock-network
+    depends_on:
+      restock-backend:
+        condition: service_started
+
+networks:
+  restock-network:
+    driver: bridge

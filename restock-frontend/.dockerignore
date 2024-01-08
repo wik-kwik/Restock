@@ -1,0 +1,6 @@
+.gitignore
+.git
+.vscode
+node_modules
+build
+npm-debug.log
