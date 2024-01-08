@@ -44,7 +44,7 @@ services:
     build:
       context: ../restock-frontend/
     ports:
-      - "3000:80"
+      - "3000:3000"
     networks:
       - restock-network
     depends_on:
