@@ -24,3 +24,24 @@ Pobierania list ofert z Allegro możliwe jest z wykorzystaniem endpointu: https:
 - **Parametr sort:** Służy do sortowania ofert:
   - Sortowanie po cenie: "+price"
   - Sortowanie po cenie wraz z kosztem dostawy: "+withDeliveryPrice"
+
+## Algorytm wyszukiwania najlepszej oferty
+
+1. Pobieranie produktów z podstawowymi filtrami:
+   - nazwa
+   - preferowana marka
+   - ilość
+2. Jeśli zaznaczona jest opcja SMART, dodawane do listy z filtrami są wszystkie "SMART" oferty
+3. Jeśli istnieją "SMART" oferty, zwracane są po najlepszej cenie, w przeciwnym wypadku wyszukiwane są produkty bez filtrów z preferowaną marką
+4. Jeśli zaznaczona jest opcja SMART, dodawane do listy bez filtrów są wszystkie "SMART" oferty
+5. Jeśli żadne produkty nie pasują do wyszukiwania zwracana jest pusta lista
+6. W przeciwnym wypadku następuje filtrowanie wewnętrzne ofert:
+   1. Sprawdzenie czy oferty wystawiane są przez super sprzedawców
+   2. Sprawdzenie czy nazwa marki zawiera wielkie i małe litery
+   3. Sprawdzenie preferowanej ilości
+
+Domyślne opcje tworzenia zapytania zawierają:
+
+- format sprzedaży "kup teraz"
+- wyszukiwanie nazwy również w opisie produktu
+- tylko nowe produkty
