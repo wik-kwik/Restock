@@ -35,7 +35,7 @@ if mac_address:
 else:
     print("Failed to get MAC address.")
 
-user_token = "siemsensor"
+user_token = "siemasensor"
 
 msg_payload = {
     "mac": mac_address,
@@ -44,7 +44,7 @@ msg_payload = {
 
 
 def get_sensor_token(msg_payload, user_token):
-    url = 'http://192.168.241.172:8080/api/sensors'  # Replace with your actual server URL
+    url = 'http://192.168.241.172:8080/api/sensors/register'  # Replace with your actual server URL
     headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Register ' + user_token  # Add the JWT token here
@@ -89,7 +89,7 @@ def on_publish(client, userdata, mid):
 
 client = mqtt.Client("rpi_client2")
 client.on_publish = on_publish
-client.connect('192.168.241.134', 1883) # tutaj ip - to jest takie jak ma u mnie na sieci duze rpi
+client.connect('192.168.241.24', 1883) # tutaj ip - to jest takie jak ma u mnie na sieci duze rpi
 client.loop_start()
 
 distance_token = get_sensor_token(msg_payload,user_token)[1]
@@ -113,7 +113,8 @@ def get_sensor_threshold(distance_token):
 
     response = requests.get(url, headers=headers) #verify = False added by JSO
     return response.status_code, response.json()["value"]
-
+send_threshold = get_sensor_threshold(distance_token)
+print("Threshold assigned to this sensor found with vale: ",send_threshold[1])
 try:
     while True:
 #        status_code, response = get_sensor_threshold(distance_token)
@@ -122,7 +123,7 @@ try:
         print("Measured Distance = %.1f cm" % dist)
         
         # Publishing the distance if it's greater than 2 from the previous measurement
-        if abs(prev_dist - dist) > 1.5:
+        if abs(prev_dist - dist) > send_threshold[1]:
             msg = str(dist)
             pubMsg = client.publish(
                 topic='rpi/distance',
@@ -131,7 +132,7 @@ try:
             )
             pubMsg.wait_for_publish()
 
-        time.sleep(1)
+        time.sleep(5)
         prev_dist = dist
 
 except KeyboardInterrupt:
