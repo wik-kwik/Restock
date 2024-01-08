@@ -17,6 +17,7 @@ public interface SensorMapper extends BasicMapper<SensorDTO, SensorEntity> {
 
         return new SensorDTO(
                 entity.getId(),
+                entity.getType(),
                 entity.getName(),
                 entity.getProduct(),
                 entity.getPreferredBrand(),
