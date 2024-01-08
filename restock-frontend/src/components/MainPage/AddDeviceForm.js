@@ -16,11 +16,11 @@ const AddDeviceForm = ({ onClose, onSubmit, sensorId }) => {
 
   const [sensorData, setSensorData] = useState({
     name: '',
-    thresholdForUpdate: '',
-    thresholdForOrder: '',
     productName: '',
     preferredAmount: '',
     preferredBrand: '',
+    thresholdForUpdate: '',
+    thresholdForOrder: '',
   });
 
   const { token } = useAuth();
@@ -35,7 +35,7 @@ const AddDeviceForm = ({ onClose, onSubmit, sensorId }) => {
         });
         const sensorData = await response.json();
         setSensorData(sensorData);
-        console.log(sensorData);
+        // console.log(sensorData);
       } catch (error) {
         console.error('Error fetching sensor data:', error);
       }
@@ -95,7 +95,7 @@ const AddDeviceForm = ({ onClose, onSubmit, sensorId }) => {
       <CloseButton onClick={onClose}>&times;</CloseButton>
 
       <FormTitle>
-        <strong>{sensorData.sensor && sensorData.sensor.name}</strong> sensor settings
+        <strong>{sensorData.name}</strong> sensor settings
       </FormTitle>
 
       {/* Name Input */}
@@ -105,36 +105,20 @@ const AddDeviceForm = ({ onClose, onSubmit, sensorId }) => {
           type="text"
           id="name"
           placeholder="name"
-          value={sensorData.sensor ? sensorData.sensor.name : ''}
-          onChange={(e) =>
-            setSensorData({
-              ...sensorData,
-              sensor: { ...(sensorData.sensor || {}), name: e.target.value },
-            })
-          }
+          value={sensorData.name}
+          onChange={(e) => setSensorData({ ...sensorData, name: e.target.value })}
         />
       </FormGroup>
 
-{/* Threshold for Update Input */}
-<FormGroup>
+      {/* Threshold for Update Input */}
+      <FormGroup>
         <FormLabel htmlFor="thresholdForUpdate">Threshold for Update</FormLabel>
         <FormInput
           type="text"
           id="thresholdForUpdate"
           placeholder="Threshold for Update"
-          value={
-            sensorData.thresholds
-              ? sensorData.thresholds.find((threshold) => threshold.type === 'U')?.value || ''
-              : ''
-          }
-          onChange={(e) =>
-            setSensorData((prevData) => ({
-              ...prevData,
-              thresholds: prevData.thresholds.map((threshold) =>
-                threshold.type === 'U' ? { ...threshold, value: e.target.value } : threshold
-              ),
-            }))
-          }
+          value={sensorData.thresholdForUpdate}
+          onChange={(e) => setSensorData({ ...sensorData, sensor: { ...sensorData.sensor, thresholdForUpdate: e.target.value } })}
         />
       </FormGroup>
 
@@ -145,19 +129,8 @@ const AddDeviceForm = ({ onClose, onSubmit, sensorId }) => {
           type="text"
           id="thresholdForOrder"
           placeholder="Threshold for Order"
-          value={
-            sensorData.thresholds
-              ? sensorData.thresholds.find((threshold) => threshold.type === 'D')?.value || ''
-              : ''
-          }
-          onChange={(e) =>
-            setSensorData((prevData) => ({
-              ...prevData,
-              thresholds: prevData.thresholds.map((threshold) =>
-                threshold.type === 'D' ? { ...threshold, value: e.target.value } : threshold
-              ),
-            }))
-          }
+          value={sensorData.thresholdForOrder}
+          onChange={(e) => setSensorData({ ...sensorData, sensor: { ...sensorData.sensor, thresholdForOrder: e.target.value } })}
         />
       </FormGroup>
 
@@ -170,13 +143,8 @@ const AddDeviceForm = ({ onClose, onSubmit, sensorId }) => {
           type="text"
           id="productName"
           placeholder="Product Name"
-          value={sensorData.sensor ? sensorData.sensor.product : ''}
-          onChange={(e) =>
-            setSensorData({
-              ...sensorData,
-              sensor: { ...(sensorData.sensor || {}), product: e.target.value },
-            })
-          }
+          value={sensorData.product}
+          onChange={(e) => setSensorData({ ...sensorData, sensor: { ...sensorData.sensor, product: e.target.value } })}
         />
       </FormGroup>
 
@@ -187,13 +155,8 @@ const AddDeviceForm = ({ onClose, onSubmit, sensorId }) => {
           type="text"
           id="preferredAmount"
           placeholder="Preffered Amount"
-          value={sensorData.sensor ? sensorData.sensor.preferredAmount : ''}
-          onChange={(e) =>
-            setSensorData({
-              ...sensorData,
-              sensor: { ...(sensorData.sensor || {}), preferredAmount: e.target.value },
-            })
-          }
+          value={sensorData.preferredAmount}
+          onChange={(e) => setSensorData({ ...sensorData, sensor: { ...sensorData.sensor, preferredAmount: e.target.value } })}
         />
       </FormGroup>
 
@@ -204,13 +167,8 @@ const AddDeviceForm = ({ onClose, onSubmit, sensorId }) => {
           type="text"
           id="preferredBrand"
           placeholder="Preferred Brand"
-          value={sensorData.sensor ? sensorData.sensor.preferredBrand : ''}
-          onChange={(e) =>
-            setSensorData({
-              ...sensorData,
-              sensor: { ...(sensorData.sensor || {}), preferredBrand: e.target.value },
-            })
-          }
+          value={sensorData.preferredBrand}
+          onChange={(e) => setSensorData({ ...sensorData, sensor: { ...sensorData.sensor, preferredBrand: e.target.value } })}
         />
       </FormGroup>
 
