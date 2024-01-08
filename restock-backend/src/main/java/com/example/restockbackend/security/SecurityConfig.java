@@ -3,6 +3,7 @@ package com.example.restockbackend.security;
 import com.example.restockbackend.service.JwtService;
 import com.example.restockbackend.service.SensorAuthService;
 import com.example.restockbackend.service.UserService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -18,6 +19,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -39,8 +41,25 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
+
     @Bean
     @Order(2)
+    public SecurityFilterChain sensorRegisterSecurityFilterChain(HttpSecurity http, AuthenticationProvider authenticationProvider, @Value("${sensor.register.secret}") String sensorRegisterToken) throws Exception {
+        http.csrf(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults())
+                .anonymous(httpSecurityAnonymousConfigurer -> httpSecurityAnonymousConfigurer.init(http))
+                .securityMatchers(matcher -> matcher.requestMatchers("/api/sensors/register"))
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+                .authenticationProvider(authenticationProvider).addFilterBefore(new SensorRegisterFilter(sensorRegisterToken), AnonymousAuthenticationFilter.class);
+
+        return http.build();
+    }
+
+    @Bean
+    @Order(3)
     public SecurityFilterChain userApiSecurityFilterChain(HttpSecurity http, AuthenticationProvider authenticationProvider, JwtService jwtService) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
@@ -58,13 +77,13 @@ public class SecurityConfig {
     @Order(1)
     public SecurityFilterChain sensorApiSecurityFilterChain(HttpSecurity http, SensorAuthService sensorAuthService) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .securityMatchers(matcher -> matcher.requestMatchers("/api/data/**", "/api/thresholds/sensor"))
+                .securityMatchers(matcher -> matcher.requestMatchers("/api/data", "/api/thresholds"))
                 .cors(Customizer.withDefaults())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
-                .addFilterBefore(new SensorFilter(sensorAuthService), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new SensorDataFilter(sensorAuthService), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

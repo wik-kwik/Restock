@@ -26,7 +26,7 @@ public class SensorApi {
         return sensorService.findById(id);
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public NewSensorResponse addSensor(@RequestBody NewSensorRequest newSensor) {
         return sensorService.register(newSensor);
     }

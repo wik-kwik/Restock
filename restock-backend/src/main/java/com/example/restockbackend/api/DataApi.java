@@ -15,7 +15,7 @@ public class DataApi {
     private final DataService dataService;
 
     @PostMapping
-    public DataDTO addData(@RequestBody @Valid DataDTO data) {
+    public DataDTO addData(@RequestBody DataDTO data) {
         return dataService.save(data);
     }
 

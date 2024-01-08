@@ -14,7 +14,7 @@ public class ThresholdApi {
 
     private final ThresholdService thresholdService;
 
-    @GetMapping() // endpoint used only by sensors
+    @GetMapping()
     public ThresholdDTO getThresholdForUpdate() {
         return thresholdService.getValueForUpdate();
     }
