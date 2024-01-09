@@ -374,7 +374,7 @@ const MainPage = () => {
                       <OrderDate>{`Date: ${formatCreateDate(order.createDate)}`}</OrderDate>
                     </OrderDateContainer>
                     {/* <ProductName>{<strong>{order.name}</strong>}</ProductName> */}
-                    <ProductName><strong>{order.name.split(' ').slice(0, 4).join(' ')}</strong></ProductName>
+                    <ProductName><strong>{order.name.split(' ').slice(0, 3).join(' ')}</strong></ProductName>
                     <OrderDetailsContainer>
                       {/* <OrderText>{`Price: ${order.smart ? order.productPrice : order.productPrice + order.deliveryPrice} PLN`}</OrderText>
                       <OrderText>{`${order.smart ? ', delivery free with SMART!' : ', including delivery cost: ' + order.deliveryPrice + ' PLN'}`}</OrderText> */}

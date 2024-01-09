@@ -28,7 +28,13 @@ const OrderDetails = ({ order, onClose }) => {
                 <strong>Status:</strong> {order.status === 'R' ? 'Rejected' : order.status === 'C' ? 'Completed' : order.status === 'A' ? 'Accepted' : order.status === 'P' ? 'Pending' : order.status}
             </OrderDetailText>
             <OrderDetailText><strong>Created:</strong> {formatCreateDate(order.createDate)}</OrderDetailText>
-            <OrderDetailText><strong>Last modified:</strong> {formatCreateDate(order.modifyDate)}</OrderDetailText>
+            <OrderDetailText>
+  {order.modifyDate !== null && (
+    <React.Fragment>
+      <strong>Last modified:</strong> {formatCreateDate(order.modifyDate)}
+    </React.Fragment>
+  )}
+</OrderDetailText>
 
             {/* <OrderDetailText><strong>Date ordered:</strong> {formatCreateDate(order.createDate)}</OrderDetailText> */}
             {/* Informacje dotyczące sensora? Który endpoint? */}
