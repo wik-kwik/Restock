@@ -13,31 +13,20 @@ import {
 import { useAuth } from '../../AuthContext';
 
 const AddDeviceForm = ({ onClose, onSubmit, onRemove, sensorId }) => {
-
   const [sensorData, setSensorData] = useState({
     id: '',
     type: '',
     name: '',
-    productName: '',
+    product: '',
     preferredAmount: '',
     preferredBrand: '',
     thresholdForUpdate: '',
     thresholdForOrder: '',
   });
 
-  const [displayName, setDisplayName] = useState(''); // Separate state for static display name
-
-
-  const [inputErrors, setInputErrors] = useState({
-    name: '',
-    thresholdForUpdate: '',
-    thresholdForOrder: '',
-    productName: '',
-    preferredAmount: '',
-    preferredBrand: '',
-  });
-
+  const [displayName, setDisplayName] = useState('');
   const { token } = useAuth();
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchSensorData = async () => {
@@ -49,8 +38,8 @@ const AddDeviceForm = ({ onClose, onSubmit, onRemove, sensorId }) => {
         });
         const sensorData = await response.json();
         setSensorData(sensorData);
+        setDisplayName(sensorData.name);
         console.log(sensorData);
-        setDisplayName(sensorData.name); // Set static display name
       } catch (error) {
         console.error('Error fetching sensor data:', error);
       }
@@ -59,76 +48,92 @@ const AddDeviceForm = ({ onClose, onSubmit, onRemove, sensorId }) => {
     fetchSensorData();
   }, [token, sensorId]);
 
+  const validateForm = () => {
+    if (
+      (!sensorData.name || !sensorData.name.trim()) ||
+      (!sensorData.product || !sensorData.product.trim()) ||
+      (!sensorData.thresholdForUpdate || !String(sensorData.thresholdForUpdate).trim()) ||
+      (!sensorData.thresholdForOrder || !String(sensorData.thresholdForOrder).trim())
+    ) {
+      setError('Please fill in the required fields.');
+      return false;
+    }
+    setError('');
+    return true;
+  };
+  
+
   const handleRemove = async () => {
     try {
       const response = await fetch(`http://localhost:8080/api/sensors?id=${sensorId}`, {
-        method: 'DELETE',  // Specify the DELETE method here
+        method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
       console.log("Sensor removed");
-      
+
       if (!response.ok) {
         throw new Error(`Failed to remove sensor. Status: ${response.status}`);
       }
 
       onRemove();
-  
+
       onClose();
     } catch (error) {
       console.error('Error removing sensor:', error.message);
     }
   };
 
-
   const handleSubmit = async () => {
+    if (!validateForm()) {
+      return;
+    }
+
     const apiUrl = `http://localhost:8080/api/sensors?id=${sensorData.id}`;
-  
+
     try {
       const response = await fetch(apiUrl, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json', // Specify the content type
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(sensorData), // Pass the correct data in the body
+        body: JSON.stringify(sensorData),
       });
-  
+
       if (!response.ok) {
         throw new Error(`Failed to update sensor. Status: ${response.status}`);
       }
-  
+
       const updatedSensorData = await response.json();
       console.log('Updated Sensor Data:', updatedSensorData);
-  
-      // Invoke the callback passed as a prop
+
       onSubmit(updatedSensorData);
-  
+
       onClose();
     } catch (error) {
       console.error('Error updating sensor:', error.message);
-      // Handle the error accordingly (e.g., show an error message)
     }
   };
-  
 
   return (
     <FormWrapper>
       <CloseButton onClick={onClose}>&times;</CloseButton>
 
       <FormTitle>
-      <strong>{displayName}</strong> sensor settings {/* Use the static display name */}
+        <strong>Sensor settings</strong>
       </FormTitle>
 
-      {/* Name Input */}
+      {error && <div style={{ color: 'red', marginBottom: '10px' }}>{error}</div>}
+
       <FormGroup>
         <FormLabel htmlFor="name">Sensor Name</FormLabel>
         <FormInput
           type="text"
           id="name"
-          placeholder="name"
+          placeholder="Sensor Name"
           value={sensorData.name}
           onChange={(e) => setSensorData({ ...sensorData, name: e.target.value })}
         />
@@ -165,13 +170,24 @@ const AddDeviceForm = ({ onClose, onSubmit, onRemove, sensorId }) => {
 
            {/* Product Name Input */}
            <FormGroup>
-        <FormLabel htmlFor="productName">Product Name</FormLabel>
+  <FormLabel htmlFor="product">Product Name</FormLabel>
+  <FormInput
+    type="text"
+    id="product"
+    placeholder="Product Name"
+    value={sensorData.product}
+    onChange={(e) => setSensorData({ ...sensorData, product: e.target.value })}
+  />
+</FormGroup>
+     {/* Preferred Brand Input */}
+     <FormGroup>
+        <FormLabel htmlFor="preferredBrand">Preferred Brand</FormLabel>
         <FormInput
           type="text"
-          id="productName"
-          placeholder="Product Name"
-          value={sensorData.product}
-          onChange={(e) => setSensorData({ ...sensorData, product: e.target.value })}
+          id="preferredBrand"
+          placeholder="Preferred Brand"
+          value={sensorData.preferredBrand}
+          onChange={(e) => setSensorData({ ...sensorData, preferredBrand: e.target.value })}
         />
       </FormGroup>
 
@@ -184,18 +200,6 @@ const AddDeviceForm = ({ onClose, onSubmit, onRemove, sensorId }) => {
           placeholder="Preferred Amount"
           value={sensorData.preferredAmount}
           onChange={(e) => setSensorData({ ...sensorData, preferredAmount: e.target.value })}
-        />
-      </FormGroup>
-
-     {/* Preferred Brand Input */}
-     <FormGroup>
-        <FormLabel htmlFor="preferredBrand">Preferred Brand</FormLabel>
-        <FormInput
-          type="text"
-          id="preferredBrand"
-          placeholder="Preferred Brand"
-          value={sensorData.preferredBrand}
-          onChange={(e) => setSensorData({ ...sensorData, preferredBrand: e.target.value })}
         />
       </FormGroup>
 

@@ -211,13 +211,13 @@ const MainPage = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-  
+
         if (response.ok) {
           const updatedData = await response.json();
-  
+
           // Update the state with the new data
           setAllSensorsData(updatedData);
-  
+
           // Update the number of sensors
           setNumberOfSensors(updatedData.length);
         } else {
@@ -227,7 +227,7 @@ const MainPage = () => {
         console.error('Error fetching updated data:', error);
       }
     };
-  
+
     // Call the function to fetch updated data
     fetchUpdatedData();
   };
@@ -248,6 +248,7 @@ const MainPage = () => {
         const data = await response.json();
         setPendingOrders(data);
         setCreateDate(data.createDate);
+        console.log(data);
       } catch (error) {
         console.error('Error fetching pending orders:', error);
       }
@@ -377,7 +378,7 @@ const MainPage = () => {
                     <OrderDetailsContainer>
                       {/* <OrderText>{`Price: ${order.smart ? order.productPrice : order.productPrice + order.deliveryPrice} PLN`}</OrderText>
                       <OrderText>{`${order.smart ? ', delivery free with SMART!' : ', including delivery cost: ' + order.deliveryPrice + ' PLN'}`}</OrderText> */}
-                      <OrderText>{`${order.smart ? order.productPrice : order.productPrice + order.deliveryPrice} PLN${order.smart ? ', delivery free with SMART!' : ', including delivery cost: ' + order.deliveryPrice + ' PLN'}`}</OrderText>
+                      <OrderText>{`${order.smart ? order.productPrice.toFixed(2) : (order.productPrice + order.deliveryPrice).toFixed(2)} PLN${order.smart ? ', delivery free with SMART!' : `, including delivery cost: ${order.deliveryPrice.toFixed(2)} PLN`}`}</OrderText>
                     </OrderDetailsContainer>
                   </OrderInfoContainer>
                   {order.status === 'P' ? (
@@ -436,7 +437,7 @@ const MainPage = () => {
                 </OrderInfoContainer>
                 <OrderStatusContainer>
                   <OrderStatusText isRejected={order.status === 'R'} isClosed={order.status === 'C'}>
-                    {order.status === 'R' ? 'Rejected' : 'Closed'}
+                    {order.status === 'R' ? 'Rejected' : 'Completed'}
                   </OrderStatusText>
                 </OrderStatusContainer>
               </PendingOrdersItem>
