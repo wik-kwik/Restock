@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static com.example.restockbackend.dao.entity.ThresholdEntity.ThresholdType.ORDER;
 import static com.example.restockbackend.dao.entity.ThresholdEntity.ThresholdType.UPDATE;
 
 @Service
@@ -53,7 +54,7 @@ public class DataService {
         }
 
         SensorEntity sensor = sensorOpt.get();
-        double thresholdValue = sensor.getThresholds().stream().filter(t -> t.getType().equals(UPDATE)).findFirst().orElseThrow().getValue();
+        double thresholdValue = sensor.getThresholds().stream().filter(t -> t.getType().equals(ORDER)).findFirst().orElseThrow().getValue();
         if (sensor.getProduct() != null && dataValue >= thresholdValue) {
             try {
                 Offer offer = AllegroClient.getInstance().getTheBestOffer(sensor.getProduct(), sensor.getPreferredBrand(), sensor.getPreferredAmount());
