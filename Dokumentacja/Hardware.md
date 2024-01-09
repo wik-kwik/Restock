@@ -1,5 +1,5 @@
 # Dokumentacja Hardware
-`## Schemat połączeń
+## Schemat połączeń
 
 ![Schemat połączeń](costam.jpg)`
 
