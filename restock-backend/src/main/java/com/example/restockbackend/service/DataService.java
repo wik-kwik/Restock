@@ -54,7 +54,7 @@ public class DataService {
 
         SensorEntity sensor = sensorOpt.get();
         double thresholdValue = sensor.getThresholds().stream().filter(t -> t.getType().equals(UPDATE)).findFirst().orElseThrow().getValue();
-        if (sensor.getProduct() != null && dataValue <= thresholdValue) {
+        if (sensor.getProduct() != null && dataValue >= thresholdValue) {
             try {
                 Offer offer = AllegroClient.getInstance().getTheBestOffer(sensor.getProduct(), sensor.getPreferredBrand(), sensor.getPreferredAmount());
                 if (offer != null && !orderService.existsOpenOrderWithOfferId(offer.getId())) {
