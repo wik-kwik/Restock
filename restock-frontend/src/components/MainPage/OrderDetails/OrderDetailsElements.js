@@ -24,6 +24,7 @@ export const FormTitle = styled.h2`
 `;
 
 export const OrderDetailText = styled.p`
+  text-align: center;
 `;
 
 
