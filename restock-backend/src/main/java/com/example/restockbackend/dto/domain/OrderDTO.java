@@ -10,6 +10,7 @@ public record OrderDTO(Long id,
                        double productPrice,
                        double deliveryPrice,
                        int smart,
-                       LocalDateTime createDate
+                       LocalDateTime createDate,
+                       LocalDateTime modifyDate
 ) {
 }

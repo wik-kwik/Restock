@@ -19,7 +19,7 @@ public class OrderEntity {
         String ACCEPTED = "A";
         String REJECTED = "R";
         String IN_DELIVERY = "D";
-        String CLOSED = "C";
+        String COMPLETED = "C";
     }
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)

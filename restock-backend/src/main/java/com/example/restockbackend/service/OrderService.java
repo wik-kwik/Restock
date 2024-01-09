@@ -34,7 +34,7 @@ public class OrderService {
     }
 
     public Iterable<OrderDTO> findOrdersHistory() {
-        return orderRepo.findByStatusIn(Arrays.asList(CLOSED, REJECTED))
+        return orderRepo.findByStatusIn(Arrays.asList(COMPLETED, REJECTED))
                 .stream()
                 .map(orderMapper::toDto)
                 .collect(Collectors.toList());
@@ -73,7 +73,7 @@ public class OrderService {
         orderEntity.setName(offer.getName());
         orderEntity.setPhotoUrl(offer.getPhotoURL());
         orderEntity.setProductPrice(offer.getProductPrice());
-        orderEntity.setDeliveryPrice(offer.getDeliveryPrice());
+        orderEntity.setDeliveryPrice(offer.isSmart() ? 0 : offer.getDeliveryPrice());
         orderEntity.setSmart(offer.isSmart() ? 1 : 0);
         orderEntity.setCreateDate(LocalDateTime.now());
         orderRepo.save(orderEntity);
