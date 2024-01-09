@@ -2,11 +2,11 @@
 
 ## [Uwierzytelnianie Client_credentials](https://developer.allegro.pl/tutorials/uwierzytelnianie-i-autoryzacja-zlq9e75GdIR#clientcredentials-flow)
 
-Korzystając z konta Allegro należy przejść pod [link](https://apps.developer.allegro.pl.allegrosandbox.pl/) i zarejestrować nową aplikację, wykorzystującą uwierzytelnianie typu device, otrzymując unikalny *CLIENT ID* i *CLIENT SECRET*. Umożliwia to autoryzację aplikacji bez zgodny użytkownika na działanie. Dzięki temu zapewniony jest dostęp do publicznych zasobów Allegro jak oferty (w wersji sandbox) zgodnie z [regulaminem REST API](https://allegro.pl/dla-sprzedajacych/1-czerwca-2021-w-api-allegro-ograniczymy-dostep-do-publicznych-danych-o-sprzedazy-innych-uzytkownikow-i-zmienimy-forme-ich-udostepniania-O3BlgZVdwCa).
+Korzystając z konta Allegro należy przejść pod [link](https://apps.developer.allegro.pl.allegrosandbox.pl/) i zarejestrować nową aplikację, wykorzystującą uwierzytelnianie typu device, aby otrzymać unikalne *CLIENT ID* i *CLIENT SECRET*. Umożliwia to autoryzację aplikacji bez zgodny użytkownika na działanie. Dzięki temu zapewniony jest dostęp do publicznych zasobów Allegro jak oferty (w wersji sandbox) zgodnie z [regulaminem REST API](https://allegro.pl/dla-sprzedajacych/1-czerwca-2021-w-api-allegro-ograniczymy-dostep-do-publicznych-danych-o-sprzedazy-innych-uzytkownikow-i-zmienimy-forme-ich-udostepniania-O3BlgZVdwCa).
 
 ## Autoryzacja aplikacji
 
-Aby zautoryzować należy wykonać żądanie HTTP metodą POST na adres: https://allegro.pl.allegrosandbox.pl/auth/oauth/token, przesyłając w nagłówku CLIENT ID i CLIENT SECRET w formacie base64, oraz ustawić typ dostępu "grant_type=client_credentials".
+Aby się zautoryzować należy wykonać żądanie HTTP metodą POST na adres: https://allegro.pl.allegrosandbox.pl/auth/oauth/token, przesyłając w nagłówku CLIENT ID i CLIENT SECRET w formacie base64, oraz ustawić typ dostępu "grant_type=client_credentials".
 
 W odpowiedzi przesyłany jest JSON zawierający token dostępowy, który jest wykorzystywany podczas listowania ofert (możliwe jest również odpytywanie innych ogólnie dostępnych zasobów Allegro Sandbox).
 
@@ -14,34 +14,34 @@ W odpowiedzi przesyłany jest JSON zawierający token dostępowy, który jest wy
 
 Pobierania list ofert z Allegro możliwe jest z wykorzystaniem endpointu: https://api.allegro.pl.allegrosandbox.pl/offers/listing, gdzie istnieje możliwość filtrowania wyników poprzez ustawienie różnych parametrów:
 
-- **Parametr option:** Pozwala na filtrowanie ofert według różnych opcji:
-  - Oferty z opcją smart: "SMART"
-  - Oferty od super sprzedawców: "SUPERSELLER"
-  - Oferty ze strefy marek: "BRAND_ZONE"
-- **Parametr deliveryMethod:** Umożliwia filtrowanie ofert według metody dostawy:
-  - Dostawa do paczkomatu: "5b445fe6580ce26bb2f9960a"
+- **Parametr option** - pozwala na filtrowanie ofert według różnych opcji:
+  - Oferty z opcją Allegro Smart!: "SMART"
+  - Oferty od Super Sprzedawców: "SUPERSELLER"
+  - Oferty ze Strefy marek: "BRAND_ZONE"
+- **Parametr deliveryMethod** - umożliwia filtrowanie ofert według metody dostawy:
+  - Dostawa do Paczkomatu: "5b445fe6580ce26bb2f9960a"
   - Dostawa kurierem: "5b445fa0580ce26bb2f99602"
-- **Parametr sort:** Służy do sortowania ofert:
-  - Sortowanie po cenie: "+price"
-  - Sortowanie po cenie wraz z kosztem dostawy: "+withDeliveryPrice"
+- **Parametr sort** - służy do sortowania ofert:
+  - Sortowanie po cenie rosnąco: "+price"
+  - Sortowanie po cenie wraz z kosztem dostawy rosnąco: "+withDeliveryPrice"
 
 ## Algorytm wyszukiwania najlepszej oferty
 
 1. Pobieranie produktów z podstawowymi filtrami:
-   - nazwa
+   - nazwa (wymagane)
    - preferowana marka
-   - ilość
-2. Jeśli zaznaczona jest opcja SMART, dodawane do listy z filtrami są wszystkie "SMART" oferty
-3. Jeśli istnieją "SMART" oferty, zwracane są po najlepszej cenie, w przeciwnym wypadku wyszukiwane są produkty bez filtrów z preferowaną marką
-4. Jeśli zaznaczona jest opcja SMART, dodawane do listy bez filtrów są wszystkie "SMART" oferty
-5. Jeśli żadne produkty nie pasują do wyszukiwania zwracana jest pusta lista
-6. W przeciwnym wypadku następuje filtrowanie wewnętrzne ofert:
-   1. Sprawdzenie czy oferty wystawiane są przez super sprzedawców
-   2. Sprawdzenie czy nazwa marki zawiera wielkie i małe litery
+   - preferowana ilość
+2. W pierwszym kroku są wyszukiwane oferty z dodatkowymi filtrami, a następnie dodawane do listy 
+3. Jeśli lista jest niepusta to zwracana jest oferta o najniższej cenie, w przeciwnym wypadku wyszukiwane są produkty bez filtrów
+4. Do listy dodawane są oferty bez dodatkowych filtrów i jeśli lista jest niepusta to następuje filtrowanie wewnętrzne:
+   1. Sprawdzenie czy oferty wystawiane są przez Super sprzedawców, jeśli niepuste to:
+   2. Sprawdzenie ofert preferowanej marki, jeśli niepuste to:
    3. Sprawdzenie preferowanej ilości
+   4. Zwrócenie najlepszej oferty (może nastąpić również w momencie gdy któryś etap filtrowania odrzuci wszystkie oferty)
+5. Jeśli żadne produkty nie pasują do wyszukiwania zwracana jest pusta lista (brak zamówienia)
+
 
 Domyślne opcje tworzenia zapytania zawierają:
 
-- format sprzedaży "kup teraz"
-- wyszukiwanie nazwy również w opisie produktu
-- tylko nowe produkty
+- format sprzedaży "Kup teraz"
+- tylko nowe produkty (stan: Nowy)

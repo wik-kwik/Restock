@@ -186,9 +186,6 @@ public class AllegroClient {
         // search only BUY_NOW type offers
         urlBuilder.append("&sellingMode.format=BUY_NOW");
 
-        // search phrase in title and additionally in description
-        urlBuilder.append("&searchMode=DESCRIPTIONS");
-
         // search only offers with NEW products
         urlBuilder.append("&parameter.11323=11323_1");
 
