@@ -505,6 +505,10 @@ background-color: ${(props) =>
       color: white;
     `}
 
+    @media screen and (max-width: 1074px) {
+      font-size: clamp(0.8em, 1vw, 1em);
+  }
+
     @media screen and (max-width: 815px) {
       font-size: clamp(1.2em, 1vw, 1.5em);
       width: 5em;

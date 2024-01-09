@@ -105,8 +105,8 @@ const PendingOrders = () => {
                             </OrderDateContainer>
                             <ProductName>{`Product: ${order.name}`}</ProductName>
                             <OrderDetailsContainer>
-                                <OrderText>{`Price: ${order.smart ? order.productPrice : order.productPrice + order.deliveryPrice} PLN`}</OrderText>
-                                <OrderText>{`${order.smart ? ', delivery free with SMART!' : ', including delivery cost: ' + order.deliveryPrice + ' PLN'}`}</OrderText>
+                            <OrderText>{`${order.smart ? order.productPrice.toFixed(2) : (order.productPrice + order.deliveryPrice).toFixed(2)} PLN${order.smart ? ', delivery free with SMART!' : `, including delivery cost: ${order.deliveryPrice.toFixed(2)} PLN`}`}</OrderText>
+                                {/* <OrderText>{`${order.smart ? ', delivery free with SMART!' : ', including delivery cost: ' + order.deliveryPrice + ' PLN'}`}</OrderText> */}
                             </OrderDetailsContainer>
                         </OrderInfoContainer>
                         {order.status === 'P' ? (

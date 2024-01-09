@@ -39,7 +39,7 @@ const AddDeviceForm = ({ onClose, onSubmit, onRemove, sensorId }) => {
         const sensorData = await response.json();
         setSensorData(sensorData);
         setDisplayName(sensorData.name);
-        console.log(sensorData);
+        // console.log(sensorData);
       } catch (error) {
         console.error('Error fetching sensor data:', error);
       }

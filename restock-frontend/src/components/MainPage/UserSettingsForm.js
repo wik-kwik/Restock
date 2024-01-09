@@ -8,12 +8,14 @@ import {
   FormButton,
   CloseButton,
   SectionLabel,
-  Row
+  Row,
+  ErrorLabel
 } from './UserSettingsFormElements';
 import { useAuth } from '../../AuthContext';
 
 const UserSettingsForm = ({ onClose, onSubmit, userId }) => {
   const { token } = useAuth();
+  const [errorMessage, setErrorMessage] = useState('');
   const [user, setUser] = useState({
     id: '',
     firstName: '',
@@ -69,6 +71,11 @@ const UserSettingsForm = ({ onClose, onSubmit, userId }) => {
         body: JSON.stringify(requestBody),
       });
 
+      if (!user.firstName || !user.lastName || !user.street || !user.houseNumber || !user.postalCode || !user.city || !user.email || !user.phoneNumber) {
+        setErrorMessage('Please fill in all required fields.');
+        return;
+      }
+
       if (response.ok) {
         console.log('User address updated successfully!');
         onClose();
@@ -84,8 +91,7 @@ const UserSettingsForm = ({ onClose, onSubmit, userId }) => {
     <FormWrapper>
       <CloseButton onClick={onClose}>&times;</CloseButton>
       <FormTitle>User Settings</FormTitle>
-
-      {/* <SectionLabel>Personal Information</SectionLabel> */}
+      {errorMessage && <ErrorLabel>{errorMessage}</ErrorLabel>}
 
       {/* First Row: First Name and Last Name */}
       <Row>

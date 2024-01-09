@@ -16,7 +16,10 @@ export const FormWrapper = styled.div`
   justify-content: left;
   align-items: center;
   max-width: 20%;
-  /* Add more styles as needed */
+
+  @media screen and (max-width: 999px) {
+    max-width: 40%;
+  }
 `;
 
 export const FormTitle = styled.h2`

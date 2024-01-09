@@ -104,12 +104,24 @@ export const OrderDetailsContainer = styled.div`
   /* border: solid pink 2px; */
   margin-top: -0.9em;
   /* height: 100%;  */
+
+
 `;
 
 export const ProductName = styled.p`
   font-size: 1em;
   margin-top: 0.7em;
+  padding: 0.1em;
   /* border: solid pink 2px; */
+  font-size: clamp(0.8em, 1vw, 1em);
+
+  @media screen and (max-width: 1212px) {
+    font-size: clamp(0.5em, 1vw, 0.7em);
+  }
+
+  @media screen and (max-width: 815px) {
+    font-size: clamp(0.8em, 1vw, 1em);
+  }
 `;
 
 export const OfferName = styled.p`
@@ -120,19 +132,51 @@ export const OfferName = styled.p`
 
 export const OrderText = styled.p`
   font-size: 0.9em;
+  min-width: 200%;
   /* border: solid pink 2px; */
   /* margin-bottom: 2px; */
+  font-size: clamp(0.7em, 1vw, 0.8rem);
+
+  @media screen and (max-width: 1188px) {
+    font-size: clamp(0.6em, 1vw, 0.6em);
+    min-width: 200%;
+  }
+
+  @media screen and (max-width: 815px) {
+    font-size: clamp(0.6em, 1vw, 0.8em);
+    min-width: 200%;
+  }
 `;
 
 
 export const OrderStatusContainer = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
+  /* border: solid pink 1px; */
+
+  @media screen and (max-width: 971px) {
+    width: 6em;
+    height: 3em; 
+    font-size: clamp(0.5em, 1vw, 0.7em);
+  }
+
+  @media screen and (max-width: 815px) {
+    width: 10em;
+  }
+
+
 `;
 
 export const OrderStatusLabel = styled.p`
   font-size: 1em;
   margin-right: 5px;
+
+  @media screen and (max-width: 815px) {
+      font-size: clamp(1.2em, 1vw, 1.5em);
+      width: 200%;
+  }
 `;
 
 export const OrderStatusText = styled.p`
@@ -158,4 +202,9 @@ background-color: ${(props) =>
     css`
       color: white;
     `}
+
+    @media screen and (max-width: 815px) {
+      font-size: clamp(1.2em, 1vw, 1.5em);
+      width: 5em;
+  }
 `;

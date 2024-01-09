@@ -103,6 +103,8 @@ export const PasswordContainer = styled.div`
   margin-bottom: 1em;
   width: 100%; 
   margin-right: 0.2em;
+
+
 `;
 
 export const PasswordInput = styled.input`
@@ -118,10 +120,10 @@ export const PasswordInput = styled.input`
   color: black;
   text-align: center;
   font-size: clamp(1rem, 0.9vw, 1.3rem);
-  /* padding-right: ${(props) => (props.showPassword ? '2em' : '1em')}; */
-  /* position: relative; */
-  /* padding-right: ${(props) => (props.showPassword ? '1.5em' : '1em')};  */
-  /* Adjust padding based on eye icon visibility */
+
+  @media screen and (max-width: 430px) {
+    margin-left: -0.5em;
+  }
 `;
 
 export const EyeIconContainer = styled.span`
@@ -197,6 +199,7 @@ export const RememberMeContainer = styled.div`
   /* margin-right: 2em; */
   /* border: pink 1px solid; */
   justify-content: space-between;
+  /* border: solid pink 1px; */
 `;
 
 export const RememberMeCheckbox = styled.input`
@@ -207,6 +210,10 @@ export const RememberMeCheckbox = styled.input`
 export const RememberMeLabel = styled.label`
 min-width: 100%;
 margin-right: 3.5em;
+
+@media screen and (max-width: 430px) {
+    margin-right: 0.3em;
+  }
 `;
 
 export const RememberOrForgotPasswordContainer = styled.div`
@@ -215,6 +222,7 @@ export const RememberOrForgotPasswordContainer = styled.div`
   align-items: center;
   padding: 0.2em;
   justify-content: space-between;
+
 `;
 
 export const ForgotPasswordLink = styled.span`
@@ -225,6 +233,12 @@ export const ForgotPasswordLink = styled.span`
   /* margin-left: 0.9em; */
   margin-right: 3em;
   min-width: 100%;
+  /* border: solid red 1px; */
+
+  @media screen and (max-width: 600px) {
+    width: 20%;
+    margin-right: 0em;
+  }
   
 `;
 

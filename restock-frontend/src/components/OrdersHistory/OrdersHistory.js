@@ -39,8 +39,8 @@ const OrdersHistory = () => {
                 </OrderDateContainer>
                 <ProductName>{`Product: ${ordersHistory.name}`}</ProductName>
                 <OrderDetailsContainer>
-                  <OrderText>{`Price: ${ordersHistory.smart ? ordersHistory.productPrice : ordersHistory.productPrice + ordersHistory.deliveryPrice} PLN`}</OrderText>
-                  <OrderText>{`${ordersHistory.smart ? ', delivery free with SMART!' : ', including delivery cost: ' + ordersHistory.deliveryPrice + ' PLN'}`}</OrderText>
+                <OrderText>{`${ordersHistory.smart ? ordersHistory.productPrice.toFixed(2) : (ordersHistory.productPrice + ordersHistory.deliveryPrice).toFixed(2)} PLN${ordersHistory.smart ? ', delivery free with SMART!' : `, including delivery cost: ${ordersHistory.deliveryPrice.toFixed(2)} PLN`}`}</OrderText>
+                  {/* <OrderText>{`${ordersHistory.smart ? ', delivery free with SMART!' : ', including delivery cost: ' + ordersHistory.deliveryPrice + ' PLN'}`}</OrderText> */}
                 </OrderDetailsContainer>
               </OrderInfoContainer>
               <OrderStatusContainer>

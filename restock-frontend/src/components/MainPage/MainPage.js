@@ -248,7 +248,7 @@ const MainPage = () => {
         const data = await response.json();
         setPendingOrders(data);
         setCreateDate(data.createDate);
-        console.log(data);
+        // console.log(data);
       } catch (error) {
         console.error('Error fetching pending orders:', error);
       }
@@ -376,8 +376,6 @@ const MainPage = () => {
                     {/* <ProductName>{<strong>{order.name}</strong>}</ProductName> */}
                     <ProductName><strong>{order.name.split(' ').slice(0, 3).join(' ')}</strong></ProductName>
                     <OrderDetailsContainer>
-                      {/* <OrderText>{`Price: ${order.smart ? order.productPrice : order.productPrice + order.deliveryPrice} PLN`}</OrderText>
-                      <OrderText>{`${order.smart ? ', delivery free with SMART!' : ', including delivery cost: ' + order.deliveryPrice + ' PLN'}`}</OrderText> */}
                       <OrderText>{`${order.smart ? order.productPrice.toFixed(2) : (order.productPrice + order.deliveryPrice).toFixed(2)} PLN${order.smart ? ', delivery free with SMART!' : `, including delivery cost: ${order.deliveryPrice.toFixed(2)} PLN`}`}</OrderText>
                     </OrderDetailsContainer>
                   </OrderInfoContainer>
@@ -433,7 +431,7 @@ const MainPage = () => {
                     <OrderDate>{`Date: ${formatCreateDate(order.createDate)}`}</OrderDate>
                   </OrderDateContainer>
                   {/* <ProductName>{`Product: ${order.name}`}</ProductName> */}
-                  <ProductName><strong>{order.name.split(' ').slice(0, 4).join(' ')}</strong></ProductName>
+                  <ProductName><strong>{order.name.split(' ').slice(0, 3).join(' ')}</strong></ProductName>
                 </OrderInfoContainer>
                 <OrderStatusContainer>
                   <OrderStatusText isRejected={order.status === 'R'} isClosed={order.status === 'C'}>

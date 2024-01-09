@@ -10,7 +10,6 @@ import { formatCreateDate } from '../../FormatCreateDate';
 
 const OrderDetails = ({ order, onClose }) => {
 
-    // console.log(order.modifyDate);
     return (
         <FormWrapper>
             <CloseButton onClick={onClose}>&times;</CloseButton>

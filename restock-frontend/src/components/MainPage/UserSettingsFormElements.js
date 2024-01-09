@@ -31,21 +31,35 @@ export const FormGroup = styled.div`
   flex-direction: column;
   width: 100%;
   padding: 0.2em;
-  /* margin-bottom: 15px; */
+
+  @media screen and (max-width: 1169px) {
+    min-width: 100%;
+  }
 `;
 
 export const FormLabel = styled.label`
   font-size: 0.9em;
   margin-bottom: 5px;
+  /* min-width: 100%; */
+
+  @media screen and (max-width: 1698px) {
+    font-size: clamp(0.7em, 1vw, 0.8em);
+  }
   
+  @media screen and (max-width: 1521px) {
+    font-size: clamp(0.6em, 1vw, 0.7em);
+  }
+
+  @media screen and (max-width: 1345px) {
+    font-size: clamp(0.5em, 1vw, 0.6em);
+  }
+
+  @media screen and (max-width: 1169px) {
+    font-size: clamp(0.6em, 1vw, 0.8em);
+  }
 `;
 
 export const FormInput = styled.input`
-  /* width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-right: 2em; */
     width: 100%;
     height: 2em;
     background-color: #FAF1E4;
@@ -55,6 +69,10 @@ export const FormInput = styled.input`
     color: black;
     text-align: center;
     font-size: clamp(1rem, 0.9vw, 1.3rem);
+
+    @media screen and (max-width: 1169px) {
+    min-width: 100%;
+  }
 `;
 
 export const FormButton = styled.button`
@@ -91,4 +109,15 @@ export const Row = styled.div`
   display: flex;
   flex-direction: row;
   margin-bottom: 0.3em;
+
+  @media screen and (max-width: 1169px) {
+    flex-direction: column;
+  }
+`;
+
+export const ErrorLabel = styled.div`
+  padding: 0.5em;
+  padding-bottom: 1em;
+  color: red;
+  font-size: 1em;
 `;
