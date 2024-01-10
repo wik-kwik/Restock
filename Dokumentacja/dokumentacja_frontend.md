@@ -1,4 +1,5 @@
 # Dokumentacja Frontendu
+### Osoba odpowiedzialna: Wiktoria Martyńska. Wykonana praca znajduje się w katalogu restock-frontend poziom wyżej w repozytorium Git.
 
 ## Spis Treści
 
