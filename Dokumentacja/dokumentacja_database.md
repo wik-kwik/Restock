@@ -9,14 +9,14 @@ Poniżej przedstawiono wszystkie tabele i dodatkowe/pozostałe elementy bazodano
 #### users
 Tabela *users* służy do przechowywania danych użytkowników zarejestrowanych w aplikacji. Zawiera kolumny z podstawowymi danymi użytkownika oraz kolumny do celów audytowych i archiwalnych (daty utworzenia, modyfikacji i usunięcia).
 
-| Nazwa kolumny | Typ kolumny  | Opis                           |
-|---------------|--------------|--------------------------------|
-| id            | INT          | Identyfikator użytkownika      |
-| username      | VARCHAR(30)  | Nazwa (login) użytkownika      |
-| password      | TEXT         | Hash hasła użytkownika (MD-5)  |
-| create_date   | TIMESTAMP    | Data utworzenia użytkownika    |
-| modify_date   | TIMESTAMP    | Data modyfikacji użytkownika   |
-| remove_date   | TIMESTAMP    | Data usunięcia użytkownika     |
+| Nazwa kolumny | Typ kolumny  | Opis                         |
+|---------------|--------------|------------------------------|
+| id            | INT          | Identyfikator użytkownika    |
+| username      | VARCHAR(30)  | Nazwa (login) użytkownika    |
+| password      | TEXT         | Hash hasła użytkownika       |
+| create_date   | TIMESTAMP    | Data utworzenia użytkownika  |
+| modify_date   | TIMESTAMP    | Data modyfikacji użytkownika |
+| remove_date   | TIMESTAMP    | Data usunięcia użytkownika   |
 
 #### sensors
 Tabela *sensors* służy do przechowywania danych sensorów używanych w systemie. Zawiera kolumny z różnymi danymi sensora, zarówno widocznymi dla użytkownika jak również technicznymi oraz kolumny do celów audytowych i archiwalnych (daty utworzenia, modyfikacji i usunięcia).
