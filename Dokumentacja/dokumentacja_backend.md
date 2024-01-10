@@ -1,4 +1,4 @@
-# 1.API
+# 1. API
 
 RESTowe API wystawione po stronie backendu umożliwia użytkownikowi wykonanie wielu czynności związanych z podstawowymi operacjami na danych. tzw. CRUD (create, read, update, delete).
 
@@ -12,12 +12,12 @@ PUT /api/address
 Ciało żądania: Obiekt typu AddressDTO reprezentujący zaktualizowane dane adresu.
 Aktualizuje dane istniejącego adresu na podstawie dostarczonych informacji.
 
-## 1.2 Dane sensorów
+## 1.2 Dane z sensorów
 
 POST /api/data
-Ciało żądania: Obiekt typu DataDTO reprezentujący dane do dodania.
+Ciało żądania: Obiekt typu DataDTO reprezentujący dane z sensorów.
 Dodaje nowe dane do systemu na podstawie dostarczonych informacji. Zostaje to wykonane po stronie hardware'u w momencie przekroczenia odpowiedniego thresholdu.
-Ten punkt końcowy jest odpowiedzalny także za wyszukanie najlepszej oferty ze strony Allegro.
+Ten punkt końcowy jest odpowiedzalny także za wywołanie logiki odpowiedzialnej za wyszukanie najlepszej oferty po stronie Allegro API.
 
 ## 1.3 Zamówienia
 
@@ -57,7 +57,7 @@ Pobiera informacje o konkretnym sensorze na podstawie jego identyfikatora.
 POST /api/sensors/register
 Ciało żądania: Obiekt typu NewSensorRequest reprezentujący dane nowego sensora.
 Dynamicznie rejestruje nowy sensor w systemie na podstawie dostarczonych danych z hardware'u.
-Dodatkowo dodaje 2 thresholdy powiązane z danym sensorem: Threshold for Update i Threshold for Order(w przypadku gdy sensor to fizyczny przycisk(PHYSICAL_BUTTON) a nie sensor umieszczony blisko produktu(DISTANCE_SENSOR) to thresholdy ustawiane są na wartości 1)
+Dodatkowo dodaje 2 thresholdy powiązane z danym sensorem: Threshold for Update i Threshold for Order (w przypadku gdy sensor to fizyczny przycisk [PHYSICAL_BUTTON] a nie czujnik odległości [DISTANCE_SENSOR] to thresholdy ustawiane są na wartości 1).
 
 PUT /api/sensors
 Ciało żądania: Obiekt typu SensorDTO reprezentujący zaktualizowane dane sensora.
