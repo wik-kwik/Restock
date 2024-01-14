@@ -19,6 +19,7 @@
 - przygotowanie uwierzytelniania z allegro sandbox
 ### Wiktoria Martyńska
 - frontend
+- integracja backendu z frontendem
 ### Marcin Karcz
 - baza danych
 - uwierzytelnianie
