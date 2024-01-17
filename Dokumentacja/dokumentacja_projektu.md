@@ -29,7 +29,7 @@
 <p>Model biznesowy zakłada współpracę z serwisem Allegro. Nasz produkt ułatwi użytkownikom korzystanie z zakupów internetowych.
 Rozwiązanie to będzie funkcjonować w taki sposób,że dostarczamy Allegro gotowe rozwiązanie, które wymaga uzyskania dostępu do pełnej wersji Allegro.
 Allegro następnie może sprzedawać w swoim serwisie nasze rozwiązanie. My dbamy o wsparcie techniczne dla urządzeń i połączenie do Allegro, a Allegro zapewnia dostęp do swojej bazy produktów.</p>
-## Sposób montażu - Norbert Barczyk
+### Sposób montażu - Norbert Barczyk
 <p>Użytkownik otrzymuje gotowy pojemnik ze zintegrowanym czujnikiem, ponadto dostaje przyciski do rozmieszczenia wedle własnego uznania</p>
  
  
@@ -114,8 +114,8 @@ Każdy ze skryptów pythonowych uruchomiony jest na innej płytce.`
 
 
 # 5\. Dokumentacja bezpieczeństwa - Marcin Karcz
-## 1\.1 Zabezpieczenie API przed nieautoryzowanym dostępem
-### 1\.1.1 API użytkownika
+## 5\.1 Zabezpieczenie API przed nieautoryzowanym dostępem
+### 5\.1.1 API użytkownika
 Wszystkie punkty końcowe udostępnione użytkownikowi zostały zabezpieczone z wykorzystaniem tokenów JWT (JSON Web Token).
 Aby request wykonany przez użytkownika mógł zostać uznany za poprawny, wymagane jest, aby w nagłówku HTTP "Authorization"
 znajdował się następujący ciąg znaków:
@@ -126,7 +126,7 @@ API użytkownika, wykonywana jest walidacja tokenu JWT. Sprawdzane jest:
 - potencjalne przedawnienie tokena
 
 Sekretne hasło JWT (JWT\_SECRET) jest globalnym parametrem, konfigurowanym w pliku application.properties (głównej konfiguracji usługi backend).
-### 1\.1.2 API Sensorów
+### 5\.1.2 API Sensorów
 Wszystkie punkty końcowe udostępnione do komunikacji z sensorami zostały zabezpieczone na podstawie generowanych przez aplikacje tokenów (losowych ciągów znaków).
 W tym przypadku nie mamy do czynienia do przenoszenia żadnych metadanych zakodowanych w tokenie, dlatego zrezygnowano z niepotrzebnej komplikacji wprowadzanej przez JWT.
 
@@ -139,9 +139,9 @@ SENSOR\_TOKEN jest generowany jeden raz i przypisywany do danego sensora. Każdy
 API rejestracyjne sensorów jest zabezpieczone i wymaga nagłówku HTTP "Authorization", który zawiera ciąg znaków "Register SENSOR\_REGISTER\_TOKEN",
 gdzie SENSOR\_REGISTER\_TOKEN jest parametrem globalnym aplikacji, konfigurowanym w pliku application.properties (głównej konfiguracji usługi backend).
 Rejestracja sensora jest poprawna tylko i wyłącznie, kiedy zawartość nagłówka Authorization zgadza się z parametrem globalnym SENSOR\_REGISTER\_TOKEN.
-### 1\.1.3 API do rejestracji oraz logowania użytkowników
+### 5\.1.3 API do rejestracji oraz logowania użytkowników
 Punkty końcowe udostępniające możliwość rejestracji oraz logowania użytkownika nie wymagają dodatkowego uwierzytelnienia.
-## 1\.2 Bezpieczeństwo połączenia z bazą danych
+## 5\.2 Bezpieczeństwo połączenia z bazą danych
 Połączenie z bazą danych zostało zabezpieczone za pośrednictwem protokołu TLSv1.3. W tym celu, z wykorzystaniem narzędzi openSSL zostały wygenerowane własnoręcznie podpisane certyfikaty.
 
 
@@ -186,9 +186,9 @@ Domyślne opcje tworzenia zapytania zawierają:
 - tylko nowe produkty (stan: Nowy)
 
 # 7\. Dokumentacja Backend - Marcin Karcz, Amadeusz Gunia, Jan Sopata, Norbert Barczyk
-# 1\. API - Marcin Karcz
+# 7\. API - Marcin Karcz
 RESTowe API wystawione po stronie backendu umożliwia użytkownikowi wykonanie wielu czynności związanych z podstawowymi operacjami na danych. tzw. CRUD (create, read, update, delete).
-## 1\.1 Adresy - Jan Sopata
+## 7\.1 Adresy - Jan Sopata
 GET /api/address
 Parametry: id (Long) - Identyfikator adresu.
 Pobiera informacje o konkretnym adresie na podstawie jego identyfikatora.
@@ -196,12 +196,12 @@ Pobiera informacje o konkretnym adresie na podstawie jego identyfikatora.
 PUT /api/address
 Ciało żądania: Obiekt typu AddressDTO reprezentujący zaktualizowane dane adresu.
 Aktualizuje dane istniejącego adresu na podstawie dostarczonych informacji.
-## 1\.2 Dane z sensorów - Norbert Barczyk,Amadeusz Gunia
+## 7\.2 Dane z sensorów - Norbert Barczyk,Amadeusz Gunia
 POST /api/data
 Ciało żądania: Obiekt typu DataDTO reprezentujący dane z sensorów.
 Dodaje nowe dane do systemu na podstawie dostarczonych informacji. Zostaje to wykonane po stronie hardware'u w momencie przekroczenia odpowiedniego thresholdu.
 Ten punkt końcowy jest odpowiedzalny także za wywołanie logiki odpowiedzialnej za wyszukanie najlepszej oferty po stronie Allegro API.
-## 1\.3 Zamówienia - Amadeusz Gunia
+## 7\.3 Zamówienia - Amadeusz Gunia
 GET /api/orders/pending
 Pobiera listę zamówień, które oczekują na realizację (czyli te o statusie ACCEPTED, IN\_DELIVERY i PENDING).
 
@@ -215,7 +215,7 @@ Zmienia status zamówienia na "ACCEPTED" na podstawie jego identyfikatora.
 PUT /api/orders/reject
 Parametry: id (Long) - Identyfikator zamówienia do odrzucenia.
 Zmienia status zamówienia na "REJECTED" na podstawie jego identyfikatora.
-## 1\.4 Parametry - Marcin Karcz
+## 7\.4 Parametry - Marcin Karcz
 GET /api/parameters/all
 Pozwala na pobranie parametrów(wyboru ofert Allegro i sposobu dostawy): Allegro Smart!, Super Sprzedawca, Strefa Marek, Paczkomat/Kurier.
 Są one niezbędne przy szukaniu najlepszej oferty z platformy Allegro.
@@ -223,7 +223,7 @@ Są one niezbędne przy szukaniu najlepszej oferty z platformy Allegro.
 PUT /api/parameters
 Ciało żądania: Lista obiektów typu ParameterDTO reprezentujących zaktualizowane dane parametrów.
 Aktualizuje dane wszystkich parametrów na podstawie dostarczonych informacji.
-## 1\.5 Sensory - Norbert Barczyk, Jan Sopata
+## 7\.5 Sensory - Norbert Barczyk, Jan Sopata
 GET /api/sensors/all
 Pobiera wszystkie sensory z systemu.
 
