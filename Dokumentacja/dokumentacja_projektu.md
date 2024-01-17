@@ -29,12 +29,12 @@
 <p>Model biznesowy zakłada współpracę z serwisem Allegro. Nasz produkt ułatwi użytkownikom korzystanie z zakupów internetowych.
 Rozwiązanie to będzie funkcjonować w taki sposób,że dostarczamy Allegro gotowe rozwiązanie, które wymaga uzyskania dostępu do pełnej wersji Allegro.
 Allegro następnie może sprzedawać w swoim serwisie nasze rozwiązanie. My dbamy o wsparcie techniczne dla urządzeń i połączenie do Allegro, a Allegro zapewnia dostęp do swojej bazy produktów.</p>
-# Sposób montażu - Norbert Barczyk
+## Sposób montażu - Norbert Barczyk
 <p>Użytkownik otrzymuje gotowy pojemnik ze zintegrowanym czujnikiem, ponadto dostaje przyciski do rozmieszczenia wedle własnego uznania</p>
  
  
  
-#3\. Dokumentacja Frontendu
+# 3\. Dokumentacja Frontendu
 ### Osoba odpowiedzialna: Wiktoria Martyńska. Wykonana praca znajduje się w katalogu restock-frontend poziom wyżej w repozytorium Git.
 ## Spis Treści
 1. [Wprowadzenie](#wprowadzenie)
@@ -72,7 +72,7 @@ Użytkownicy mają możliwość sprawdzania bieżącego statusu swoich zamówie�
 Użytkownicy mogą także skonfigurować parametry API Allegro używanego do składania zamówień. Mogą wybrać, czy korzystają z Allegro Smart!, czy chcą kupować tylko od Super Sprzedawców oraz ze Strefy Marek. Mogą także zdecydować, czy paczki mają być wysyłane kurierem czy do paczkomatu.
 
 
-#4\. Dokumentacja Hardware - Hubert Majdański, Jakub Sośniak
+# 4\. Dokumentacja Hardware - Hubert Majdański, Jakub Sośniak
 ## Schemat połączeń
 ![Schemat połączeń](schema.jpg)`
 ## Wykorzystany sprzęt
@@ -146,7 +146,7 @@ Połączenie z bazą danych zostało zabezpieczone za pośrednictwem protokołu 
 
 
 
-#6\. Dokumentacja Allegro - Paweł Bałuszyński[link do drugiego repo](https://github.com/baluszynski/allegro-connection)
+# 6\. Dokumentacja Allegro - Paweł Bałuszyński[link do drugiego repo](https://github.com/baluszynski/allegro-connection)
 ## [Uwierzytelnianie Client_credentials](https://developer.allegro.pl/tutorials/uwierzytelnianie-i-autoryzacja-zlq9e75GdIR#clientcredentials-flow)
 Korzystając z konta Allegro należy przejść pod [link](https://apps.developer.allegro.pl.allegrosandbox.pl/) i zarejestrować nową aplikację, wykorzystującą uwierzytelnianie typu device, aby otrzymać unikalne *CLIENT ID* i *CLIENT SECRET*. Umożliwia to autoryzację aplikacji bez zgodny użytkownika na działanie. Dzięki temu zapewniony jest dostęp do publicznych zasobów Allegro jak oferty (w wersji sandbox) zgodnie z [regulaminem REST API](https://allegro.pl/dla-sprzedajacych/1-czerwca-2021-w-api-allegro-ograniczymy-dostep-do-publicznych-danych-o-sprzedazy-innych-uzytkownikow-i-zmienimy-forme-ich-udostepniania-O3BlgZVdwCa).
 ## Autoryzacja aplikacji
@@ -185,7 +185,7 @@ Domyślne opcje tworzenia zapytania zawierają:
 - format sprzedaży "Kup teraz"
 - tylko nowe produkty (stan: Nowy)
 
-#7\. Dokumentacja Backend - Marcin Karcz, Amadeusz Gunia, Jan Sopata, Norbert Barczyk
+# 7\. Dokumentacja Backend - Marcin Karcz, Amadeusz Gunia, Jan Sopata, Norbert Barczyk
 # 1\. API - Marcin Karcz
 RESTowe API wystawione po stronie backendu umożliwia użytkownikowi wykonanie wielu czynności związanych z podstawowymi operacjami na danych. tzw. CRUD (create, read, update, delete).
 ## 1\.1 Adresy - Jan Sopata
@@ -245,7 +245,7 @@ Parametry: id (Long) - Identyfikator sensora do usunięcia.
 Usuwa sensor z systemu na podstawie jego identyfikatora.
 
 
-#8\. Dokumentacja bazy danych - Amadeusz Gunia
+# 8\. Dokumentacja bazy danych - Amadeusz Gunia
 ## MariaDB
 Do stworzenia i utrzymania bazy danych w naszym projekcie został wybrany system **MariaDB**. Jest to darmowa relacyjna baza danych wywowdząca się z MySQL.
 ## Struktura bazy danych
@@ -365,7 +365,7 @@ W bazie danych dodano dodatkowe ograniczenia dla wybranych tabel tj. sprawdzanie
 ### Skrypty
 Do stworzenia bazy danych używane są trzy skrypty SQL. Pierwszy z nich tworzy opisane powyżej tabele, drugi dodaje ograniczenia, a trzeci wprowadza do tabeli parameters odpowiednie parametry z domyślnymi wartościami.
 
-#9\. Dokumentacja wdrożenia systemu - Marcin Karcz
+# 9\. Dokumentacja wdrożenia systemu - Marcin Karcz
 ## Wstęp
 W celu ułatwienia deploymentu całości aplikacji frontend, backend oraz baza danych zostały skonterenyzowane. Aby, skutecznie
 wystartować wspomniane serwisy, należy zadbać o to, aby docker na maszynie hosta korzystał z docker engine w wersji 19.03.0+.
