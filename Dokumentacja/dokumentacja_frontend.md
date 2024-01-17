@@ -1,4 +1,40 @@
-﻿# Dokumentacja Frontendu
+# Restock
+# 1\. Podział pracy w projekcie
+### Norbert Barczyk
+- manager
+- REST API
+### Amadeusz Gunia
+- baza danych
+- REST API
+- logika aplikacji po stronie backendu (dynamiczna rejestracja sensorów, integracja z Allegro API)
+### Hubert Majdański
+- hardware (elektronika + skrypty + integracja z serwerem)
+### Jakub Sośniak
+- hardware (elektronika + skrypty + integracja z serwerem)
+### Jan Sopata
+- REST API
+- integracja backendu z frontendem
+### Paweł Bałuszyński
+- research Allegro API
+- przygotowanie uwierzytelniania z allegro sandbox
+### Wiktoria Martyńska
+- frontend
+- integracja backendu z frontendem
+### Marcin Karcz
+- baza danych
+- uwierzytelnianie
+- Docker
+
+##2\. Model biznesowy - Norbert Barczyk
+<p>Model biznesowy zakłada współpracę z serwisem Allegro. Nasz produkt ułatwi użytkownikom korzystanie z zakupów internetowych.
+Rozwiązanie to będzie funkcjonować w taki sposób,że dostarczamy Allegro gotowe rozwiązanie, które wymaga uzyskania dostępu do pełnej wersji Allegro.
+Allegro następnie może sprzedawać w swoim serwisie nasze rozwiązanie. My dbamy o wsparcie techniczne dla urządzeń i połączenie do Allegro, a Allegro zapewnia dostęp do swojej bazy produktów.</p>
+## Sposób montażu - Norbert Barczyk
+<p>Użytkownik otrzymuje gotowy pojemnik ze zintegrowanym czujnikiem, ponadto dostaje przyciski do rozmieszczenia wedle własnego uznania</p>
+ 
+ 
+ 
+#3\. Dokumentacja Frontendu
 ### Osoba odpowiedzialna: Wiktoria Martyńska. Wykonana praca znajduje się w katalogu restock-frontend poziom wyżej w repozytorium Git.
 ## Spis Treści
 1. [Wprowadzenie](#wprowadzenie)
@@ -34,7 +70,9 @@ Po wybraniu konkretnego zamówienia, użytkownicy mogą zobaczyć jego szczegó�
 Użytkownicy mają możliwość sprawdzania bieżącego statusu swoich zamówień. Statusy są aktualizowane na bieżąco, aby dostarczyć informacje na temat przetwarzania zamówienia.
 ## 7\. Konfiguracja API Allegro
 Użytkownicy mogą także skonfigurować parametry API Allegro używanego do składania zamówień. Mogą wybrać, czy korzystają z Allegro Smart!, czy chcą kupować tylko od Super Sprzedawców oraz ze Strefy Marek. Mogą także zdecydować, czy paczki mają być wysyłane kurierem czy do paczkomatu.
-# Dokumentacja Hardware
+
+
+#4\. Dokumentacja Hardware - Hubert Majdański, Jakub Sośniak
 ## Schemat połączeń
 ![Schemat połączeń](schema.jpg)`
 ## Wykorzystany sprzęt
@@ -67,13 +105,15 @@ Użytkownicy mogą także skonfigurować parametry API Allegro używanego do sk�
 # Przygotowane skrypty
 Wykorzystywanymi skryptami są:
 
-- **Trzy skrypty pomocnicze w języku bash** – są one wywoływane w Cron’ie – pozwalają one na opóźnienie uruchomienia skryptów pythonowych do momentu gdy MQTT jest gotowe.
-- **Skrypt button.py** – Odpowiada za obsługę przycisku oraz przesył danych do brokera MQTT.
-- **Skrypt ultrasonic\_sensor.py** – Odpowiada za obsługę przycisku oraz przesył danych do brokera MQTT.
-- **Skrypt client.py** – jest tak naprawdę sercem systemu, to tutaj odbierane są dane od poszczególnych sensorów oraz przesyłane do serwera.
+- **Trzy skrypty pomocnicze w języku bash** – są one wywoływane w Cron’ie – pozwalają one na opóźnienie uruchomienia skryptów pythonowych do momentu gdy MQTT jest gotowe. - Hubert
+- **Skrypt button.py** – Odpowiada za obsługę przycisku oraz przesył danych do brokera MQTT. - Hubert
+- **Skrypt ultrasonic\_sensor.py** – Odpowiada za obsługę przycisku oraz przesył danych do brokera MQTT. - Jakub
+- **Skrypt client.py** – jest tak naprawdę sercem systemu, to tutaj odbierane są dane od poszczególnych sensorów oraz przesyłane do serwera. - Jakub
 
 Każdy ze skryptów pythonowych uruchomiony jest na innej płytce.`
-# 1\. Dokumentacja bezpieczeństwa
+
+
+# 5\. Dokumentacja bezpieczeństwa - Marcin Karcz
 ## 1\.1 Zabezpieczenie API przed nieautoryzowanym dostępem
 ### 1\.1.1 API użytkownika
 Wszystkie punkty końcowe udostępnione użytkownikowi zostały zabezpieczone z wykorzystaniem tokenów JWT (JSON Web Token).
@@ -103,39 +143,10 @@ Rejestracja sensora jest poprawna tylko i wyłącznie, kiedy zawartość nagłó
 Punkty końcowe udostępniające możliwość rejestracji oraz logowania użytkownika nie wymagają dodatkowego uwierzytelnienia.
 ## 1\.2 Bezpieczeństwo połączenia z bazą danych
 Połączenie z bazą danych zostało zabezpieczone za pośrednictwem protokołu TLSv1.3. W tym celu, z wykorzystaniem narzędzi openSSL zostały wygenerowane własnoręcznie podpisane certyfikaty.
-# Podział pracy w projekcie
-### Norbert Barczyk
-- manager
-- REST API
-### Amadeusz Gunia
-- baza danych
-- REST API
-- logika aplikacji po stronie backendu (dynamiczna rejestracja sensorów, integracja z Allegro API)
-### Hubert Majdański
-- hardware (elektronika + skrypty + integracja z serwerem)
-### Jakub Sośniak
-- hardware (elektronika + skrypty + integracja z serwerem)
-### Jan Sopata
-- REST API
-- integracja backendu z frontendem
-### Paweł Bałuszyński
-- research Allegro API
-- przygotowanie uwierzytelniania z allegro sandbox
-### Wiktoria Martyńska
-- frontend
-- integracja backendu z frontendem
-### Marcin Karcz
-- baza danych
-- uwierzytelnianie
-- Docker
-# Restock
-## Model biznesowy
-<p>Model biznesowy zakłada współpracę z serwisem Allegro. Nasz produkt ułatwi użytkownikom korzystanie z zakupów internetowych.
-Rozwiązanie to będzie funkcjonować w taki sposób,że dostarczamy Allegro gotowe rozwiązanie, które wymaga uzyskania dostępu do pełnej wersji Allegro.
-Allegro następnie może sprzedawać w swoim serwisie nasze rozwiązanie. My dbamy o wsparcie techniczne dla urządzeń i połączenie do Allegro, a Allegro zapewnia dostęp do swojej bazy produktów.</p>
-## Sposób montażu
-<p>Użytkownik otrzymuje gotowy pojemnik ze zintegrowanym czujnikiem, ponadto dostaje przyciski do rozmieszczenia wedle własnego uznania</p>
-# Dokumentacja Allegro
+
+
+
+#6\. Dokumentacja Allegro - Paweł Bałuszyński[link do drugiego repo](https://github.com/baluszynski/allegro-connection)
 ## [Uwierzytelnianie Client_credentials](https://developer.allegro.pl/tutorials/uwierzytelnianie-i-autoryzacja-zlq9e75GdIR#clientcredentials-flow)
 Korzystając z konta Allegro należy przejść pod [link](https://apps.developer.allegro.pl.allegrosandbox.pl/) i zarejestrować nową aplikację, wykorzystującą uwierzytelnianie typu device, aby otrzymać unikalne *CLIENT ID* i *CLIENT SECRET*. Umożliwia to autoryzację aplikacji bez zgodny użytkownika na działanie. Dzięki temu zapewniony jest dostęp do publicznych zasobów Allegro jak oferty (w wersji sandbox) zgodnie z [regulaminem REST API](https://allegro.pl/dla-sprzedajacych/1-czerwca-2021-w-api-allegro-ograniczymy-dostep-do-publicznych-danych-o-sprzedazy-innych-uzytkownikow-i-zmienimy-forme-ich-udostepniania-O3BlgZVdwCa).
 ## Autoryzacja aplikacji
@@ -173,9 +184,11 @@ Domyślne opcje tworzenia zapytania zawierają:
 
 - format sprzedaży "Kup teraz"
 - tylko nowe produkty (stan: Nowy)
-# 1\. API
+
+#7\. Dokumentacja Backend - Marcin Karcz, Amadeusz Gunia, Jan Sopata, Norbert Barczyk
+# 1\. API - Marcin Karcz
 RESTowe API wystawione po stronie backendu umożliwia użytkownikowi wykonanie wielu czynności związanych z podstawowymi operacjami na danych. tzw. CRUD (create, read, update, delete).
-## 1\.1 Adresy
+## 1\.1 Adresy - Jan Sopata
 GET /api/address
 Parametry: id (Long) - Identyfikator adresu.
 Pobiera informacje o konkretnym adresie na podstawie jego identyfikatora.
@@ -183,12 +196,12 @@ Pobiera informacje o konkretnym adresie na podstawie jego identyfikatora.
 PUT /api/address
 Ciało żądania: Obiekt typu AddressDTO reprezentujący zaktualizowane dane adresu.
 Aktualizuje dane istniejącego adresu na podstawie dostarczonych informacji.
-## 1\.2 Dane z sensorów
+## 1\.2 Dane z sensorów - Norbert Barczyk,Amadeusz Gunia
 POST /api/data
 Ciało żądania: Obiekt typu DataDTO reprezentujący dane z sensorów.
 Dodaje nowe dane do systemu na podstawie dostarczonych informacji. Zostaje to wykonane po stronie hardware'u w momencie przekroczenia odpowiedniego thresholdu.
 Ten punkt końcowy jest odpowiedzalny także za wywołanie logiki odpowiedzialnej za wyszukanie najlepszej oferty po stronie Allegro API.
-## 1\.3 Zamówienia
+## 1\.3 Zamówienia - Amadeusz Gunia
 GET /api/orders/pending
 Pobiera listę zamówień, które oczekują na realizację (czyli te o statusie ACCEPTED, IN\_DELIVERY i PENDING).
 
@@ -202,7 +215,7 @@ Zmienia status zamówienia na "ACCEPTED" na podstawie jego identyfikatora.
 PUT /api/orders/reject
 Parametry: id (Long) - Identyfikator zamówienia do odrzucenia.
 Zmienia status zamówienia na "REJECTED" na podstawie jego identyfikatora.
-## 1\.4 Parametry
+## 1\.4 Parametry - Marcin Karcz
 GET /api/parameters/all
 Pozwala na pobranie parametrów(wyboru ofert Allegro i sposobu dostawy): Allegro Smart!, Super Sprzedawca, Strefa Marek, Paczkomat/Kurier.
 Są one niezbędne przy szukaniu najlepszej oferty z platformy Allegro.
@@ -210,7 +223,7 @@ Są one niezbędne przy szukaniu najlepszej oferty z platformy Allegro.
 PUT /api/parameters
 Ciało żądania: Lista obiektów typu ParameterDTO reprezentujących zaktualizowane dane parametrów.
 Aktualizuje dane wszystkich parametrów na podstawie dostarczonych informacji.
-## 1\.5 Sensory
+## 1\.5 Sensory - Norbert Barczyk, Jan Sopata
 GET /api/sensors/all
 Pobiera wszystkie sensory z systemu.
 
@@ -230,7 +243,9 @@ Aktualizuje dane istniejącego sensora na podstawie dostarczonych informacji.
 DELETE /api/sensors
 Parametry: id (Long) - Identyfikator sensora do usunięcia.
 Usuwa sensor z systemu na podstawie jego identyfikatora.
-# Dokumentacja bazy danych
+
+
+#8\. Dokumentacja bazy danych - Amadeusz Gunia
 ## MariaDB
 Do stworzenia i utrzymania bazy danych w naszym projekcie został wybrany system **MariaDB**. Jest to darmowa relacyjna baza danych wywowdząca się z MySQL.
 ## Struktura bazy danych
@@ -349,6 +364,8 @@ W bazie danych dodano dodatkowe ograniczenia dla wybranych tabel tj. sprawdzanie
 
 ### Skrypty
 Do stworzenia bazy danych używane są trzy skrypty SQL. Pierwszy z nich tworzy opisane powyżej tabele, drugi dodaje ograniczenia, a trzeci wprowadza do tabeli parameters odpowiednie parametry z domyślnymi wartościami.
+
+#9\. Dokumentacja wdrożenia systemu - Marcin Karcz
 ## Wstęp
 W celu ułatwienia deploymentu całości aplikacji frontend, backend oraz baza danych zostały skonterenyzowane. Aby, skutecznie
 wystartować wspomniane serwisy, należy zadbać o to, aby docker na maszynie hosta korzystał z docker engine w wersji 19.03.0+.
