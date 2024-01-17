@@ -34,7 +34,7 @@ Sposób montażu - Norbert Barczyk
  
  
  
-# 3\. Dokumentacja Frontendu
+# 3\. Dokumentacja Frontendu - Wiktoria Martyńska
 ### Osoba odpowiedzialna: Wiktoria Martyńska. Wykonana praca znajduje się w katalogu restock-frontend poziom wyżej w repozytorium Git.
 ## Spis Treści
 1. [Wprowadzenie](#wprowadzenie)
@@ -201,7 +201,7 @@ POST /api/data
 Ciało żądania: Obiekt typu DataDTO reprezentujący dane z sensorów.
 Dodaje nowe dane do systemu na podstawie dostarczonych informacji. Zostaje to wykonane po stronie hardware'u w momencie przekroczenia odpowiedniego thresholdu.
 Ten punkt końcowy jest odpowiedzalny także za wywołanie logiki odpowiedzialnej za wyszukanie najlepszej oferty po stronie Allegro API.
-## 7\.3 Zamówienia - Amadeusz Gunia
+## 7\.3 Zamówienia - Amadeusz Gunia,Jan Sopata
 GET /api/orders/pending
 Pobiera listę zamówień, które oczekują na realizację (czyli te o statusie ACCEPTED, IN\_DELIVERY i PENDING).
 
@@ -215,7 +215,7 @@ Zmienia status zamówienia na "ACCEPTED" na podstawie jego identyfikatora.
 PUT /api/orders/reject
 Parametry: id (Long) - Identyfikator zamówienia do odrzucenia.
 Zmienia status zamówienia na "REJECTED" na podstawie jego identyfikatora.
-## 7\.4 Parametry - Marcin Karcz
+## 7\.4 Parametry - Marcin Karcz,Jan Sopata
 GET /api/parameters/all
 Pozwala na pobranie parametrów(wyboru ofert Allegro i sposobu dostawy): Allegro Smart!, Super Sprzedawca, Strefa Marek, Paczkomat/Kurier.
 Są one niezbędne przy szukaniu najlepszej oferty z platformy Allegro.
