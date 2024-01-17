@@ -146,7 +146,7 @@ Połączenie z bazą danych zostało zabezpieczone za pośrednictwem protokołu 
 
 
 
-# 6\. Dokumentacja Allegro - Paweł Bałuszyński[link do drugiego repo](https://github.com/baluszynski/allegro-connection)
+# 6\. Dokumentacja Allegro - Paweł Bałuszyński [link do drugiego repo](https://github.com/baluszynski/allegro-connection)
 ## [Uwierzytelnianie Client_credentials](https://developer.allegro.pl/tutorials/uwierzytelnianie-i-autoryzacja-zlq9e75GdIR#clientcredentials-flow)
 Korzystając z konta Allegro należy przejść pod [link](https://apps.developer.allegro.pl.allegrosandbox.pl/) i zarejestrować nową aplikację, wykorzystującą uwierzytelnianie typu device, aby otrzymać unikalne *CLIENT ID* i *CLIENT SECRET*. Umożliwia to autoryzację aplikacji bez zgodny użytkownika na działanie. Dzięki temu zapewniony jest dostęp do publicznych zasobów Allegro jak oferty (w wersji sandbox) zgodnie z [regulaminem REST API](https://allegro.pl/dla-sprzedajacych/1-czerwca-2021-w-api-allegro-ograniczymy-dostep-do-publicznych-danych-o-sprzedazy-innych-uzytkownikow-i-zmienimy-forme-ich-udostepniania-O3BlgZVdwCa).
 ## Autoryzacja aplikacji
