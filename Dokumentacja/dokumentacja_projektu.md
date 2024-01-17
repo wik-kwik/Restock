@@ -35,7 +35,7 @@ Sposób montażu - Norbert Barczyk
  
  
 # 3\. Dokumentacja Frontendu - Wiktoria Martyńska
-### Osoba odpowiedzialna: Wiktoria Martyńska. Wykonana praca znajduje się w katalogu restock-frontend poziom wyżej w repozytorium Git.
+### Wykonana praca znajduje się w katalogu restock-frontend poziom wyżej w repozytorium Git.
 ## Spis Treści
 1. [Wprowadzenie](#wprowadzenie)
 1. [Rejestracja i Logowanie](#rejestracja-i-logowanie)
