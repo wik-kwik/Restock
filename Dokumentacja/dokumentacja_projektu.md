@@ -34,45 +34,37 @@ Sposób montażu - Norbert Barczyk
  
  
  
-# 3\. Dokumentacja Frontendu - Wiktoria Martyńska
-### Wykonana praca znajduje się w katalogu restock-frontend poziom wyżej w repozytorium Git.
-## Spis Treści
-1. [Wprowadzenie](#wprowadzenie)
-1. [Rejestracja i Logowanie](#rejestracja-i-logowanie)
-1. [Konfiguracja Czujników](#konfiguracja-czujników)
-1. [Edycja Danych Adresowych](#edycja-danych-adresowych)
-1. [Zarządzanie Zamówieniami](#zarządzanie-zamówieniami)
-1. [Sprawdzanie Szczegółów i Statusów Zamówień](#sprawdzanie-szczegółów-i-statusów-zamówień)
-1. [Konfiguracja API Allegro](#konfiguracja-api-allegro)
-## 1\. Wprowadzenie
+# 3\. Dokumentacja frontendu - Wiktoria Martyńska
+### Cały kod znajduje się w katalogu restock-frontend poziom wyżej w repozytorium Git.
+## Wprowadzenie
 Frontendowa część projektu umożliwia użytkownikom łatwe zarządzanie swoim kontem, czujnikami oraz zamówieniami. Poniżej znajdują się opisy głównych funkcji systemu.
-## 2\. Rejestracja i Logowanie
-### 2\.1 Rejestracja
+## Rejestracja i Logowanie
+### Rejestracja
 Użytkownicy mogą utworzyć nowe konto, podając swoją nazwę użytkownika i hasło.
-### 2\.2 Logowanie
+### Logowanie
 Zarejestrowani użytkownicy mogą zalogować się na wcześniej utworzone konto. Sesje są bezpieczne, a użytkownicy mają dostęp do swojego konta po zalogowaniu. W systemie generowany jest indywidualny token dla każdego użytkownika.
-## 3\. Konfiguracja Czujników
-### 3\.1 Dodawanie Czujników
+## Konfiguracja Czujników
+### Dodawanie Czujników
 Zalogowani użytkownicy mogą skonfigurować nowo podłączone czujniki. W trakcie procesu konfiguracji, użytkownicy podają niezbędne informacje o nowym czujniku, takie jak nazwa, obsługiwany przez niego produkt itp.
-### 3\.2 Edycja Czujników
+### Edycja Czujników
 Użytkownicy mają możliwość edycji parametrów swoich dodanych czujników. Mogą aktualizować nazwę, przypisywać produkt do danego czujnika, modyfikować progi decyzyjne odnośnie rozpoczęcia procesu zamówienia danego produktu. Opcjonalnie, mogą także wybrać preferowaną markę i ilość produktu.
-## 4\. Edycja Danych Adresowych
+## Edycja Danych Adresowych
 Zalogowani użytkownicy mogą edytować swoje dane adresowe, takie jak adres zamieszkania, numer telefonu itp. Aktualizacje te wpływają na informacje używane w procesie zamawiania.
-## 5\. Zarządzanie Zamówieniami
-### 5\.1 Przegląd Zamówień
+## Zarządzanie Zamówieniami
+### Przegląd Zamówień
 Użytkownicy mają dostęp do listy swoich zamówień. Mogą przeglądać je chronologicznie i sprawdzać ich ogólne informacje.
-### 5\.2 Akceptacja/Odrzucenie Zamówienia
+### Akceptacja/Odrzucenie Zamówienia
 Użytkownicy mogą akceptować lub odrzucać otrzymane zamówienia. Proces ten jest intuicyjny i zapewnia szybką reakcję na nowe zamówienia.
-## 6\. Sprawdzanie Szczegółów i Statusów Zamówień
-### 6\.1 Szczegóły Zamówienia
+## Sprawdzanie Szczegółów i Statusów Zamówień
+### Szczegóły Zamówienia
 Po wybraniu konkretnego zamówienia, użytkownicy mogą zobaczyć jego szczegóły, takie jak produkty, ilość, cena itp.
-### 6\.2 Statusy Zamówień
+### Statusy Zamówień
 Użytkownicy mają możliwość sprawdzania bieżącego statusu swoich zamówień. Statusy są aktualizowane na bieżąco, aby dostarczyć informacje na temat przetwarzania zamówienia.
-## 7\. Konfiguracja API Allegro
+## Konfiguracja API Allegro
 Użytkownicy mogą także skonfigurować parametry API Allegro używanego do składania zamówień. Mogą wybrać, czy korzystają z Allegro Smart!, czy chcą kupować tylko od Super Sprzedawców oraz ze Strefy Marek. Mogą także zdecydować, czy paczki mają być wysyłane kurierem czy do paczkomatu.
 
 
-# 4\. Dokumentacja Hardware - Hubert Majdański, Jakub Sośniak
+# 4\. Dokumentacja sprzętu - Hubert Majdański, Jakub Sośniak
 ## Schemat połączeń
 ![Schemat połączeń](schema.jpg)`
 ## Wykorzystany sprzęt
@@ -80,27 +72,27 @@ Użytkownicy mogą także skonfigurować parametry API Allegro używanego do sk�
 - **1x Czujnik ultradzwiękowy hc-sr04**
 - **3x Raspberry Pi Zero W**
 ## Opis działania
-## 1\. Podstawa Systemu
+## Podstawa Systemu
 - Działanie części hardware oparte jest na protokole **MQTT** oraz połączeniu z **wi-fi**.
-## 2\. Rola Płytek
+## Rola Płytek
 - Dwie z płytek pełnią rolę **transmittera**, natomiast jedna z płytek pełni rolę **odbiorcy (receiver)**.
-## 3\. Podłączenia Transmitterów
+## Podłączenia Transmitterów
 - Dwie płytki pełniące rolę transmitterów podłączone są kolejno do:
 - **Przycisku rezystancyjnego**
 - **Czujnika ultradzwiękowego HC-SR04**
-## 4\. Funkcjonowanie Receivera
+## Funkcjonowanie Receivera
 - Receiver odbiera dane zebrane przez obie płytki.
 - Zmiany są wysyłane w momencie przekroczenia przez układ **threshholdu**, który ustalany jest przez frontend i przesyłany do płytek w momencie jego zmiany.
-## 5\. Komunikacja w Systemie
+## Komunikacja w Systemie
 - Komunikacja Receiver – Transmitter oparta jest o protokół MQTT.
 - Receiver pełni również rolę **brokera MQTT**, natomiast transmitterzy – **klientami MQTT**.
-## 6\. Automatyczne Uruchamianie Systemu
+## Automatyczne Uruchamianie Systemu
 - System uruchamia się automatycznie wraz z podłączeniem do zasilania.
 - Wykorzystano **cron**, będący jednym z podstawowych narzędzi systemów uniksowych, który pozwala na cykliczne uruchamianie programów (w tym przypadku po uruchomieniu systemu).
-## 7\. Przetwarzanie i Przesyłanie Danych
+## Przetwarzanie i Przesyłanie Danych
 - Odbierane przez receiver dane są formatowane do formatu **json** oraz przesyłane do serwera.
 - Na serwerze tworzony jest nowy wpis w bazie na podstawie odczytanej wartości.
-## 8\. Rejestracja Czujników
+## Rejestracja Czujników
 - Czujniki rejestrowane są w bazie czujników od razu po uruchomieniu na podstawie swojego **adresu MAC** (odczytywanego na początku każdego ze skryptów).`
 # Przygotowane skrypty
 Wykorzystywanymi skryptami są:
@@ -114,8 +106,8 @@ Każdy ze skryptów pythonowych uruchomiony jest na innej płytce.`
 
 
 # 5\. Dokumentacja bezpieczeństwa - Marcin Karcz
-## 5\.1 Zabezpieczenie API przed nieautoryzowanym dostępem
-### 5\.1.1 API użytkownika
+## Zabezpieczenie API przed nieautoryzowanym dostępem
+### API użytkownika
 Wszystkie punkty końcowe udostępnione użytkownikowi zostały zabezpieczone z wykorzystaniem tokenów JWT (JSON Web Token).
 Aby request wykonany przez użytkownika mógł zostać uznany za poprawny, wymagane jest, aby w nagłówku HTTP "Authorization"
 znajdował się następujący ciąg znaków:
@@ -126,7 +118,7 @@ API użytkownika, wykonywana jest walidacja tokenu JWT. Sprawdzane jest:
 - potencjalne przedawnienie tokena
 
 Sekretne hasło JWT (JWT\_SECRET) jest globalnym parametrem, konfigurowanym w pliku application.properties (głównej konfiguracji usługi backend).
-### 5\.1.2 API Sensorów
+### API Sensorów
 Wszystkie punkty końcowe udostępnione do komunikacji z sensorami zostały zabezpieczone na podstawie generowanych przez aplikacje tokenów (losowych ciągów znaków).
 W tym przypadku nie mamy do czynienia do przenoszenia żadnych metadanych zakodowanych w tokenie, dlatego zrezygnowano z niepotrzebnej komplikacji wprowadzanej przez JWT.
 
@@ -139,14 +131,15 @@ SENSOR\_TOKEN jest generowany jeden raz i przypisywany do danego sensora. Każdy
 API rejestracyjne sensorów jest zabezpieczone i wymaga nagłówku HTTP "Authorization", który zawiera ciąg znaków "Register SENSOR\_REGISTER\_TOKEN",
 gdzie SENSOR\_REGISTER\_TOKEN jest parametrem globalnym aplikacji, konfigurowanym w pliku application.properties (głównej konfiguracji usługi backend).
 Rejestracja sensora jest poprawna tylko i wyłącznie, kiedy zawartość nagłówka Authorization zgadza się z parametrem globalnym SENSOR\_REGISTER\_TOKEN.
-### 5\.1.3 API do rejestracji oraz logowania użytkowników
+### API do rejestracji oraz logowania użytkowników
 Punkty końcowe udostępniające możliwość rejestracji oraz logowania użytkownika nie wymagają dodatkowego uwierzytelnienia.
-## 5\.2 Bezpieczeństwo połączenia z bazą danych
+## Bezpieczeństwo połączenia z bazą danych
 Połączenie z bazą danych zostało zabezpieczone za pośrednictwem protokołu TLSv1.3. W tym celu, z wykorzystaniem narzędzi openSSL zostały wygenerowane własnoręcznie podpisane certyfikaty.
 
 
 
-# 6\. Dokumentacja Allegro - Paweł Bałuszyński [link do drugiego repo](https://github.com/baluszynski/allegro-connection)
+# 6\. Dokumentacja Allegro - Paweł Bałuszyński 
+### [link do drugiego repozytorium](https://github.com/baluszynski/allegro-connection) - kod związany z researchem nt. uwierzytelniania allegro
 ## [Uwierzytelnianie Client_credentials](https://developer.allegro.pl/tutorials/uwierzytelnianie-i-autoryzacja-zlq9e75GdIR#clientcredentials-flow)
 Korzystając z konta Allegro należy przejść pod [link](https://apps.developer.allegro.pl.allegrosandbox.pl/) i zarejestrować nową aplikację, wykorzystującą uwierzytelnianie typu device, aby otrzymać unikalne *CLIENT ID* i *CLIENT SECRET*. Umożliwia to autoryzację aplikacji bez zgodny użytkownika na działanie. Dzięki temu zapewniony jest dostęp do publicznych zasobów Allegro jak oferty (w wersji sandbox) zgodnie z [regulaminem REST API](https://allegro.pl/dla-sprzedajacych/1-czerwca-2021-w-api-allegro-ograniczymy-dostep-do-publicznych-danych-o-sprzedazy-innych-uzytkownikow-i-zmienimy-forme-ich-udostepniania-O3BlgZVdwCa).
 ## Autoryzacja aplikacji
@@ -185,10 +178,10 @@ Domyślne opcje tworzenia zapytania zawierają:
 - format sprzedaży "Kup teraz"
 - tylko nowe produkty (stan: Nowy)
 
-# 7\. Dokumentacja Backend - Marcin Karcz, Amadeusz Gunia, Jan Sopata, Norbert Barczyk
-# 7\. API - Marcin Karcz
+# 7\. Dokumentacja backend - Marcin Karcz, Amadeusz Gunia, Jan Sopata, Norbert Barczyk
+# API - Marcin Karcz
 RESTowe API wystawione po stronie backendu umożliwia użytkownikowi wykonanie wielu czynności związanych z podstawowymi operacjami na danych. tzw. CRUD (create, read, update, delete).
-## 7\.1 Adresy - Jan Sopata
+## Adresy - Jan Sopata
 GET /api/address
 Parametry: id (Long) - Identyfikator adresu.
 Pobiera informacje o konkretnym adresie na podstawie jego identyfikatora.
@@ -196,12 +189,12 @@ Pobiera informacje o konkretnym adresie na podstawie jego identyfikatora.
 PUT /api/address
 Ciało żądania: Obiekt typu AddressDTO reprezentujący zaktualizowane dane adresu.
 Aktualizuje dane istniejącego adresu na podstawie dostarczonych informacji.
-## 7\.2 Dane z sensorów - Norbert Barczyk,Amadeusz Gunia
+## Dane z sensorów - Norbert Barczyk, Amadeusz Gunia
 POST /api/data
 Ciało żądania: Obiekt typu DataDTO reprezentujący dane z sensorów.
 Dodaje nowe dane do systemu na podstawie dostarczonych informacji. Zostaje to wykonane po stronie hardware'u w momencie przekroczenia odpowiedniego thresholdu.
 Ten punkt końcowy jest odpowiedzalny także za wywołanie logiki odpowiedzialnej za wyszukanie najlepszej oferty po stronie Allegro API.
-## 7\.3 Zamówienia - Amadeusz Gunia,Jan Sopata
+## Zamówienia - Amadeusz Gunia, Jan Sopata
 GET /api/orders/pending
 Pobiera listę zamówień, które oczekują na realizację (czyli te o statusie ACCEPTED, IN\_DELIVERY i PENDING).
 
@@ -215,7 +208,7 @@ Zmienia status zamówienia na "ACCEPTED" na podstawie jego identyfikatora.
 PUT /api/orders/reject
 Parametry: id (Long) - Identyfikator zamówienia do odrzucenia.
 Zmienia status zamówienia na "REJECTED" na podstawie jego identyfikatora.
-## 7\.4 Parametry - Marcin Karcz,Jan Sopata
+## Parametry - Marcin Karcz, Jan Sopata
 GET /api/parameters/all
 Pozwala na pobranie parametrów(wyboru ofert Allegro i sposobu dostawy): Allegro Smart!, Super Sprzedawca, Strefa Marek, Paczkomat/Kurier.
 Są one niezbędne przy szukaniu najlepszej oferty z platformy Allegro.
@@ -223,7 +216,7 @@ Są one niezbędne przy szukaniu najlepszej oferty z platformy Allegro.
 PUT /api/parameters
 Ciało żądania: Lista obiektów typu ParameterDTO reprezentujących zaktualizowane dane parametrów.
 Aktualizuje dane wszystkich parametrów na podstawie dostarczonych informacji.
-## 7\.5 Sensory - Norbert Barczyk, Jan Sopata
+## Sensory - Norbert Barczyk, Jan Sopata
 GET /api/sensors/all
 Pobiera wszystkie sensory z systemu.
 
@@ -243,7 +236,6 @@ Aktualizuje dane istniejącego sensora na podstawie dostarczonych informacji.
 DELETE /api/sensors
 Parametry: id (Long) - Identyfikator sensora do usunięcia.
 Usuwa sensor z systemu na podstawie jego identyfikatora.
-
 
 # 8\. Dokumentacja bazy danych - Amadeusz Gunia
 ## MariaDB
