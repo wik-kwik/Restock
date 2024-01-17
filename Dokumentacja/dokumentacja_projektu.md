@@ -166,7 +166,7 @@ Pobierania list ofert z Allegro możliwe jest z wykorzystaniem endpointu: https:
 - **Parametr sort** - służy do sortowania ofert:
   - Sortowanie po cenie rosnąco: "+price"
   - Sortowanie po cenie wraz z kosztem dostawy rosnąco: "+withDeliveryPrice"
-## Algorytm wyszukiwania najlepszej oferty
+## Algorytm wyszukiwania najlepszej oferty - Amadeusz Gunia
 1. Pobieranie produktów z podstawowymi filtrami:
    - nazwa (wymagane)
    - preferowana marka
